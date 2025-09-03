@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- SEO Meta Tags -->
+    <title>BooShiv</title>
+    <!-- Enhanced Favicon Support -->
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="images/Logo2-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="images/Logo2-16x16.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="images/Logo2apple-touch-icon.png"
+    />
+    <link rel="manifest" href="images/Logo2.webmanifest" />
+    <meta
+      name="description"
+      content="Premium natural farm products including Poombarai Poondu garlic, whole black pepper, and Kavuni rice. Direct from farmers to your table."
+    />
+    <meta
+      name="keywords"
+      content="organic garlic, black pepper, kavuni rice, natural products, farm direct"
+    />
+    <meta name="author" content="BooShiv" />
+    <meta name="robots" content="index, follow" />
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body data-bs-theme="light">
+    <!-- Header -->
+    <header class="header">
+      <div class="container">
+        <div class="header-content">
+          <button
+            id="theme-toggle"
+            class="theme-toggle"
+            aria-label="Toggle Theme"
+            title="Toggle theme"
+          >
+            <span id="theme-icon"></span>
+          </button>
+
+          <div class="header-left">
+            <button class="menu-toggle" id="menu-toggle">☰</button>
+          </div>
+
+          <div class="brand">
+            <img
+              id="logo"
+              src="images/BooShivLogo.png"
+              alt="Logo"
+              class="logo"
+            />
+            <h1 class="site-title">BooShiv</h1>
+          </div>
+
+          <nav class="nav">
+            <a href="#about"><span>About</span></a>
+            <a href="#vision"><span>Vision</span></a>
+            <div class="nav-dropdown">
+              <a href="#products"><span>Products</span></a>
+              <div class="dropdown-content">
+                <a href="productGarlic.html">Poombarai Garlic</a>
+                <a href="productWPepper.html">Whole Black Pepper</a>
+                <a href="productKRice.html">Kavuni Rice</a>
+              </div>
+            </div>
+            <a href="#contact"><span>Contact</span></a>
+          </nav>
+        </div>
+      </div>
+    </header>
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+      <div class="mobile-menu-header">
+        <h3>Menu</h3>
+        <button class="menu-close" id="menu-close">×</button>
+      </div>
+      <div class="mobile-menu-items">
+        <a href="#about">About</a>
+        <a href="#vision">Vision</a>
+        <a href="#products">Products</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+
+    <!-- Main Content -->
+    <main class="container">
+      <!-- About Section -->
+      <section id="about" class="content-section">
+        <h2>About Us</h2>
+        <p>
+          Founded by a visionary trio whose shared passion for authentic farming
+          and community wellness sparked a mission to reconnect families with
+          nature's finest ingredients.
+        </p>
+        <p>
+          As passionate advocates for both farmers and consumers, we bridge the
+          gap between field and kitchen, ensuring every product maintains its
+          natural integrity and nutritional value.
+        </p>
+        <p>
+          Our carefully curated selection — whole garlic, whole black pepper,
+          and Kavuni rice — represents the perfect blend of exceptional flavor
+          and traditional medicinal wisdom, bringing nature's pharmacy directly
+          to your home.
+        </p>
+      </section>
+      <section id="vision" class="content-section">
+        <h2>Our Vision</h2>
+        <p>
+          To nurture a healthier world where every household has access to
+          nature's most powerful ingredients, grown with traditional wisdom and
+          delivered with care — creating lasting connections between farmers,
+          families, and the healing power of the earth.
+        </p>
+      </section>
+      <div class="container">
+        <!-- Products Section -->
+        <section id="products" class="products-section">
+          <h2 class="section-title">Our Premium Products</h2>
+          <div class="products-grid">
+            <!-- Poombarai Poondu -->
+            <div class="product-card">
+              <a href="productGarlic.html" class="product-link">
+                <h3 class="product-title"><span>Poombarai Garlic</span></h3>
+                <img
+                  src="images/Garlic.png"
+                  alt="Poombarai Garlic"
+                  class="product-image"
+                />
+              </a>
+            </div>
+
+            <!-- Whole Black Pepper -->
+            <div class="product-card">
+              <a href="productWPepper.html" class="product-link">
+                <h3 class="product-title">
+                  <span>Whole Black Pepper (குறு மிளகு)</span>
+                </h3>
+                <img
+                  src="images/BlackPepper.png"
+                  alt="Whole Black Pepper"
+                  class="product-image"
+                />
+              </a>
+            </div>
+
+            <!-- Kavuni Rice -->
+            <div class="product-card">
+              <a href="productKRice.html" class="product-link">
+                <h3 class="product-title"><span>Kavuni Rice</span></h3>
+                <img
+                  src="images/KavuniRice.png"
+                  alt="Kavuni Rice"
+                  class="product-image"
+                />
+              </a>
+            </div>
+          </div>
+        </section>
+      </div>
+      <section class="customer-form" id="enquiry-form">
+        <h2>Enquiry Form</h2>
+        <form
+          id="enquiry-form-submit"
+          action="https://formspree.io/f/myzpvbdw"
+          method="POST"
+        >
+          <input type="text" name="_gotcha" style="display: none" />
+          <div class="form-group">
+            <label for="enquiry-name">First Name *</label>
+            <input type="text" id="enquiry-name" name="name" required />
+          </div>
+          <div class="form-group">
+            <label for="enquiry-name">Last Name *</label>
+            <input type="text" id="enquiry-name" name="name" required />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="enquiry-email">Email Address *</label>
+              <input type="email" id="enquiry-email" name="email" required />
+            </div>
+            <div class="form-group">
+              <label for="enquiry-phone">Phone Number *</label>
+              <input
+                type="tel"
+                id="enquiry-phone"
+                name="phone"
+                placeholder="+1 1234567890"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="enquiry-subject">Subject</label>
+            <input
+              type="text"
+              id="enquiry-subject"
+              name="subject"
+              placeholder="What can we help you with?"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="enquiry-message">Message *</label>
+            <textarea
+              id="enquiry-message"
+              name="message"
+              rows="5"
+              placeholder="Please describe your enquiry..."
+              required
+            ></textarea>
+          </div>
+
+          <button type="submit" class="submit-enquiry-btn">
+            Submit Enquiry
+          </button>
+        </form>
+      </section>
+
+      <!-- Contact Section -->
+      <section id="contact" class="content-section">
+        <h2>Contact Us</h2>
+        <p style="text-align: center">
+          <strong>Email:</strong> info@booshiv.com<br />
+          <strong>Questions?</strong> We're here to help with your order!
+        </p>
+      </section>
+    </main>
+
+    <script src="script.js" defer></script>
+  </body>
+</html>

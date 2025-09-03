@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us - BooShiv</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <div class="watermark">
+      <img src="/Images/BooShivLogo.png" alt="BooShiv Watermark" />
+    </div>
+    <!-- Contact Bar -->
+    <div class="contact-bar">
+      <div class="contact-bar-content">
+        <div class="contact-left">
+          Contact us <a href="tel:0478257409">0478 257 409</a>
+        </div>
+        <div class="theme-toggle-container">
+          <button class="arrow-toggle" onclick="toggleThemeMenu()">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <div class="theme-menu" id="themeMenu">
+            <button class="theme-btn" onclick="toggleTheme()">
+              <span class="theme-icon-light">☀️</span>
+              <span class="theme-icon-dark">🌙</span>
+              <span class="theme-text">Dark Mode</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+      <div class="nav-container">
+        <div class="logo-container">
+          <img
+            src="/Images/BooShivLogo.png"
+            alt="BooShiv Logo"
+            style="width: 60px; height: 60px; object-fit: contain"
+          />
+          <div class="logo">BooShiv</div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Image Grid -->
+    <div class="image-grid">
+      <div class="image-placeholder">
+        <span class="coming-soon">Coming Soon</span>
+      </div>
+      <div class="image-placeholder">
+        <span class="coming-soon">Coming Soon</span>
+      </div>
+      <div class="image-placeholder">
+        <span class="coming-soon">Coming Soon</span>
+      </div>
+      <div class="image-placeholder">
+        <span class="coming-soon">Coming Soon</span>
+      </div>
+    </div>
+
+    <!-- Our Story Section -->
+    <section class="story-section">
+      <div class="container">
+        <div class="story-content">
+          <div class="story-text">
+            <h2>Our Story</h2>
+            <p>
+              BooShiv was born from a vision: to weave timeless heritage into
+              the fabric of modern global markets. What began as a belief—that
+              authentic, high-quality creations deserve worldwide
+              recognition—has blossomed into a soulful enterprise rooted in
+              trust, artistry, and cultural reverence.
+            </p>
+            <p>
+              Guided by a visionary entrepreneur with deep ancestral ties to
+              traditional trade, BooShiv seeks to unveil the untapped brilliance
+              of rare spices, exquisite textiles, and masterful craftsmanship.
+              This journey has grown into a refined import-export venture, with
+              plans to unveil an exclusive house of curated elegance.
+            </p>
+            <p>
+              But BooShiv is more than commerce. We carry stories. We honour
+              traditions. We celebrate the extraordinary skill of artisans whose
+              work transcends borders—building bridges of beauty, meaning, and
+              lasting connection.
+            </p>
+          </div>
+          <div class="story-image">
+            <span class="coming-soon">Coming Soon</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products-section">
+      <div class="container">
+        <h2 class="section-title">What We Bring to Australia</h2>
+        <p class="section-subtitle">
+          Premium quality products sourced directly from India's finest
+          producers
+        </p>
+
+        <div class="products-grid">
+          <div class="product-card">
+            <div class="product-icon">🌶️</div>
+            <h3>Premium Spices</h3>
+            <p>
+              We source the finest spices directly from farms and spice markets,
+              ensuring authenticity and superior quality for businesses.
+            </p>
+            <ul class="product-features">
+              <li>Direct farm sourcing</li>
+              <li>Bulk quantities for businesses</li>
+              <li>Quality certified products</li>
+              <li>Competitive wholesale pricing</li>
+            </ul>
+          </div>
+
+          <div class="product-card">
+            <div class="product-icon">🧵</div>
+            <h3>Textiles & Fabrics</h3>
+            <p>
+              Exquisite silk, cotton, and artisanal weaves that celebrate
+              timeless textile heritage—crafted for discerning fashion houses
+              and refined interior spaces.
+            </p>
+            <ul class="product-features">
+              <li>Premium silk varieties</li>
+              <li>Organic cotton fabrics</li>
+              <li>Traditional woven textiles</li>
+              <li>Custom bulk orders available</li>
+            </ul>
+          </div>
+
+          <div class="product-card">
+            <div class="product-icon">👗</div>
+            <h3>Curated Fashion Atelier</h3>
+            <p>
+              Coming soon - Our exclusive atelier showcases custom-designed
+              garments that blend ancestral craftsmanship with modern
+              elegance—where tradition meets contemporary style in every thread.
+            </p>
+            <ul class="product-features">
+              <li>Custom-tailored designs</li>
+              <li>Stitched in India</li>
+              <li>Fusion fashion collections</li>
+              <li>Limited edition pieces</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="mission-section">
+      <div class="container">
+        <div class="mission-content">
+          <h2>Our Mission & Values</h2>
+          <p style="font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.95">
+            Building sustainable trade relationships that benefit businesses,
+            communities, and cultures across borders.
+          </p>
+
+          <div class="mission-grid">
+            <div class="mission-item">
+              <h3>Quality First</h3>
+              <p>
+                Each piece we curate upholds uncompromising standards of
+                quality—ensuring our partners receive only the finest, most
+                refined offerings for their clientele.
+              </p>
+            </div>
+            <div class="mission-item">
+              <h3>Cultural Bridge</h3>
+              <p>
+                We honour timeless cultural heritage while thoughtfully serving
+                the refined tastes of contemporary global markets.
+              </p>
+            </div>
+            <div class="mission-item">
+              <h3>Sustainable Trade</h3>
+              <p>
+                Our business practices prioritize environmental responsibility
+                and fair trade, supporting communities.
+              </p>
+            </div>
+            <div class="mission-item">
+              <h3>Business Growth</h3>
+              <p>
+                We empower discerning businesses with access to authentic,
+                heritage-rich products—offered at thoughtful, competitive
+                wholesale values.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Markets Section -->
+    <section class="markets-section">
+      <div class="container">
+        <h2 class="section-title">Where We Operate</h2>
+        <p class="section-subtitle">
+          Connecting two great nations through trade and commerce
+        </p>
+
+        <div class="markets-grid">
+          <div class="market-card">
+            <div class="market-flag">🇮🇳</div>
+            <h3>India</h3>
+            <p>
+              Our sourcing hub, where we partner with trusted suppliers,
+              farmers, and artisans to bring you authentic products.
+            </p>
+            <div class="market-stats">
+              <div class="stat-item">
+                <span>Export Categories</span>
+                <span class="stat-value">3</span>
+              </div>
+              <div class="stat-item">
+                <span>Partner Suppliers</span>
+                <span class="stat-value">Growing</span>
+              </div>
+              <div class="stat-item">
+                <span>Quality Certified</span>
+                <span class="stat-value">100%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="market-card">
+            <div class="market-flag">🇦🇺</div>
+            <h3>Australia</h3>
+            <p>
+              Soon, exclusive garments crafted from premium fabrics will open
+              the next chapter—where timeless design meets cultural elegance and
+              artisanal finesse.
+            </p>
+            <div class="market-stats">
+              <div class="stat-item">
+                <span>Business Focus</span>
+                <span class="stat-value">B2B</span>
+              </div>
+              <div class="stat-item">
+                <span>Product Lines</span>
+                <span class="stat-value">Expanding</span>
+              </div>
+              <div class="stat-item">
+                <span>Boutique Launch</span>
+                <span class="stat-value">Coming Soon</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Founder Section -->
+    <section class="founder-section">
+      <div class="container">
+        <h2 class="section-title">Our Leadership</h2>
+        <p class="section-subtitle">
+          The trailblazer redefining BooShiv’s future
+        </p>
+
+        <div class="founder-card">
+          <div class="founder-image">
+            <span>Coming Soon</span>
+          </div>
+          <h3 class="founder-name">Gayathri Balasubramaniyan</h3>
+          <p class="founder-title">Founder</p>
+          <p class="founder-bio">
+            With a passion for global trade and cultural connection, Gayathri
+            weaves deep market insight with a soulful entrepreneurial spirit to
+            shape meaningful business opportunities. Her vision for BooShiv is
+            to become a premier destination for heritage-rich, authentic
+            products—honoring tradition while cultivating lasting relationships
+            that uplift those united by the art of commerce and the beauty of
+            culture.
+          </p>
+        </div>
+      </div>
+    </section>
+    ]
+    <!-- Contact Section -->
+    <section class="contact-section">
+      <div class="container">
+        <h2 class="section-title">Get in Touch</h2>
+        <p class="section-subtitle">
+          Ready to explore business opportunities? We'd love to hear from you at
+          <a
+            href="mailto:info@booshiv.com"
+            style="color: #ff6b6b; text-decoration: none"
+            >info@booshiv.com</a
+          >
+        </p>
+
+        <section class="customer-form" id="enquiry-form">
+          <h2>Enquiry Form</h2>
+          <div
+            id="success-message"
+            class="success-message"
+            style="display: none"
+          >
+            <div class="success-content">
+              <h3>Thank You!</h3>
+              <p>
+                Your enquiry has been received. We'll get back to you within 24
+                hours.
+              </p>
+              <div class="success-timer">
+                Form will reappear in <span id="countdown">30</span> seconds
+              </div>
+            </div>
+          </div>
+
+          <form
+            id="enquiry-form-submit"
+            action="/api/submit-form"
+            method="POST"
+          >
+            <input type="text" name="_gotcha" style="display: none" />
+            <div class="form-row">
+              <div class="form-group">
+                <label for="enquiry-firstname">First Name *</label>
+                <input
+                  type="text"
+                  id="enquiry-firstname"
+                  name="firstname"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="enquiry-lastname">Last Name *</label>
+                <input
+                  type="text"
+                  id="enquiry-lastname"
+                  name="lastname"
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="enquiry-email">Email Address *</label>
+                <input type="email" id="enquiry-email" name="email" required />
+              </div>
+              <div class="form-group">
+                <label for="enquiry-phone">Phone Number *</label>
+                <input
+                  type="tel"
+                  id="enquiry-phone"
+                  name="phone"
+                  placeholder="+61 1234567890"
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="enquiry-subject">Subject</label>
+              <input
+                type="text"
+                id="enquiry-subject"
+                name="subject"
+                placeholder="What can we help you with?"
+              />
+            </div>
+            <div class="form-group">
+              <label for="enquiry-message">Message *</label>
+              <textarea
+                id="enquiry-message"
+                name="message"
+                rows="5"
+                placeholder="Please describe your enquiry..."
+                required
+              ></textarea>
+            </div>
+            <button type="submit" class="submit-enquiry-btn">
+              Submit Enquiry
+            </button>
+          </form>
+        </section>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-logo">BooShiv</div>
+        <p class="footer-text">
+          Bridging India and Australia through authentic trade and commerce
+        </p>
+        <p style="opacity: 0.6; font-size: 0.9rem">
+          © 2024 BooShiv. All rights reserved. | ABN: 11 762 603 033
+        </p>
+      </div>
+    </footer>
+    <script src="index.js" defer></script>
+  </body>
+</html>

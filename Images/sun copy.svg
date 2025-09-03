@@ -1,0 +1,17 @@
+<svg width="300" height="300" viewBox="0 0 350 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Super bright glow filter -->
+    <filter id="superBrightGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="30" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Glowing crescent moon -->
+  <g filter="url(#superBrightGlow)">
+    <path d="M65 15C55 35 50 60 50 90C50 175 120 240 215 240C260 240 300 220 330 190C300 250 240 290 170 290C85 290 15 220 15 135C15 90 30 50 65 15Z" fill="#FFFFFF"/>
+  </g>
+</svg>
