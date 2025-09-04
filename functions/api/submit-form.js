@@ -52,20 +52,16 @@ export async function onRequestPost(context) {
       );
     }
 
-    // Prepare email content
+    // Prepare email content - SIMPLIFIED VERSION
     const emailBody = {
       personalizations: [
         {
-          to: [{ email: "info@booshiv.com", name: "BooShiv" }],
+          to: [{ email: "info@booshiv.com" }],
         },
       ],
       from: {
         email: "noreply@booshiv.com",
         name: "BooShiv Website",
-      },
-      reply_to: {
-        email: data.email,
-        name: `${data.firstname} ${data.lastname}`,
       },
       subject: `New Enquiry: ${data.subject}`,
       content: [
@@ -86,81 +82,8 @@ ${data.message}
 This email was sent from your website contact form.
           `,
         },
-        {
-          type: "text/html",
-          value: `
-            <!DOCTYPE html>
-            <html>
-            <head>
-              <meta charset="UTF-8">
-            </head>
-            <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-              <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
-                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 10px 10px 0 0;">
-                  <h2 style="margin: 0; font-size: 24px;">New Enquiry from BooShiv Website</h2>
-                </div>
-                
-                <div style="background: #f8f9fa; padding: 30px; border-radius: 0 0 10px 10px; border: 1px solid #e9ecef; border-top: none;">
-                  <table style="width: 100%; border-collapse: collapse;">
-                    <tr>
-                      <td style="padding: 10px 0; border-bottom: 1px solid #dee2e6;">
-                        <strong style="color: #495057;">Name:</strong>
-                      </td>
-                      <td style="padding: 10px 0; border-bottom: 1px solid #dee2e6;">
-                        ${data.firstname} ${data.lastname}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="padding: 10px 0; border-bottom: 1px solid #dee2e6;">
-                        <strong style="color: #495057;">Email:</strong>
-                      </td>
-                      <td style="padding: 10px 0; border-bottom: 1px solid #dee2e6;">
-                        <a href="mailto:${data.email}" style="color: #667eea; text-decoration: none;">${data.email}</a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="padding: 10px 0; border-bottom: 1px solid #dee2e6;">
-                        <strong style="color: #495057;">Phone:</strong>
-                      </td>
-                      <td style="padding: 10px 0; border-bottom: 1px solid #dee2e6;">
-                        <a href="tel:${data.phone}" style="color: #667eea; text-decoration: none;">${data.phone}</a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="padding: 10px 0; border-bottom: 1px solid #dee2e6;">
-                        <strong style="color: #495057;">Subject:</strong>
-                      </td>
-                      <td style="padding: 10px 0; border-bottom: 1px solid #dee2e6;">
-                        ${data.subject}
-                      </td>
-                    </tr>
-                  </table>
-                  
-                  <div style="margin-top: 20px; padding: 20px; background: white; border-radius: 5px; border-left: 4px solid #667eea;">
-                    <h3 style="margin-top: 0; color: #495057;">Message:</h3>
-                    <p style="white-space: pre-wrap; color: #212529;">${data.message}</p>
-                  </div>
-                </div>
-                
-                <div style="text-align: center; margin-top: 20px; padding: 20px; color: #6c757d; font-size: 12px;">
-                  <p>This email was automatically sent from your website contact form.</p>
-                  <p>© 2024 BooShiv. All rights reserved.</p>
-                </div>
-              </div>
-            </body>
-            </html>
-          `,
-        },
       ],
     };
-
-    // Only add DKIM if the environment variable exists
-    if (context.env.DKIM_PRIVATE_KEY) {
-      emailBody.personalizations[0].dkim_domain = "booshiv.com";
-      emailBody.personalizations[0].dkim_selector = "mailchannels";
-      emailBody.personalizations[0].dkim_private_key =
-        context.env.DKIM_PRIVATE_KEY;
-    }
 
     // Send email using MailChannels
     const response = await fetch("https://api.mailchannels.net/tx/v1/send", {
@@ -190,7 +113,21 @@ This email was sent from your website contact form.
       );
     } else {
       console.error("MailChannels error:", responseText);
-      throw new Error(`MailChannels API error: ${response.status}`);
+      // Return more specific error info
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: `Email service error: ${response.status}`,
+          details: responseText,
+        }),
+        {
+          status: 500,
+          headers: {
+            "Content-Type": "application/json",
+            ...corsHeaders,
+          },
+        }
+      );
     }
   } catch (error) {
     console.error("Form submission error:", error);
@@ -198,6 +135,7 @@ This email was sent from your website contact form.
       JSON.stringify({
         success: false,
         error: "Failed to send email. Please try again later.",
+        details: error.message,
       }),
       {
         status: 500,
@@ -210,7 +148,7 @@ This email was sent from your website contact form.
   }
 }
 
-// Handle OPTIONS requests for CORS - THIS WAS MISSING
+// Handle OPTIONS requests for CORS
 export async function onRequestOptions() {
   return new Response(null, {
     status: 200,
