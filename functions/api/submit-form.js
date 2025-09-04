@@ -60,7 +60,7 @@ export async function onRequestPost(context) {
         },
       ],
       from: {
-        email: "noreply@booshiv.pages.dev",
+        email: "noreply@771e5f39.booshiv.pages.dev",
         name: "BooShiv Website",
       },
       subject: `New Enquiry: ${data.subject}`,
