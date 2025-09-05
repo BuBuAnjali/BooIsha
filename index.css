@@ -36,7 +36,7 @@ body:hover .watermark {
 /* Contact Bar - Above Navigation */
 .contact-bar {
     background: #c3d1e6;
-    padding: 0.5rem 0;
+    padding: 0;
     border-bottom: 1px solid #e0e0e0;
     position: sticky;
     top: 0;
@@ -106,9 +106,7 @@ body:hover .watermark {
     right: 0;
     top: 100%;
     margin-top: 10px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    background: transparent;
     padding: 10px;
     opacity: 0;
     visibility: hidden;
@@ -124,9 +122,8 @@ body:hover .watermark {
 }
 
 .theme-btn {
-    background: #f0f0f0;
     border: none;
-    padding: 10px 20px;
+    padding: 5px 10px;
     border-radius: 8px;
     cursor: pointer;
     display: flex;
@@ -135,13 +132,70 @@ body:hover .watermark {
     font-size: 0.9rem;
     transition: background 0.3s ease;
     white-space: nowrap;
+    background: rgb(100, 96, 96);
 }
 
 .theme-btn:hover {
-    background: #e0e0e0;
+   background: rgb(100, 96, 96);
+}
+
+/* Tooltip styles */
+.theme-btn::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    margin-bottom: 5px;
+}
+
+.theme-btn::after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #333;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.theme-btn:hover::before,
+.theme-btn:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+.theme-icon-light,
+.theme-icon-dark {
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.theme-icon-light {
+    background-image: url('/Images/moon.svg');
+    display: inline-block;
 }
 
 .theme-icon-dark {
+    background-image: url('/Images/sun.svg');
     display: none;
 }
 
@@ -222,8 +276,7 @@ body.dark-theme footer {
 }
 
 body.dark-theme .theme-menu {
-    background: #2a2a2a;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+    background: transparent;
 }
 
 body.dark-theme .theme-btn {
@@ -240,7 +293,7 @@ body.dark-theme .theme-icon-light {
 }
 
 body.dark-theme .theme-icon-dark {
-    display: inline;
+    display: inline-block;
 }
 
 body.dark-theme .arrow-toggle {
@@ -314,8 +367,8 @@ body.dark-theme .contact-bar-content a:hover {
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 1.5rem;
             max-width: 1200px;
-            margin: -3rem auto 4rem;
-            padding: 0 2rem;
+            margin: -3rem auto 2rem;
+            padding: 0 1rem;
             position: relative;
             z-index: 10;
         }
@@ -354,7 +407,7 @@ body.dark-theme .contact-bar-content a:hover {
 
         /* Our Story Section */
         .story-section {
-            padding: 5rem 0;
+            padding: 0;
             background: #f8f9fa;
         }
 
@@ -403,7 +456,7 @@ body.dark-theme .contact-bar-content a:hover {
 
         /* Products Section */
         .products-section {
-            padding: 5rem 0;
+            padding: 1rem 0;
         }
 
         .section-title {
@@ -417,7 +470,7 @@ body.dark-theme .contact-bar-content a:hover {
             text-align: center;
             font-size: 1.2rem;
             color: #5a6c7d;
-            margin-bottom: 4rem;
+            margin-bottom: 1rem;
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
@@ -515,12 +568,17 @@ body.dark-theme .contact-bar-content a:hover {
 
         /* Mission Section */
         .mission-section {
-            padding: 5rem 0;
-            background: linear-gradient(135deg, #819cab 0%, #FF8E53 100%);
+            padding: 1rem 0;
+            
             color: white;
             text-align: center;
         }
-
+body.dark.theme .mission-section {
+            background: linear-gradient(135deg, #0b0f10 0%, #1a2a39 100%);
+        }
+        body.light.theme .mission-section {
+            background: linear-gradient(135deg, #7bbed0 0%, #4b78a2 100%);
+        }
         .mission-content {
             max-width: 900px;
             margin: 0 auto;
@@ -528,7 +586,7 @@ body.dark-theme .contact-bar-content a:hover {
 
         .mission-content h2 {
             font-size: 2.5rem;
-            margin-bottom: 2rem;
+            margin-bottom: 0.5rem;
         }
 
         .mission-grid {
@@ -563,7 +621,7 @@ body.dark-theme .contact-bar-content a:hover {
 
         /* Markets Section */
         .markets-section {
-            padding: 5rem 0;
+            padding: 1rem 0;
             background: #f8f9fa;
         }
 
@@ -623,7 +681,7 @@ body.dark-theme .contact-bar-content a:hover {
 
         /* Founder Section */
         .founder-section {
-            padding: 5rem 0;
+            padding: 1rem 0;
         }
 
         .founder-card {
@@ -671,7 +729,7 @@ body.dark-theme .contact-bar-content a:hover {
 
         /* Contact Section */
         .contact-section {
-            padding: 5rem 0;
+            padding: 1rem 0;
             background: #f8f9fa;
         }
 

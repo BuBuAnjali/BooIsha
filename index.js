@@ -11,15 +11,15 @@ function toggleThemeMenu() {
 
 function toggleTheme() {
   const body = document.body;
-  const themeText = document.querySelector(".theme-text");
+  const themeBtn = document.querySelector(".theme-btn");
 
   body.classList.toggle("dark-theme");
 
   if (body.classList.contains("dark-theme")) {
-    themeText.textContent = "Light Mode";
+    themeBtn.setAttribute("data-tooltip", "Switch to Light Mode");
     localStorage.setItem("theme", "dark");
   } else {
-    themeText.textContent = "Dark Mode";
+    themeBtn.setAttribute("data-tooltip", "Switch to Dark Mode");
     localStorage.setItem("theme", "light");
   }
 
@@ -28,16 +28,16 @@ function toggleTheme() {
 
 // Load saved theme on page load and set up form handler
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("DOM loaded");
-
   const savedTheme = localStorage.getItem("theme");
-  const themeText = document.querySelector(".theme-text");
+  const themeBtn = document.querySelector(".theme-btn");
 
   if (savedTheme === "dark") {
     document.body.classList.add("dark-theme");
-    themeText.textContent = "Light Mode";
+    themeBtn.setAttribute("data-tooltip", "Switch to Light Mode");
+  } else {
+    themeBtn.setAttribute("data-tooltip", "Switch to Dark Mode");
   }
-
+  console.log("DOM loaded");
   // Form submission handler
   const form = document.getElementById("enquiry-form-submit");
   console.log("Form found:", form);
