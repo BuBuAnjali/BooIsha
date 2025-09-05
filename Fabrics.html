@@ -3,252 +3,462 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <!-- SEO Meta Tags -->
-    <title>BooShiv</title>
-    <!-- Enhanced Favicon Support -->
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="images/Logo2-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="images/Logo2-16x16.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="images/Logo2apple-touch-icon.png"
-    />
-    <link rel="manifest" href="images/Logo2.webmanifest" />
-    <meta
-      name="description"
-      content="Premium natural farm products including Poombarai Poondu garlic, whole black pepper, and Kavuni rice. Direct from farmers to your table."
-    />
-    <meta
-      name="keywords"
-      content="organic garlic, black pepper, kavuni rice, natural products, farm direct"
-    />
-    <meta name="author" content="BooShiv" />
-    <meta name="robots" content="index, follow" />
-    <link rel="stylesheet" href="styles.css" />
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"
-    />
+    <title>Textiles & Fabrics - BooShiv</title>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="fabrics.css" />
   </head>
+  <body>
+    <div class="watermark">
+      <img src="/Images/BooShivLogo.png" alt="BooShiv Watermark" />
+    </div>
 
-  <body data-bs-theme="light">
-    <!-- Header -->
-    <header class="header">
-      <div class="container">
-        <div class="header-content">
-          <button
-            id="theme-toggle"
-            class="theme-toggle"
-            aria-label="Toggle Theme"
-            title="Toggle theme"
-          >
-            <span id="theme-icon"></span>
-          </button>
-
-          <div class="header-left">
-            <button class="menu-toggle" id="menu-toggle">☰</button>
-          </div>
-
-          <div class="brand">
-            <img
-              id="logo"
-              src="images/BooShivLogo.png"
-              alt="Logo"
-              class="logo"
-            />
-            <h1 class="site-title">BooShiv</h1>
-          </div>
-
-          <nav class="nav">
-            <a href="#about"><span>About</span></a>
-            <a href="#vision"><span>Vision</span></a>
-            <div class="nav-dropdown">
-              <a href="#products"><span>Products</span></a>
-              <div class="dropdown-content">
-                <a href="productGarlic.html">Poombarai Garlic</a>
-                <a href="productWPepper.html">Whole Black Pepper</a>
-                <a href="productKRice.html">Kavuni Rice</a>
-              </div>
-            </div>
-            <a href="#contact"><span>Contact</span></a>
-          </nav>
+    <!-- Contact Bar -->
+    <div class="contact-bar">
+      <div class="contact-bar-content">
+        <div class="contact-left">
+          Contact us <a href="tel:0478257409">0478 257 409</a>
         </div>
-      </div>
-    </header>
-    <!-- Mobile Menu -->
-    <div class="mobile-menu" id="mobile-menu">
-      <div class="mobile-menu-header">
-        <h3>Menu</h3>
-        <button class="menu-close" id="menu-close">×</button>
-      </div>
-      <div class="mobile-menu-items">
-        <a href="#about">About</a>
-        <a href="#vision">Vision</a>
-        <a href="#products">Products</a>
-        <a href="#contact">Contact</a>
+        <div class="theme-toggle-container">
+          <button class="arrow-toggle" onclick="toggleThemeMenu()">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <div class="theme-menu" id="themeMenu">
+            <button class="theme-btn" onclick="toggleTheme()">
+              <span class="theme-icon-light">☀️</span>
+              <span class="theme-icon-dark">🌙</span>
+              <span class="theme-text">Dark Mode</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Cart Sidebar -->
-
-    <!-- Main Content -->
-    <main class="container">
-      <!-- About Section -->
-      <section id="about" class="content-section">
-        <h2>About Us</h2>
-        <p>
-          Founded by a visionary trio whose shared passion for authentic farming
-          and community wellness sparked a mission to reconnect families with
-          nature's finest ingredients.
-        </p>
-        <p>
-          As passionate advocates for both farmers and consumers, we bridge the
-          gap between field and kitchen, ensuring every product maintains its
-          natural integrity and nutritional value.
-        </p>
-        <p>
-          Our carefully curated selection — whole garlic, whole black pepper,
-          and Kavuni rice — represents the perfect blend of exceptional flavor
-          and traditional medicinal wisdom, bringing nature's pharmacy directly
-          to your home.
-        </p>
-      </section>
-      <section id="vision" class="content-section">
-        <h2>Our Vision</h2>
-        <p>
-          To nurture a healthier world where every household has access to
-          nature's most powerful ingredients, grown with traditional wisdom and
-          delivered with care — creating lasting connections between farmers,
-          families, and the healing power of the earth.
-        </p>
-      </section>
-      <div class="container">
-        <!-- Products Section -->
-        <section id="products" class="products-section">
-          <h2 class="section-title">Our Premium Products</h2>
-          <div class="products-grid">
-            <!-- Poombarai Poondu -->
-            <div class="product-card">
-              <a href="productGarlic.html" class="product-link">
-                <h3 class="product-title"><span>Poombarai Garlic</span></h3>
-                <img
-                  src="images/Garlic.png"
-                  alt="Poombarai Garlic"
-                  class="product-image"
-                />
-              </a>
-            </div>
-
-            <!-- Whole Black Pepper -->
-            <div class="product-card">
-              <a href="productWPepper.html" class="product-link">
-                <h3 class="product-title">
-                  <span>Whole Black Pepper (குறு மிளகு)</span>
-                </h3>
-                <img
-                  src="images/BlackPepper.png"
-                  alt="Whole Black Pepper"
-                  class="product-image"
-                />
-              </a>
-            </div>
-
-            <!-- Kavuni Rice -->
-            <div class="product-card">
-              <a href="productKRice.html" class="product-link">
-                <h3 class="product-title"><span>Kavuni Rice</span></h3>
-                <img
-                  src="images/KavuniRice.png"
-                  alt="Kavuni Rice"
-                  class="product-image"
-                />
-              </a>
-            </div>
-          </div>
-        </section>
-      </div>
-      <section class="customer-form" id="enquiry-form">
-        <h2>Enquiry Form</h2>
-        <form
-          id="enquiry-form-submit"
-          action="https://formspree.io/f/myzpvbdw"
-          method="POST"
-        >
-          <input type="text" name="_gotcha" style="display: none" />
-          <div class="form-group">
-            <label for="enquiry-name">First Name *</label>
-            <input type="text" id="enquiry-name" name="name" required />
-          </div>
-          <div class="form-group">
-            <label for="enquiry-name">Last Name *</label>
-            <input type="text" id="enquiry-name" name="name" required />
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="enquiry-email">Email Address *</label>
-              <input type="email" id="enquiry-email" name="email" required />
-            </div>
-            <div class="form-group">
-              <label for="enquiry-phone">Phone Number *</label>
-              <input
-                type="tel"
-                id="enquiry-phone"
-                name="phone"
-                placeholder="+1 1234567890"
-                required
-              />
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="enquiry-subject">Subject</label>
-            <input
-              type="text"
-              id="enquiry-subject"
-              name="subject"
-              placeholder="What can we help you with?"
+    <!-- Navigation -->
+    <nav>
+      <div class="nav-container">
+        <div class="logo-container">
+          <a
+            href="index.html"
+            style="
+              display: flex;
+              align-items: center;
+              text-decoration: none;
+              color: inherit;
+            "
+          >
+            <img
+              src="/Images/BooShivLogo.png"
+              alt="BooShiv Logo"
+              style="
+                width: 60px;
+                height: 60px;
+                object-fit: contain;
+                padding-right: 10px;
+              "
             />
-          </div>
+            <div class="logo">BooShiv</div>
+          </a>
+        </div>
+        <div class="breadcrumb">
+          <a href="index.html">Home</a>
+          <span>/</span>
+          <span>Textiles & Fabrics</span>
+        </div>
+      </div>
+    </nav>
 
-          <div class="form-group">
-            <label for="enquiry-message">Message *</label>
-            <textarea
-              id="enquiry-message"
-              name="message"
-              rows="5"
-              placeholder="Please describe your enquiry..."
-              required
-            ></textarea>
-          </div>
-
-          <button type="submit" class="submit-enquiry-btn">
-            Submit Enquiry
-          </button>
-        </form>
-      </section>
-
-      <!-- Contact Section -->
-      <section id="contact" class="content-section">
-        <h2>Contact Us</h2>
-        <p style="text-align: center">
-          <strong>Email:</strong> info@booshiv.com<br />
-          <strong>Questions?</strong> We're here to help with your order!
+    <!-- Hero Section -->
+    <section class="textiles-hero">
+      <div class="container">
+        <h1>Premium Textiles & Fabrics</h1>
+        <p>
+          Exquisite silk, cotton, and artisanal weaves directly from India's
+          finest mills
         </p>
-      </section>
-    </main>
+      </div>
+    </section>
 
-    <script src="script.js" defer></script>
+    <!-- Filter Section -->
+    <section class="filter-section">
+      <div class="container">
+        <div class="filter-bar">
+          <div class="filter-group">
+            <label>Category:</label>
+            <select class="filter-select">
+              <option>All Categories</option>
+              <option>Silk</option>
+              <option>Cotton</option>
+              <option>Linen</option>
+              <option>Wool</option>
+              <option>Blended Fabrics</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label>Sort by:</label>
+            <select class="filter-select">
+              <option>Featured</option>
+              <option>Name (A-Z)</option>
+              <option>Name (Z-A)</option>
+              <option>Newest First</option>
+            </select>
+          </div>
+          <div class="results-count">Showing <strong>12</strong> products</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Products Grid -->
+    <section class="products-listing">
+      <div class="container">
+        <div class="products-grid">
+          <!-- Product Card 1 -->
+          <div class="product-card">
+            <div class="product-image">
+              <span class="coming-soon-badge">Coming Soon</span>
+              <div class="product-badges">
+                <span class="badge premium">Premium</span>
+              </div>
+            </div>
+            <div class="product-details">
+              <h3>Pure Mulberry Silk</h3>
+              <p class="product-description">
+                Luxurious 100% mulberry silk fabric with natural sheen and
+                smooth texture. Perfect for high-end garments.
+              </p>
+              <div class="product-specs">
+                <span class="spec">100% Silk</span>
+                <span class="spec">Width: 44"</span>
+                <span class="spec">GSM: 80</span>
+              </div>
+              <div class="product-footer">
+                <span class="availability">Available for Bulk Orders</span>
+                <button class="enquire-btn">Enquire Now</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 2 -->
+          <div class="product-card">
+            <div class="product-image">
+              <span class="coming-soon-badge">Coming Soon</span>
+              <div class="product-badges">
+                <span class="badge new">New</span>
+              </div>
+            </div>
+            <div class="product-details">
+              <h3>Organic Cotton Canvas</h3>
+              <p class="product-description">
+                Heavy-duty organic cotton canvas, ideal for bags, upholstery,
+                and durable apparel.
+              </p>
+              <div class="product-specs">
+                <span class="spec">100% Cotton</span>
+                <span class="spec">Width: 60"</span>
+                <span class="spec">GSM: 340</span>
+              </div>
+              <div class="product-footer">
+                <span class="availability">Available for Bulk Orders</span>
+                <button class="enquire-btn">Enquire Now</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 3 -->
+          <div class="product-card">
+            <div class="product-image">
+              <span class="coming-soon-badge">Coming Soon</span>
+              <div class="product-badges">
+                <span class="badge premium">Premium</span>
+              </div>
+            </div>
+            <div class="product-details">
+              <h3>Handwoven Ikat Fabric</h3>
+              <p class="product-description">
+                Traditional handwoven ikat with intricate patterns. A heritage
+                textile perfect for unique designs.
+              </p>
+              <div class="product-specs">
+                <span class="spec">Cotton-Silk Blend</span>
+                <span class="spec">Width: 42"</span>
+                <span class="spec">Handmade</span>
+              </div>
+              <div class="product-footer">
+                <span class="availability">Limited Quantity</span>
+                <button class="enquire-btn">Enquire Now</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 4 -->
+          <div class="product-card">
+            <div class="product-image">
+              <span class="coming-soon-badge">Coming Soon</span>
+            </div>
+            <div class="product-details">
+              <h3>Fine Linen Fabric</h3>
+              <p class="product-description">
+                Premium quality linen with excellent breathability and natural
+                texture. Perfect for summer collections.
+              </p>
+              <div class="product-specs">
+                <span class="spec">100% Linen</span>
+                <span class="spec">Width: 58"</span>
+                <span class="spec">GSM: 180</span>
+              </div>
+              <div class="product-footer">
+                <span class="availability">Available for Bulk Orders</span>
+                <button class="enquire-btn">Enquire Now</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 5 -->
+          <div class="product-card">
+            <div class="product-image">
+              <span class="coming-soon-badge">Coming Soon</span>
+              <div class="product-badges">
+                <span class="badge eco">Eco-Friendly</span>
+              </div>
+            </div>
+            <div class="product-details">
+              <h3>Bamboo Cotton Blend</h3>
+              <p class="product-description">
+                Sustainable bamboo-cotton blend with antibacterial properties
+                and silky soft feel.
+              </p>
+              <div class="product-specs">
+                <span class="spec">70% Bamboo 30% Cotton</span>
+                <span class="spec">Width: 48"</span>
+                <span class="spec">GSM: 200</span>
+              </div>
+              <div class="product-footer">
+                <span class="availability">Available for Bulk Orders</span>
+                <button class="enquire-btn">Enquire Now</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 6 -->
+          <div class="product-card">
+            <div class="product-image">
+              <span class="coming-soon-badge">Coming Soon</span>
+              <div class="product-badges">
+                <span class="badge premium">Premium</span>
+              </div>
+            </div>
+            <div class="product-details">
+              <h3>Chanderi Silk</h3>
+              <p class="product-description">
+                Lightweight traditional Chanderi silk with golden zari borders.
+                Ideal for ethnic wear.
+              </p>
+              <div class="product-specs">
+                <span class="spec">Silk-Cotton Mix</span>
+                <span class="spec">Width: 44"</span>
+                <span class="spec">Traditional Weave</span>
+              </div>
+              <div class="product-footer">
+                <span class="availability">Limited Quantity</span>
+                <button class="enquire-btn">Enquire Now</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 7 -->
+          <div class="product-card">
+            <div class="product-image">
+              <span class="coming-soon-badge">Coming Soon</span>
+            </div>
+            <div class="product-details">
+              <h3>Khadi Cotton</h3>
+              <p class="product-description">
+                Hand-spun and handwoven khadi cotton, symbol of sustainable
+                fashion and Indian heritage.
+              </p>
+              <div class="product-specs">
+                <span class="spec">100% Cotton</span>
+                <span class="spec">Width: 36"</span>
+                <span class="spec">Handspun</span>
+              </div>
+              <div class="product-footer">
+                <span class="availability">Available for Bulk Orders</span>
+                <button class="enquire-btn">Enquire Now</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 8 -->
+          <div class="product-card">
+            <div class="product-image">
+              <span class="coming-soon-badge">Coming Soon</span>
+              <div class="product-badges">
+                <span class="badge new">New</span>
+              </div>
+            </div>
+            <div class="product-details">
+              <h3>Modal Jersey Fabric</h3>
+              <p class="product-description">
+                Ultra-soft modal jersey perfect for comfortable everyday wear.
+                Excellent drape and breathability.
+              </p>
+              <div class="product-specs">
+                <span class="spec">95% Modal 5% Spandex</span>
+                <span class="spec">Width: 60"</span>
+                <span class="spec">GSM: 160</span>
+              </div>
+              <div class="product-footer">
+                <span class="availability">Available for Bulk Orders</span>
+                <button class="enquire-btn">Enquire Now</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 9 -->
+          <div class="product-card">
+            <div class="product-image">
+              <span class="coming-soon-badge">Coming Soon</span>
+              <div class="product-badges">
+                <span class="badge premium">Premium</span>
+              </div>
+            </div>
+            <div class="product-details">
+              <h3>Tussar Silk</h3>
+              <p class="product-description">
+                Wild silk with natural gold sheen and rich texture. Perfect for
+                luxury garments and sarees.
+              </p>
+              <div class="product-specs">
+                <span class="spec">100% Tussar Silk</span>
+                <span class="spec">Width: 44"</span>
+                <span class="spec">GSM: 95</span>
+              </div>
+              <div class="product-footer">
+                <span class="availability">Limited Quantity</span>
+                <button class="enquire-btn">Enquire Now</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 10 -->
+          <div class="product-card">
+            <div class="product-image">
+              <span class="coming-soon-badge">Coming Soon</span>
+              <div class="product-badges">
+                <span class="badge eco">Eco-Friendly</span>
+              </div>
+            </div>
+            <div class="product-details">
+              <h3>Organic Hemp Fabric</h3>
+              <p class="product-description">
+                Durable and sustainable hemp fabric. Naturally resistant to mold
+                and UV rays.
+              </p>
+              <div class="product-specs">
+                <span class="spec">100% Hemp</span>
+                <span class="spec">Width: 54"</span>
+                <span class="spec">GSM: 250</span>
+              </div>
+              <div class="product-footer">
+                <span class="availability">Available for Bulk Orders</span>
+                <button class="enquire-btn">Enquire Now</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 11 -->
+          <div class="product-card">
+            <div class="product-image">
+              <span class="coming-soon-badge">Coming Soon</span>
+            </div>
+            <div class="product-details">
+              <h3>Velvet Fabric</h3>
+              <p class="product-description">
+                Luxurious velvet with deep pile and rich appearance. Ideal for
+                evening wear and upholstery.
+              </p>
+              <div class="product-specs">
+                <span class="spec">Polyester Velvet</span>
+                <span class="spec">Width: 54"</span>
+                <span class="spec">GSM: 280</span>
+              </div>
+              <div class="product-footer">
+                <span class="availability">Available for Bulk Orders</span>
+                <button class="enquire-btn">Enquire Now</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 12 -->
+          <div class="product-card">
+            <div class="product-image">
+              <span class="coming-soon-badge">Coming Soon</span>
+              <div class="product-badges">
+                <span class="badge premium">Premium</span>
+                <span class="badge new">New</span>
+              </div>
+            </div>
+            <div class="product-details">
+              <h3>Banarasi Brocade</h3>
+              <p class="product-description">
+                Exquisite brocade with intricate gold and silver thread work. A
+                masterpiece of Indian textile art.
+              </p>
+              <div class="product-specs">
+                <span class="spec">Silk with Zari</span>
+                <span class="spec">Width: 44"</span>
+                <span class="spec">Handwoven</span>
+              </div>
+              <div class="product-footer">
+                <span class="availability">Limited Quantity</span>
+                <button class="enquire-btn">Enquire Now</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="combined-section">
+      <div class="container">
+        <div class="combined-content">
+          <!-- CTA Content (Left Side) -->
+          <div class="cta-content">
+            <h2>Looking for Custom Fabric Solutions?</h2>
+            <p>
+              We specialize in sourcing specific fabrics for your business
+              needs. Contact us for custom orders, bulk pricing, and exclusive
+              designs.
+            </p>
+            <div class="cta-buttons">
+              <a href="#enquiry-form" class="cta-btn primary">Send Enquiry</a>
+              <a href="tel:0478257409" class="cta-btn secondary">Call Us</a>
+            </div>
+          </div>
+
+          <!-- Footer Content (Right Side) -->
+          <div class="footer-content">
+            <div class="footer-logo">BooShiv</div>
+            <p class="footer-text">
+              Bridging India and Australia through authentic trade and commerce
+            </p>
+            <p class="footer-copyright">
+              © 2024 BooShiv. All rights reserved. | ABN: 11 762 603 033
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="index.js" defer></script>
+    <script src="fabrics.js" defer></script>
   </body>
 </html>

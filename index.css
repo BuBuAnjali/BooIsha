@@ -732,7 +732,7 @@ body.dark-theme .contact-bar-content a:hover {
         footer {
             background: #2c3e50;
             color: white;
-            padding: 3rem 0;
+            padding: 0.5rem 0;
             text-align: center;
         }
 
@@ -918,8 +918,45 @@ body.dark-theme .contact-bar-content a:hover {
   display: none;
 }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
+/* Add this to your existing index.css file */
+
+/* View Products Button */
+.view-products-btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 25px;
+  background: #ff6b6b;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.view-products-btn:hover {
+  background: #ff5252;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+}
+
+/* Dark mode support for the button */
+body.dark-mode .view-products-btn {
+  background: #ff6b6b;
+  color: white;
+}
+
+body.dark-mode .view-products-btn:hover {
+  background: #ff5252;
+  box-shadow: 0 5px 15px rgba(255, 107, 107, 0.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .view-products-btn {
+    display: block;
+    width: 100%;
+  }
             .hero-title {
                 font-size: 2.5rem;
             }
@@ -969,3 +1006,5 @@ body.dark-theme .contact-bar-content a:hover {
     }
 
   }
+
+  
