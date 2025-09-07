@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fabric Roll Demo</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        height: 100vh;
+        background: #f8f8f8;
+        font-family: sans-serif;
+      }
+
+      .shelf {
+        width: 400px;
+        height: 20px;
+        background: #8b5e3c;
+        position: relative;
+        margin-bottom: 200px;
+      }
+
+      .fabric-roll {
+        width: 50px;
+        height: 50px;
+        background: red;
+        border-radius: 25px;
+        position: absolute;
+        top: -50px;
+        left: 50%;
+        transform: translateX(-50%);
+        cursor: pointer;
+      }
+
+      .fabric-layer {
+        width: 10px;
+        height: 0;
+        background: pink;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        transition: height 2s;
+      }
+
+      .person {
+        width: 50px;
+        height: 100px;
+        background: blue;
+        position: absolute;
+        bottom: 20px;
+        left: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="person"></div>
+
+    <div class="shelf">
+      <div class="fabric-roll" id="roll"></div>
+      <div class="fabric-layer" id="layer"></div>
+    </div>
+
+    <script>
+      const roll = document.getElementById("roll");
+      const layer = document.getElementById("layer");
+
+      roll.addEventListener("click", () => {
+        // Animate fabric being unrolled
+        layer.style.height = "150px";
+      });
+    </script>
+  </body>
+</html>

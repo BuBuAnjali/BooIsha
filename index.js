@@ -26,6 +26,18 @@ function toggleTheme() {
   toggleThemeMenu();
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+  const warp = document.querySelector(".warp");
+  const weft = document.querySelector(".weft");
+
+  if (warp && weft) {
+    for (let i = 0; i < 12; i++) {
+      warp.appendChild(document.createElement("div"));
+      weft.appendChild(document.createElement("div"));
+    }
+  }
+});
+
 // Load saved theme on page load and set up form handler
 document.addEventListener("DOMContentLoaded", function () {
   const savedTheme = localStorage.getItem("theme");
