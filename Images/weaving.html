@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weaving Machine Simulation</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #2c3e50, #34495e, #4a6741);
+        color: white;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        overflow: hidden;
+      }
+      canvas {
+        display: block;
+      }
+      .ui {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background: rgba(0, 0, 0, 0.8);
+        padding: 20px;
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        z-index: 100;
+        min-width: 250px;
+      }
+      .controls {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        background: rgba(0, 0, 0, 0.8);
+        padding: 15px;
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        z-index: 100;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      button {
+        padding: 10px 15px;
+        background: linear-gradient(45deg, #27ae60, #2ecc71);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 12px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      }
+      button:hover {
+        background: linear-gradient(45deg, #2ecc71, #58d68d);
+        transform: translateY(-2px);
+      }
+      .title {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        font-size: 24px;
+        font-weight: 300;
+        color: rgba(255, 255, 255, 0.9);
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        z-index: 100;
+      }
+      .phase-indicator {
+        position: fixed;
+        top: 50%;
+        right: 20px;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.8);
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        text-align: center;
+        z-index: 100;
+      }
+      .phase-name {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #3498db;
+      }
+      .phase-desc {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.7);
+        line-height: 1.4;
+      }
+      .stat-row {
+        display: flex;
+        justify-content: space-between;
+        margin: 5px 0;
+        padding: 3px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .stat-label {
+        color: rgba(255, 255, 255, 0.7);
+      }
+      .stat-value {
+        color: #2ecc71;
+        font-weight: 500;
+      }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  </head>
+  <body>
+    <div class="title">Weaving Machine Simulation</div>
+
+    <div class="ui">
+      <div style="font-size: 16px; margin-bottom: 10px; color: #2ecc71">
+        Loom Status
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Speed:</span>
+        <span class="stat-value" id="speed">Normal</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Warp Threads:</span>
+        <span class="stat-value" id="warp-count">40</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Weft Rows:</span>
+        <span class="stat-value" id="weft-count">0</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Cycle:</span>
+        <span class="stat-value" id="cycle-count">0</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">FPS:</span>
+        <span class="stat-value" id="fps">60</span>
+      </div>
+    </div>
+
+    <div class="phase-indicator">
+      <div class="phase-name" id="phase-name">Shedding</div>
+      <div class="phase-desc" id="phase-desc">
+        Separating warp threads to create shed
+      </div>
+    </div>
+
+    <div class="controls">
+      <button onclick="toggleWeaving()">Pause</button>
+      <button onclick="changeSpeed()">Speed</button>
+      <button onclick="resetLoom()">Reset</button>
+      <button onclick="changeColors()">Colors</button>
+      <button onclick="addWarpThreads()">+ Warp</button>
+    </div>
+
+    <script>
+      // Check THREE.js availability
+      if (typeof THREE === "undefined") {
+        document.body.innerHTML =
+          '<h1 style="color: white; text-align: center; margin-top: 100px;">Error: THREE.js failed to load</h1>';
+        throw new Error("THREE.js not loaded");
+      }
+
+      console.log("THREE.js loaded, version:", THREE.REVISION);
+
+      // Global variables
+      let scene, camera, renderer;
+      let weavingMachine = null;
+
+      // Initialize Three.js
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(
+        60,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+      camera.position.set(0, 30, 50);
+      camera.lookAt(0, 0, 0);
+
+      renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true,
+      });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setClearColor(0x2c3e50, 1);
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      document.body.appendChild(renderer.domElement);
+
+      // Lighting
+      const ambientLight = new THREE.AmbientLight(0x404040, 0.4);
+      scene.add(ambientLight);
+
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
+      directionalLight.position.set(20, 30, 20);
+      directionalLight.castShadow = true;
+      directionalLight.shadow.mapSize.width = 2048;
+      directionalLight.shadow.mapSize.height = 2048;
+      scene.add(directionalLight);
+
+      const fillLight = new THREE.DirectionalLight(0x81c784, 0.3);
+      fillLight.position.set(-10, 10, -10);
+      scene.add(fillLight);
+
+      console.log("Three.js scene initialized");
+
+      // Weaving Machine Class
+      class WeavingMachine {
+        constructor() {
+          this.warpThreads = [];
+          this.weftThreads = [];
+          this.loomFrame = null;
+          this.shuttle = null;
+          this.beater = null;
+          this.heddles = [];
+
+          // Parameters
+          this.warpCount = 40;
+          this.threadSpacing = 0.8;
+          this.loomWidth = this.warpCount * this.threadSpacing;
+          this.loomDepth = 30;
+
+          // Animation state
+          this.phase = "shedding";
+          this.phaseProgress = 0;
+          this.cycleCount = 0;
+          this.weftRowCount = 0;
+          this.isWeaving = true;
+          this.speed = 1.0;
+          this.speedIndex = 1;
+          this.speedOptions = [0.5, 1.0, 2.0, 3.0];
+          this.speedNames = ["Slow", "Normal", "Fast", "Rapid"];
+
+          this.shedPattern = 0;
+          this.shedHeight = 2;
+
+          this.colorIndex = 0;
+          this.colorSets = [
+            { warp: 0x8d6e63, weft: 0xd32f2f },
+            { warp: 0x2196f3, weft: 0xffc107 },
+            { warp: 0x4caf50, weft: 0xe91e63 },
+            { warp: 0x9c27b0, weft: 0x00bcd4 },
+          ];
+
+          this.init();
+        }
+
+        init() {
+          console.log("Initializing weaving machine components...");
+          this.createLoomFrame();
+          this.createWarpThreads();
+          this.createShuttle();
+          this.createBeater();
+          this.createHeddles();
+          console.log("Weaving machine ready");
+        }
+
+        createLoomFrame() {
+          const frameGroup = new THREE.Group();
+          const woodMaterial = new THREE.MeshPhongMaterial({ color: 0x8d6e63 });
+
+          // Front beam
+          const frontBeam = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.5, 0.5, this.loomWidth + 4),
+            woodMaterial
+          );
+          frontBeam.rotation.z = Math.PI / 2;
+          frontBeam.position.set(0, -2, 15);
+          frameGroup.add(frontBeam);
+
+          // Back beam
+          const backBeam = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.5, 0.5, this.loomWidth + 4),
+            woodMaterial
+          );
+          backBeam.rotation.z = Math.PI / 2;
+          backBeam.position.set(0, -2, -15);
+          frameGroup.add(backBeam);
+
+          this.loomFrame = frameGroup;
+          scene.add(frameGroup);
+        }
+
+        createWarpThreads() {
+          this.warpThreads = [];
+          const threadMaterial = new THREE.MeshPhongMaterial({
+            color: this.colorSets[this.colorIndex].warp,
+          });
+
+          for (let i = 0; i < this.warpCount; i++) {
+            const thread = new THREE.Mesh(
+              new THREE.CylinderGeometry(0.05, 0.05, this.loomDepth),
+              threadMaterial.clone()
+            );
+
+            thread.rotation.x = Math.PI / 2;
+            thread.position.x = (i - this.warpCount / 2) * this.threadSpacing;
+            thread.position.y = 0;
+            thread.position.z = 0;
+
+            thread.userData = {
+              originalY: 0,
+              shedGroup: i % 2,
+              index: i,
+            };
+
+            this.warpThreads.push(thread);
+            scene.add(thread);
+          }
+
+          console.log(`Created ${this.warpCount} warp threads`);
+        }
+
+        createShuttle() {
+          const shuttleMaterial = new THREE.MeshPhongMaterial({
+            color: 0x795548,
+          });
+
+          // Shuttle body
+          const shuttleBody = new THREE.Mesh(
+            new THREE.BoxGeometry(4, 0.6, 0.6),
+            shuttleMaterial
+          );
+
+          // Rounded ends
+          const endMaterial = new THREE.MeshPhongMaterial({ color: 0x5d4037 });
+          const leftEnd = new THREE.Mesh(
+            new THREE.SphereGeometry(0.3, 8, 6),
+            endMaterial
+          );
+          leftEnd.position.x = -2;
+
+          const rightEnd = new THREE.Mesh(
+            new THREE.SphereGeometry(0.3, 8, 6),
+            endMaterial
+          );
+          rightEnd.position.x = 2;
+
+          this.shuttle = new THREE.Group();
+          this.shuttle.add(shuttleBody);
+          this.shuttle.add(leftEnd);
+          this.shuttle.add(rightEnd);
+
+          this.shuttle.position.set(-this.loomWidth / 2 - 3, 0, 0);
+          scene.add(this.shuttle);
+        }
+
+        createBeater() {
+          const beaterMaterial = new THREE.MeshPhongMaterial({
+            color: 0x6d4c41,
+          });
+          this.beater = new THREE.Mesh(
+            new THREE.BoxGeometry(this.loomWidth + 2, 0.5, 1),
+            beaterMaterial
+          );
+          this.beater.position.set(0, 1, 8);
+          scene.add(this.beater);
+        }
+
+        createHeddles() {
+          this.heddles = [];
+          const heddleMaterial = new THREE.MeshPhongMaterial({
+            color: 0x37474f,
+          });
+
+          for (let h = 0; h < 2; h++) {
+            const heddleGroup = new THREE.Group();
+
+            const frame = new THREE.Mesh(
+              new THREE.BoxGeometry(this.loomWidth, 6, 0.2),
+              heddleMaterial
+            );
+            frame.position.y = 3;
+            frame.position.z = -5 + h * 2;
+            heddleGroup.add(frame);
+
+            heddleGroup.userData = { originalY: 3, group: h };
+            this.heddles.push(heddleGroup);
+            scene.add(heddleGroup);
+          }
+        }
+
+        update(deltaTime) {
+          if (!this.isWeaving) return;
+
+          this.phaseProgress += deltaTime * this.speed;
+
+          switch (this.phase) {
+            case "shedding":
+              this.updateShedding();
+              if (this.phaseProgress >= 1.0) {
+                this.phase = "picking";
+                this.phaseProgress = 0;
+              }
+              break;
+
+            case "picking":
+              this.updatePicking();
+              if (this.phaseProgress >= 1.0) {
+                this.phase = "beating";
+                this.phaseProgress = 0;
+                this.addWeftThread();
+              }
+              break;
+
+            case "beating":
+              this.updateBeating();
+              if (this.phaseProgress >= 1.0) {
+                this.phase = "shedding";
+                this.phaseProgress = 0;
+                this.cycleCount++;
+                this.shedPattern = 1 - this.shedPattern;
+              }
+              break;
+          }
+
+          this.updateUI();
+        }
+
+        updateShedding() {
+          const progress = this.easeInOut(this.phaseProgress);
+
+          this.warpThreads.forEach((thread) => {
+            const shouldRaise = thread.userData.shedGroup === this.shedPattern;
+            const targetY = shouldRaise ? this.shedHeight : -this.shedHeight;
+            thread.position.y = THREE.MathUtils.lerp(0, targetY, progress);
+          });
+
+          this.heddles.forEach((heddle) => {
+            const shouldRaise = heddle.userData.group === this.shedPattern;
+            const targetY = shouldRaise ? 5 : 1;
+            heddle.position.y = THREE.MathUtils.lerp(3, targetY, progress);
+          });
+        }
+
+        updatePicking() {
+          const progress = this.easeInOut(this.phaseProgress);
+          const startX = -this.loomWidth / 2 - 3;
+          const endX = this.loomWidth / 2 + 3;
+
+          if (this.cycleCount % 2 === 0) {
+            this.shuttle.position.x = THREE.MathUtils.lerp(
+              startX,
+              endX,
+              progress
+            );
+          } else {
+            this.shuttle.position.x = THREE.MathUtils.lerp(
+              endX,
+              startX,
+              progress
+            );
+          }
+
+          this.shuttle.position.y = 0;
+        }
+
+        updateBeating() {
+          const progress = this.easeInOut(this.phaseProgress);
+          const startZ = 8;
+          const endZ = 2;
+
+          let beatProgress;
+          if (progress < 0.5) {
+            beatProgress = progress * 2;
+            this.beater.position.z = THREE.MathUtils.lerp(
+              startZ,
+              endZ,
+              beatProgress
+            );
+          } else {
+            beatProgress = (progress - 0.5) * 2;
+            this.beater.position.z = THREE.MathUtils.lerp(
+              endZ,
+              startZ,
+              beatProgress
+            );
+          }
+        }
+
+        addWeftThread() {
+          const weftMaterial = new THREE.MeshPhongMaterial({
+            color: this.colorSets[this.colorIndex].weft,
+          });
+
+          const weftThread = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.04, 0.04, this.loomWidth),
+            weftMaterial
+          );
+
+          weftThread.rotation.z = Math.PI / 2;
+          weftThread.position.set(0, 0, 5 - this.weftRowCount * 0.2);
+
+          this.weftThreads.push(weftThread);
+          scene.add(weftThread);
+
+          this.weftRowCount++;
+
+          if (this.weftThreads.length > 50) {
+            const oldThread = this.weftThreads.shift();
+            scene.remove(oldThread);
+          }
+        }
+
+        easeInOut(t) {
+          return t * t * (3 - 2 * t);
+        }
+
+        updateUI() {
+          const phases = {
+            shedding: {
+              name: "Shedding",
+              desc: "Separating warp threads to create shed opening",
+            },
+            picking: {
+              name: "Picking",
+              desc: "Shuttle carrying weft thread through shed",
+            },
+            beating: {
+              name: "Beat-up",
+              desc: "Pressing weft thread into fabric with reed",
+            },
+          };
+
+          document.getElementById("phase-name").textContent =
+            phases[this.phase].name;
+          document.getElementById("phase-desc").textContent =
+            phases[this.phase].desc;
+          document.getElementById("weft-count").textContent = this.weftRowCount;
+          document.getElementById("cycle-count").textContent = this.cycleCount;
+          document.getElementById("speed").textContent =
+            this.speedNames[this.speedIndex];
+        }
+
+        toggleWeaving() {
+          this.isWeaving = !this.isWeaving;
+        }
+
+        changeSpeed() {
+          this.speedIndex = (this.speedIndex + 1) % this.speedOptions.length;
+          this.speed = this.speedOptions[this.speedIndex];
+        }
+
+        changeColors() {
+          this.colorIndex = (this.colorIndex + 1) % this.colorSets.length;
+          const colors = this.colorSets[this.colorIndex];
+
+          // Update warp threads
+          this.warpThreads.forEach((thread) => {
+            thread.material.color.setHex(colors.warp);
+          });
+
+          // Update shuttle thread spool
+          if (this.shuttleThread) {
+            this.shuttleThread.material.color.setHex(colors.weft);
+          }
+        }
+
+        addWarpThreads() {
+          if (this.warpCount < 60) {
+            this.warpThreads.forEach((thread) => scene.remove(thread));
+
+            this.warpCount += 4;
+            this.loomWidth = this.warpCount * this.threadSpacing;
+            document.getElementById("warp-count").textContent = this.warpCount;
+
+            this.createWarpThreads();
+          }
+        }
+
+        reset() {
+          this.weftThreads.forEach((thread) => scene.remove(thread));
+          this.weftThreads = [];
+          this.weftRowCount = 0;
+          this.cycleCount = 0;
+          this.phaseProgress = 0;
+          this.phase = "shedding";
+          this.shedPattern = 0;
+
+          this.shuttle.position.set(-this.loomWidth / 2 - 3, 0, 0);
+          this.beater.position.set(0, 1, 8);
+          this.warpThreads.forEach((thread) => {
+            thread.position.y = 0;
+          });
+          this.heddles.forEach((heddle) => {
+            heddle.position.y = 3;
+          });
+        }
+      }
+
+      // Create weaving machine
+      try {
+        weavingMachine = new WeavingMachine();
+        console.log("Weaving machine created successfully");
+      } catch (error) {
+        console.error("Error creating weaving machine:", error);
+      }
+
+      // Control functions
+      function toggleWeaving() {
+        if (weavingMachine) {
+          weavingMachine.toggleWeaving();
+          const button = event.target;
+          button.textContent = weavingMachine.isWeaving ? "Pause" : "Play";
+        }
+      }
+
+      function changeSpeed() {
+        if (weavingMachine) weavingMachine.changeSpeed();
+      }
+
+      function resetLoom() {
+        if (weavingMachine) weavingMachine.reset();
+      }
+
+      function changeColors() {
+        if (weavingMachine) weavingMachine.changeColors();
+      }
+
+      function addWarpThreads() {
+        if (weavingMachine) weavingMachine.addWarpThreads();
+      }
+
+      // Animation loop
+      let lastTime = 0;
+      let frameCount = 0;
+
+      function animate(currentTime) {
+        requestAnimationFrame(animate);
+
+        const deltaTime = (currentTime - lastTime) / 1000;
+        lastTime = currentTime;
+
+        if (deltaTime > 0 && weavingMachine) {
+          weavingMachine.update(deltaTime);
+
+          // Camera orbit - much closer and tighter
+          const time = currentTime * 0.0005;
+          camera.position.x = Math.sin(time) * 20;
+          camera.position.z = Math.cos(time) * 20;
+          camera.position.y = 8;
+          camera.lookAt(0, 0, 0);
+
+          frameCount++;
+          if (frameCount % 60 === 0) {
+            document.getElementById("fps").textContent = Math.round(
+              1 / deltaTime
+            );
+          }
+        }
+
+        renderer.render(scene, camera);
+      }
+
+      // Handle window resize
+      window.addEventListener("resize", () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      // Start animation
+      console.log("Starting weaving machine animation...");
+      animate(0);
+    </script>
+  </body>
+</html>

@@ -8,8 +8,247 @@
     <link rel="stylesheet" href="fabrics.css" />
   </head>
   <body>
+    <div class="menu-overlay" onclick="closeSideMenu()"></div>
     <div class="watermark">
       <img src="/Images/BooIshaLogo.png" alt="BooIsha Watermark" />
+    </div>
+
+    <!-- Side Menu -->
+    <div class="side-menu">
+      <div class="menu-header">
+        <h2>Fabric Categories</h2>
+        <button class="menu-close" onclick="closeSideMenu()">X</button>
+      </div>
+      <div class="menu-content">
+        <!-- Silk Fabrics -->
+        <div class="fabric-category">
+          <div class="category-header" onclick="toggleCategory(this)">
+            <h3>Silk Fabrics</h3>
+            <span class="category-arrow">▼</span>
+          </div>
+          <div class="fabric-list">
+            <div class="fabric-item" onclick="filterByFabric('Mulberry Silk')">
+              <span>Mulberry Silk</span>
+              <span class="fabric-count">8</span>
+            </div>
+            <div class="fabric-item" onclick="filterByFabric('Tussar Silk')">
+              <span>Tussar Silk</span>
+              <span class="fabric-count">6</span>
+            </div>
+            <div class="fabric-item" onclick="filterByFabric('Chanderi Silk')">
+              <span>Chanderi Silk</span>
+              <span class="fabric-count">4</span>
+            </div>
+            <div class="fabric-item" onclick="filterByFabric('Banarasi Silk')">
+              <span>Banarasi Silk</span>
+              <span class="fabric-count">5</span>
+            </div>
+            <div
+              class="fabric-item"
+              onclick="filterByFabric('Kanjivaram Silk')"
+            >
+              <span>Kanjivaram Silk</span>
+              <span class="fabric-count">3</span>
+            </div>
+            <div class="fabric-item" onclick="filterByFabric('Mysore Silk')">
+              <span>Mysore Silk</span>
+              <span class="fabric-count">4</span>
+            </div>
+            <div class="fabric-item" onclick="filterByFabric('Eri Silk')">
+              <span>Eri Silk</span>
+              <span class="fabric-count">2</span>
+            </div>
+            <div class="fabric-item" onclick="filterByFabric('Muga Silk')">
+              <span>Muga Silk</span>
+              <span class="fabric-count">2</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cotton Fabrics -->
+        <div class="fabric-category">
+          <div class="category-header" onclick="toggleCategory(this)">
+            <h3>Cotton Fabrics</h3>
+            <span class="category-arrow">▼</span>
+          </div>
+          <div class="fabric-list">
+            <div class="fabric-item" onclick="filterByFabric('Khadi Cotton')">
+              <span>Khadi Cotton</span>
+              <span class="fabric-count">12</span>
+            </div>
+            <div class="fabric-item" onclick="filterByFabric('Organic Cotton')">
+              <span>Organic Cotton</span>
+              <span class="fabric-count">15</span>
+            </div>
+            <div
+              class="fabric-item"
+              onclick="filterByFabric('Handloom Cotton')"
+            >
+              <span>Handloom Cotton</span>
+              <span class="fabric-count">8</span>
+            </div>
+            <div class="fabric-item" onclick="filterByFabric('Cotton Canvas')">
+              <span>Cotton Canvas</span>
+              <span class="fabric-count">6</span>
+            </div>
+            <div class="fabric-item" onclick="filterByFabric('Cotton Voile')">
+              <span>Cotton Voile</span>
+              <span class="fabric-count">4</span>
+            </div>
+            <div class="fabric-item" onclick="filterByFabric('Cotton Lawn')">
+              <span>Cotton Lawn</span>
+              <span class="fabric-count">5</span>
+            </div>
+            <div class="fabric-item" onclick="filterByFabric('Cotton Poplin')">
+              <span>Cotton Poplin</span>
+              <span class="fabric-count">7</span>
+            </div>
+            <div class="fabric-item" onclick="filterByFabric('Cotton Twill')">
+              <span>Cotton Twill</span>
+              <span class="fabric-count">6</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Linen Fabrics -->
+        <div class="fabric-category">
+          <div class="category-header" onclick="toggleCategory(this)">
+            <h3>Linen & Natural Fibers</h3>
+            <span class="category-arrow">▼</span>
+          </div>
+          <div class="fabric-list">
+            <div class="fabric-item" onclick="filterByFabric('Pure Linen')">
+              <span>Pure Linen</span>
+              <span class="fabric-count">8</span>
+            </div>
+            <div class="fabric-item" onclick="filterByFabric('Hemp Fabric')">
+              <span>Hemp Fabric</span>
+              <span class="fabric-count">5</span>
+            </div>
+            <div class="fabric-item" onclick="filterByFabric('Jute Fabric')">
+              <span>Jute Fabric</span>
+              <span class="fabric-count">6</span>
+            </div>
+            <div class="fabric-item" onclick="filterByFabric('Ramie Fabric')">
+              <span>Ramie Fabric</span>
+              <span class="fabric-count">3</span>
+            </div>
+            <div class="fabric-item" onclick="filterByFabric('Bamboo Fabric')">
+              <span>Bamboo Fabric</span>
+              <span class="fabric-count">4</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wool Fabrics -->
+        <div class="fabric-category">
+          <div class="category-header" onclick="toggleCategory(this)">
+            <h3>Wool Fabrics</h3>
+            <span class="category-arrow">▼</span>
+          </div>
+          <div class="fabric-list">
+            <div class="fabric-item" onclick="filterByFabric('Pashmina Wool')">
+              <span>Pashmina Wool</span>
+              <span class="fabric-count">4</span>
+            </div>
+            <div class="fabric-item" onclick="filterByFabric('Merino Wool')">
+              <span>Merino Wool</span>
+              <span class="fabric-count">6</span>
+            </div>
+            <div class="fabric-item" onclick="filterByFabric('Cashmere')">
+              <span>Cashmere</span>
+              <span class="fabric-count">3</span>
+            </div>
+            <div class="fabric-item" onclick="filterByFabric('Yak Wool')">
+              <span>Yak Wool</span>
+              <span class="fabric-count">2</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Blended Fabrics -->
+        <div class="fabric-category">
+          <div class="category-header" onclick="toggleCategory(this)">
+            <h3>Blended Fabrics</h3>
+            <span class="category-arrow">▼</span>
+          </div>
+          <div class="fabric-list">
+            <div
+              class="fabric-item"
+              onclick="filterByFabric('Cotton-Silk Blend')"
+            >
+              <span>Cotton-Silk Blend</span>
+              <span class="fabric-count">10</span>
+            </div>
+            <div
+              class="fabric-item"
+              onclick="filterByFabric('Cotton-Linen Blend')"
+            >
+              <span>Cotton-Linen Blend</span>
+              <span class="fabric-count">8</span>
+            </div>
+            <div class="fabric-item" onclick="filterByFabric('Modal Blend')">
+              <span>Modal Blend</span>
+              <span class="fabric-count">6</span>
+            </div>
+            <div class="fabric-item" onclick="filterByFabric('Tencel Blend')">
+              <span>Tencel Blend</span>
+              <span class="fabric-count">5</span>
+            </div>
+            <div class="fabric-item" onclick="filterByFabric('Bamboo Cotton')">
+              <span>Bamboo Cotton</span>
+              <span class="fabric-count">7</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Specialty Fabrics -->
+        <div class="fabric-category">
+          <div class="category-header" onclick="toggleCategory(this)">
+            <h3>Specialty & Traditional</h3>
+            <span class="category-arrow">▼</span>
+          </div>
+          <div class="fabric-list">
+            <div class="fabric-item" onclick="filterByFabric('Ikat Weave')">
+              <span>Ikat Weave</span>
+              <span class="fabric-count">6</span>
+            </div>
+            <div
+              class="fabric-item"
+              onclick="filterByFabric('Block Print Cotton')"
+            >
+              <span>Block Print Cotton</span>
+              <span class="fabric-count">12</span>
+            </div>
+            <div
+              class="fabric-item"
+              onclick="filterByFabric('Kalamkari Fabric')"
+            >
+              <span>Kalamkari Fabric</span>
+              <span class="fabric-count">4</span>
+            </div>
+            <div
+              class="fabric-item"
+              onclick="filterByFabric('Bandhani Fabric')"
+            >
+              <span>Bandhani Fabric</span>
+              <span class="fabric-count">5</span>
+            </div>
+            <div class="fabric-item" onclick="filterByFabric('Ajrakh Print')">
+              <span>Ajrakh Print</span>
+              <span class="fabric-count">3</span>
+            </div>
+            <div class="fabric-item" onclick="filterByFabric('Brocade')">
+              <span>Brocade</span>
+              <span class="fabric-count">8</span>
+            </div>
+            <div class="fabric-item" onclick="filterByFabric('Velvet')">
+              <span>Velvet</span>
+              <span class="fabric-count">6</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Contact Bar -->
@@ -32,10 +271,13 @@
             </svg>
           </button>
           <div class="theme-menu" id="themeMenu">
-            <button class="theme-btn" onclick="toggleTheme()">
-              <span class="theme-icon-light">☀️</span>
-              <span class="theme-icon-dark">🌙</span>
-              <span class="theme-text">Dark Mode</span>
+            <button
+              class="theme-btn"
+              onclick="toggleTheme()"
+              data-tooltip="Switch to Dark Mode"
+            >
+              <span class="theme-icon-light"></span>
+              <span class="theme-icon-dark"></span>
             </button>
           </div>
         </div>
@@ -59,8 +301,8 @@
               src="/Images/BooIshaLogo.png"
               alt="BooIsha Logo"
               style="
-                width: 60px;
-                height: 60px;
+                width: 90px;
+                height: 90px;
                 object-fit: contain;
                 padding-right: 10px;
               "
@@ -77,387 +319,99 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="textiles-hero">
-      <div class="container">
-        <h1>Premium Textiles & Fabrics</h1>
-        <p>
-          Exquisite silk, cotton, and artisanal weaves directly from India's
-          finest mills
-        </p>
-      </div>
-    </section>
-
-    <!-- Filter Section -->
-    <section class="filter-section">
-      <div class="container">
-        <div class="filter-bar">
-          <div class="filter-group">
-            <label>Category:</label>
-            <select class="filter-select">
-              <option>All Categories</option>
-              <option>Silk</option>
-              <option>Cotton</option>
-              <option>Linen</option>
-              <option>Wool</option>
-              <option>Blended Fabrics</option>
-            </select>
-          </div>
-          <div class="filter-group">
-            <label>Sort by:</label>
-            <select class="filter-select">
-              <option>Featured</option>
-              <option>Name (A-Z)</option>
-              <option>Name (Z-A)</option>
-              <option>Newest First</option>
-            </select>
-          </div>
-          <div class="results-count">Showing <strong>12</strong> products</div>
+    <div class="main-content">
+      <section class="textiles-hero">
+        <div class="textiles-hero-bg"></div>
+        <div class="container">
+          <h1>Premium Textiles & Fabrics</h1>
+          <p>
+            Exquisite silk, cotton, and artisanal weaves directly from India's
+            finest mills
+          </p>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Products Grid -->
-    <section class="products-listing">
-      <div class="container">
-        <div class="products-grid">
-          <!-- Product Card 1 -->
-          <div class="product-card">
-            <div class="product-image">
-              <span class="coming-soon-badge">Coming Soon</span>
-              <div class="product-badges">
-                <span class="badge premium">Premium</span>
-              </div>
-            </div>
-            <div class="product-details">
-              <h3>Pure Mulberry Silk</h3>
-              <p class="product-description">
-                Luxurious 100% mulberry silk fabric with natural sheen and
-                smooth texture. Perfect for high-end garments.
-              </p>
-              <div class="product-specs">
-                <span class="spec">100% Silk</span>
-                <span class="spec">Width: 44"</span>
-                <span class="spec">GSM: 80</span>
-              </div>
-              <div class="product-footer">
-                <span class="availability">Available for Bulk Orders</span>
-                <button class="enquire-btn">Enquire Now</button>
-              </div>
+      <!-- Filter Section -->
+      <section class="filter-section">
+        <div class="container">
+          <!-- Add menu toggle here -->
+          <div class="menu-toggle" onclick="toggleSideMenu()">
+            <div class="hamburger">
+              <span></span>
+              <span></span>
+              <span></span>
             </div>
           </div>
 
-          <!-- Product Card 2 -->
-          <div class="product-card">
-            <div class="product-image">
-              <span class="coming-soon-badge">Coming Soon</span>
-              <div class="product-badges">
-                <span class="badge new">New</span>
+          <div class="filter-bar">
+            <div class="filter-bar-content">
+              <div class="filter-group">
+                <label>Filter By:</label>
+                <select class="filter-select">
+                  <option>All Categories</option>
+                  <option>Silk</option>
+                  <option>Cotton</option>
+                  <option>Linen</option>
+                  <option>Wool</option>
+                  <option>Blended Fabrics</option>
+                </select>
               </div>
-            </div>
-            <div class="product-details">
-              <h3>Organic Cotton Canvas</h3>
-              <p class="product-description">
-                Heavy-duty organic cotton canvas, ideal for bags, upholstery,
-                and durable apparel.
-              </p>
-              <div class="product-specs">
-                <span class="spec">100% Cotton</span>
-                <span class="spec">Width: 60"</span>
-                <span class="spec">GSM: 340</span>
+              <div class="filter-group">
+                <label>Sort by:</label>
+                <select class="filter-select">
+                  <option>Featured</option>
+                  <option>Name (A-Z)</option>
+                  <option>Name (Z-A)</option>
+                  <option>Newest First</option>
+                </select>
               </div>
-              <div class="product-footer">
-                <span class="availability">Available for Bulk Orders</span>
-                <button class="enquire-btn">Enquire Now</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Product Card 3 -->
-          <div class="product-card">
-            <div class="product-image">
-              <span class="coming-soon-badge">Coming Soon</span>
-              <div class="product-badges">
-                <span class="badge premium">Premium</span>
-              </div>
-            </div>
-            <div class="product-details">
-              <h3>Handwoven Ikat Fabric</h3>
-              <p class="product-description">
-                Traditional handwoven ikat with intricate patterns. A heritage
-                textile perfect for unique designs.
-              </p>
-              <div class="product-specs">
-                <span class="spec">Cotton-Silk Blend</span>
-                <span class="spec">Width: 42"</span>
-                <span class="spec">Handmade</span>
-              </div>
-              <div class="product-footer">
-                <span class="availability">Limited Quantity</span>
-                <button class="enquire-btn">Enquire Now</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Product Card 4 -->
-          <div class="product-card">
-            <div class="product-image">
-              <span class="coming-soon-badge">Coming Soon</span>
-            </div>
-            <div class="product-details">
-              <h3>Fine Linen Fabric</h3>
-              <p class="product-description">
-                Premium quality linen with excellent breathability and natural
-                texture. Perfect for summer collections.
-              </p>
-              <div class="product-specs">
-                <span class="spec">100% Linen</span>
-                <span class="spec">Width: 58"</span>
-                <span class="spec">GSM: 180</span>
-              </div>
-              <div class="product-footer">
-                <span class="availability">Available for Bulk Orders</span>
-                <button class="enquire-btn">Enquire Now</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Product Card 5 -->
-          <div class="product-card">
-            <div class="product-image">
-              <span class="coming-soon-badge">Coming Soon</span>
-              <div class="product-badges">
-                <span class="badge eco">Eco-Friendly</span>
-              </div>
-            </div>
-            <div class="product-details">
-              <h3>Bamboo Cotton Blend</h3>
-              <p class="product-description">
-                Sustainable bamboo-cotton blend with antibacterial properties
-                and silky soft feel.
-              </p>
-              <div class="product-specs">
-                <span class="spec">70% Bamboo 30% Cotton</span>
-                <span class="spec">Width: 48"</span>
-                <span class="spec">GSM: 200</span>
-              </div>
-              <div class="product-footer">
-                <span class="availability">Available for Bulk Orders</span>
-                <button class="enquire-btn">Enquire Now</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Product Card 6 -->
-          <div class="product-card">
-            <div class="product-image">
-              <span class="coming-soon-badge">Coming Soon</span>
-              <div class="product-badges">
-                <span class="badge premium">Premium</span>
-              </div>
-            </div>
-            <div class="product-details">
-              <h3>Chanderi Silk</h3>
-              <p class="product-description">
-                Lightweight traditional Chanderi silk with golden zari borders.
-                Ideal for ethnic wear.
-              </p>
-              <div class="product-specs">
-                <span class="spec">Silk-Cotton Mix</span>
-                <span class="spec">Width: 44"</span>
-                <span class="spec">Traditional Weave</span>
-              </div>
-              <div class="product-footer">
-                <span class="availability">Limited Quantity</span>
-                <button class="enquire-btn">Enquire Now</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Product Card 7 -->
-          <div class="product-card">
-            <div class="product-image">
-              <span class="coming-soon-badge">Coming Soon</span>
-            </div>
-            <div class="product-details">
-              <h3>Khadi Cotton</h3>
-              <p class="product-description">
-                Hand-spun and handwoven khadi cotton, symbol of sustainable
-                fashion and Indian heritage.
-              </p>
-              <div class="product-specs">
-                <span class="spec">100% Cotton</span>
-                <span class="spec">Width: 36"</span>
-                <span class="spec">Handspun</span>
-              </div>
-              <div class="product-footer">
-                <span class="availability">Available for Bulk Orders</span>
-                <button class="enquire-btn">Enquire Now</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Product Card 8 -->
-          <div class="product-card">
-            <div class="product-image">
-              <span class="coming-soon-badge">Coming Soon</span>
-              <div class="product-badges">
-                <span class="badge new">New</span>
-              </div>
-            </div>
-            <div class="product-details">
-              <h3>Modal Jersey Fabric</h3>
-              <p class="product-description">
-                Ultra-soft modal jersey perfect for comfortable everyday wear.
-                Excellent drape and breathability.
-              </p>
-              <div class="product-specs">
-                <span class="spec">95% Modal 5% Spandex</span>
-                <span class="spec">Width: 60"</span>
-                <span class="spec">GSM: 160</span>
-              </div>
-              <div class="product-footer">
-                <span class="availability">Available for Bulk Orders</span>
-                <button class="enquire-btn">Enquire Now</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Product Card 9 -->
-          <div class="product-card">
-            <div class="product-image">
-              <span class="coming-soon-badge">Coming Soon</span>
-              <div class="product-badges">
-                <span class="badge premium">Premium</span>
-              </div>
-            </div>
-            <div class="product-details">
-              <h3>Tussar Silk</h3>
-              <p class="product-description">
-                Wild silk with natural gold sheen and rich texture. Perfect for
-                luxury garments and sarees.
-              </p>
-              <div class="product-specs">
-                <span class="spec">100% Tussar Silk</span>
-                <span class="spec">Width: 44"</span>
-                <span class="spec">GSM: 95</span>
-              </div>
-              <div class="product-footer">
-                <span class="availability">Limited Quantity</span>
-                <button class="enquire-btn">Enquire Now</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Product Card 10 -->
-          <div class="product-card">
-            <div class="product-image">
-              <span class="coming-soon-badge">Coming Soon</span>
-              <div class="product-badges">
-                <span class="badge eco">Eco-Friendly</span>
-              </div>
-            </div>
-            <div class="product-details">
-              <h3>Organic Hemp Fabric</h3>
-              <p class="product-description">
-                Durable and sustainable hemp fabric. Naturally resistant to mold
-                and UV rays.
-              </p>
-              <div class="product-specs">
-                <span class="spec">100% Hemp</span>
-                <span class="spec">Width: 54"</span>
-                <span class="spec">GSM: 250</span>
-              </div>
-              <div class="product-footer">
-                <span class="availability">Available for Bulk Orders</span>
-                <button class="enquire-btn">Enquire Now</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Product Card 11 -->
-          <div class="product-card">
-            <div class="product-image">
-              <span class="coming-soon-badge">Coming Soon</span>
-            </div>
-            <div class="product-details">
-              <h3>Velvet Fabric</h3>
-              <p class="product-description">
-                Luxurious velvet with deep pile and rich appearance. Ideal for
-                evening wear and upholstery.
-              </p>
-              <div class="product-specs">
-                <span class="spec">Polyester Velvet</span>
-                <span class="spec">Width: 54"</span>
-                <span class="spec">GSM: 280</span>
-              </div>
-              <div class="product-footer">
-                <span class="availability">Available for Bulk Orders</span>
-                <button class="enquire-btn">Enquire Now</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Product Card 12 -->
-          <div class="product-card">
-            <div class="product-image">
-              <span class="coming-soon-badge">Coming Soon</span>
-              <div class="product-badges">
-                <span class="badge premium">Premium</span>
-                <span class="badge new">New</span>
-              </div>
-            </div>
-            <div class="product-details">
-              <h3>Banarasi Brocade</h3>
-              <p class="product-description">
-                Exquisite brocade with intricate gold and silver thread work. A
-                masterpiece of Indian textile art.
-              </p>
-              <div class="product-specs">
-                <span class="spec">Silk with Zari</span>
-                <span class="spec">Width: 44"</span>
-                <span class="spec">Handwoven</span>
-              </div>
-              <div class="product-footer">
-                <span class="availability">Limited Quantity</span>
-                <button class="enquire-btn">Enquire Now</button>
+              <div class="results-count">
+                Showing <strong>12</strong> products
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="combined-section">
-      <div class="container">
-        <div class="combined-content">
-          <!-- CTA Content (Left Side) -->
-          <div class="cta-content">
-            <h2>Looking for Custom Fabric Solutions?</h2>
-            <p>
-              We specialize in sourcing specific fabrics for your business
-              needs. Contact us for custom orders, bulk pricing, and exclusive
-              designs.
-            </p>
-            <div class="cta-buttons">
-              <a href="#enquiry-form" class="cta-btn primary">Send Enquiry</a>
-              <a href="tel:0478257409" class="cta-btn secondary">Call Us</a>
+      <!-- Products Grid -->
+      <section class="products-listing">
+        <div class="container">
+          <div class="products-grid"></div>
+        </div>
+      </section>
+
+      <section class="combined-section">
+        <div class="container">
+          <div class="combined-content">
+            <!-- CTA Content (Left Side) -->
+            <div class="cta-content">
+              <h2>Looking for Custom Fabric Solutions?</h2>
+              <p>
+                We specialize in sourcing specific fabrics for your business
+                needs. Contact us for custom orders, bulk pricing, and exclusive
+                designs.
+              </p>
+              <div class="cta-buttons">
+                <a href="#enquiry-form" class="cta-btn primary">Send Enquiry</a>
+                <a href="tel:0478257409" class="cta-btn secondary">Call Us</a>
+              </div>
+            </div>
+
+            <!-- Footer Content (Right Side) -->
+            <div class="footer-content">
+              <div class="footer-logo">BooIsha</div>
+              <p class="footer-text">
+                Bridging India and Australia through authentic trade and
+                commerce
+              </p>
+              <p class="footer-copyright">
+                © 2024 BooIsha. All rights reserved. | ABN: 11 762 603 033
+              </p>
             </div>
           </div>
-
-          <!-- Footer Content (Right Side) -->
-          <div class="footer-content">
-            <div class="footer-logo">BooIsha</div>
-            <p class="footer-text">
-              Bridging India and Australia through authentic trade and commerce
-            </p>
-            <p class="footer-copyright">
-              © 2024 BooIsha. All rights reserved. | ABN: 11 762 603 033
-            </p>
-          </div>
         </div>
-      </div>
-    </section>
-
+      </section>
+    </div>
     <script src="index.js" defer></script>
     <script src="fabrics.js" defer></script>
   </body>

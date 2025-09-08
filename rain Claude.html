@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Fabricfalls – Centered Silk with Flares</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: #0a0a0b;
+        color: #eee;
+        font: 14px system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      }
+      #gl {
+        position: fixed;
+        inset: 0;
+        display: block;
+      }
+      .hud {
+        position: fixed;
+        left: 12px;
+        bottom: 12px;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        z-index: 10;
+      }
+      .btn {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        color: #fff;
+        padding: 6px 10px;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+      .badge {
+        background: rgba(0, 0, 0, 0.45);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        padding: 6px 10px;
+        border-radius: 999px;
+      }
+      .title {
+        position: fixed;
+        left: 12px;
+        top: 12px;
+        font-weight: 800;
+        opacity: 0.85;
+      }
+      .mask {
+        position: fixed;
+        inset: 0 0 70% 0;
+        pointer-events: none;
+        z-index: 9;
+        background: linear-gradient(#0a0a0b, rgba(10, 10, 11, 0));
+      }
+      .maskBottom {
+        position: fixed;
+        inset: 75% 0 0 0;
+        pointer-events: none;
+        z-index: 9;
+        background: linear-gradient(rgba(10, 10, 11, 0), #0a0a0b);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="title">Fabricfalls – Centered Silk with Flares</div>
+    <canvas id="gl"></canvas>
+    <div class="maskBottom"></div>
+    <div class="mask"></div>
+    <div class="hud">
+      <button class="btn" id="pause">Pause</button>
+      <button class="btn" id="color">Next Color</button>
+      <span class="badge" id="stats">—</span>
+    </div>
+
+    <script type="module">
+      import * as THREE from "https://unpkg.com/three@0.160.0/build/three.module.js";
+
+      /* ==================== Setup ==================== */
+      const canvas = document.getElementById("gl");
+      const renderer = new THREE.WebGLRenderer({
+        canvas,
+        antialias: false,
+        alpha: true,
+        powerPreference: "high-performance",
+      });
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      const DPR = Math.min(
+        window.devicePixelRatio || 1,
+        matchMedia("(max-width:768px)").matches ? 1.5 : 2
+      );
+      renderer.setPixelRatio(DPR);
+      renderer.setSize(innerWidth, innerHeight);
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        55,
+        innerWidth / innerHeight,
+        0.1,
+        1000
+      );
+      camera.position.set(0, 20, 120);
+      camera.lookAt(0, 0, 0);
+
+      /* Lights */
+      const ambient = new THREE.AmbientLight(0xffffff, 0.45);
+      scene.add(ambient);
+      const key = new THREE.DirectionalLight(0xffffff, 1.6);
+      key.position.set(-2, 2.2, 3.2);
+      scene.add(key);
+      const rim = new THREE.DirectionalLight(0xffffff, 1.0);
+      rim.position.set(2, 1.0, -2.0);
+      scene.add(rim);
+
+      /* ==================== Cloth grid ==================== */
+      const COLS = 80,
+        ROWS = 160;
+      const DX = 1.1,
+        DY = 0.9;
+      const ITER = 5,
+        DRAG = 0.996;
+      const GRAV = new THREE.Vector3(0, -28, 0);
+      const FEED = 22;
+      const TOP_Y = 55;
+
+      const count = COLS * ROWS;
+      const P = Array.from({ length: count }, () => new THREE.Vector3());
+      const PP = Array.from({ length: count }, () => new THREE.Vector3());
+      const idx = (x, y) => y * COLS + x;
+
+      function resetSheet() {
+        const HALF = (COLS - 1) * 0.5;
+        const startY = 40;
+        for (let y = 0; y < ROWS; y++) {
+          for (let x = 0; x < COLS; x++) {
+            const i = idx(x, y);
+            const px = (x - HALF) * DX;
+            const py = startY - y * DY;
+            P[i].set(px, py, 0);
+            PP[i].copy(P[i]);
+          }
+        }
+      }
+      resetSheet();
+
+      /* ==================== Geometry ==================== */
+      const geo = new THREE.BufferGeometry();
+      const pos = new Float32Array(count * 3);
+      const nor = new Float32Array(count * 3);
+      const uvs = new Float32Array(count * 2);
+      for (let y = 0; y < ROWS; y++)
+        for (let x = 0; x < COLS; x++) {
+          const i = idx(x, y);
+          uvs[i * 2] = x / (COLS - 1);
+          uvs[i * 2 + 1] = y / (ROWS - 1);
+        }
+      geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+      geo.setAttribute("normal", new THREE.BufferAttribute(nor, 3));
+      geo.setAttribute("uv", new THREE.BufferAttribute(uvs, 2));
+      const ind = [];
+      for (let y = 0; y < ROWS - 1; y++)
+        for (let x = 0; x < COLS - 1; x++) {
+          const a = idx(x, y),
+            b = idx(x + 1, y),
+            c = idx(x, y + 1),
+            d = idx(x + 1, y + 1);
+          ind.push(a, b, c, b, d, c);
+        }
+      geo.setIndex(ind);
+
+      /* ==================== Materials & layers ==================== */
+      // Helper: gradient texture (top→bottom)
+      function makeGradientTexture(topColor, bottomColor) {
+        const c = document.createElement("canvas");
+        c.width = 2;
+        c.height = 512;
+        const g = c.getContext("2d");
+        const grad = g.createLinearGradient(0, 0, 0, c.height);
+        grad.addColorStop(0, topColor);
+        grad.addColorStop(1, bottomColor);
+        g.fillStyle = grad;
+        g.fillRect(0, 0, c.width, c.height);
+        const tex = new THREE.CanvasTexture(c);
+        tex.colorSpace = THREE.SRGBColorSpace;
+        tex.wrapS = tex.wrapT = THREE.ClampToEdgeWrapping;
+        return tex;
+      }
+
+      // Base fabric (gradient Phong)
+      const gradientTex = makeGradientTexture("#2d6bff", "#0f234d"); // default blue → deep navy
+      const mat = new THREE.MeshPhongMaterial({
+        map: gradientTex,
+        specular: 0xffffff,
+        shininess: 180,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.96,
+      });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.frustumCulled = false;
+      mesh.renderOrder = 1;
+      scene.add(mesh);
+
+      // Edge vignette (multiply)
+      function makeEdgeVignetteTex() {
+        const c = document.createElement("canvas");
+        c.width = 512;
+        c.height = 8;
+        const g = c.getContext("2d");
+        const grad = g.createLinearGradient(0, 0, c.width, 0);
+        grad.addColorStop(0.0, "rgba(0,0,0,0.55)");
+        grad.addColorStop(0.12, "rgba(0,0,0,0.12)");
+        grad.addColorStop(0.88, "rgba(0,0,0,0.12)");
+        grad.addColorStop(1.0, "rgba(0,0,0,0.55)");
+        g.fillStyle = grad;
+        g.fillRect(0, 0, c.width, 8);
+        const tex = new THREE.CanvasTexture(c);
+        tex.wrapS = THREE.ClampToEdgeWrapping;
+        tex.wrapT = THREE.RepeatWrapping;
+        tex.repeat.set(1, 8);
+        return tex;
+      }
+      const edgeTex = makeEdgeVignetteTex();
+      const edgeMat = new THREE.MeshBasicMaterial({
+        map: edgeTex,
+        transparent: true,
+        opacity: 0.25,
+        blending: THREE.MultiplyBlending,
+        depthWrite: false,
+        side: THREE.DoubleSide,
+      });
+      const edgeMesh = new THREE.Mesh(geo, edgeMat);
+      edgeMesh.renderOrder = 6;
+      edgeMesh.position.z += 0.015;
+      scene.add(edgeMesh);
+
+      // Silk weave (multiply) – uses RedSilk.png if present
+      new THREE.TextureLoader().load("RedSilk.png", (weave) => {
+        weave.wrapS = weave.wrapT = THREE.RepeatWrapping;
+        weave.anisotropy = 8;
+        weave.repeat.set(2.0, 6.0);
+        const weaveMat = new THREE.MeshBasicMaterial({
+          map: weave,
+          transparent: true,
+          opacity: 0.18,
+          blending: THREE.MultiplyBlending,
+          depthWrite: false,
+          side: THREE.DoubleSide,
+        });
+        const weaveMesh = new THREE.Mesh(geo, weaveMat);
+        weaveMesh.renderOrder = 7;
+        weaveMesh.position.z += 0.018;
+        scene.add(weaveMesh);
+      });
+
+      /* Flares (3 additive layers, tinted to fabric color) */
+      const flares = [];
+      const loader = new THREE.TextureLoader();
+      function makeFallbackFlare() {
+        const c = document.createElement("canvas");
+        c.width = 64;
+        c.height = 512;
+        const g = c.getContext("2d");
+        const grd = g.createLinearGradient(32, 0, 32, 512);
+        grd.addColorStop(0.0, "rgba(255,255,255,0.00)");
+        grd.addColorStop(0.28, "rgba(255,255,255,0.10)");
+        grd.addColorStop(0.5, "rgba(255,255,255,0.28)");
+        grd.addColorStop(0.72, "rgba(255,255,255,0.10)");
+        grd.addColorStop(1.0, "rgba(255,255,255,0.00)");
+        g.fillStyle = grd;
+        g.fillRect(0, 0, 64, 512);
+        const tex = new THREE.CanvasTexture(c);
+        tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+        return tex;
+      }
+      function loadFlareTex(cb) {
+        loader.load(
+          "flare.png",
+          (t) => {
+            t.wrapS = t.wrapT = THREE.RepeatWrapping;
+            cb(t);
+          },
+          undefined,
+          () => cb(makeFallbackFlare())
+        );
+      }
+      function addFlareLayer({
+        repeatX,
+        repeatY,
+        speed,
+        opacity = 0.28,
+        rot = 0,
+      }) {
+        loadFlareTex((tex) => {
+          tex.repeat.set(repeatX, repeatY);
+          const flareMat = new THREE.MeshBasicMaterial({
+            map: tex,
+            transparent: true,
+            opacity,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+          });
+          flareMat.color = mat.color.clone().multiplyScalar(0.9);
+          const flareMesh = new THREE.Mesh(geo, flareMat);
+          flareMesh.rotation.z = rot;
+          flareMesh.renderOrder = 10;
+          flareMesh.frustumCulled = false;
+          flareMesh.position.z += 0.02;
+          scene.add(flareMesh);
+          flares.push({ tex, mesh: flareMesh, speed });
+        });
+      }
+      addFlareLayer({
+        repeatX: 6,
+        repeatY: 18,
+        speed: 0.004,
+        opacity: 0.28,
+        rot: 0.0,
+      });
+      addFlareLayer({
+        repeatX: 3,
+        repeatY: 10,
+        speed: 0.0022,
+        opacity: 0.22,
+        rot: 0.06,
+      });
+      addFlareLayer({
+        repeatX: 1.5,
+        repeatY: 6,
+        speed: 0.0014,
+        opacity: 0.16,
+        rot: -0.04,
+      });
+
+      /* ==================== Physics helpers ==================== */
+      function enforce(iA, iB, rest, moveA) {
+        const A = P[iA],
+          B = P[iB];
+        const dx = B.x - A.x,
+          dy = B.y - A.y,
+          dz = B.z - A.z;
+        const d = Math.hypot(dx, dy, dz) || 1;
+        const diff = (d - rest) / d;
+        const cx = dx * 0.5 * diff,
+          cy = dy * 0.5 * diff,
+          cz = dz * 0.5 * diff;
+        if (moveA) {
+          A.x += cx;
+          A.y += cy;
+          A.z += cz;
+        }
+        B.x -= cx;
+        B.y -= cy;
+        B.z -= cz;
+      }
+
+      /* ==================== UI ==================== */
+      let running = true;
+      const statsEl = document.getElementById("stats");
+      document.getElementById("pause")?.addEventListener("click", () => {
+        running = !running;
+        document.getElementById("pause").textContent = running
+          ? "Pause"
+          : "Resume";
+      });
+      const palette = [
+        0x2d6bff, 0x18a558, 0xffd84d, 0x6f39d9, 0xff69b4, 0xffffff,
+      ];
+      document.getElementById("color")?.addEventListener("click", () => {
+        const i = (palette.indexOf(mat.color.getHex()) + 1) % palette.length;
+        mat.color.setHex(palette[i]);
+        for (const f of flares)
+          if (f.mesh.material?.color)
+            f.mesh.material.color.copy(mat.color).multiplyScalar(0.9);
+      });
+
+      /* ==================== Animation ==================== */
+      const startTime = performance.now();
+      let frames = 0,
+        t0 = performance.now();
+      let last = performance.now();
+      function tick(now) {
+        const dt = Math.min(0.033, (now - last) / 1000);
+        last = now;
+
+        if (running) {
+          // ---- Ease-in so the fall starts slower (requires: const startTime = performance.now()) ----
+          const tSec = (now - startTime) / 1000;
+          const s = Math.min(1, tSec / 2.5); // duration of ramp (↑ for slower start)
+          const ease = s * s * (3 - 2 * s); // smoothstep 0..1
+          const feed = FEED * (0.35 + 0.65 * ease) * dt; // start at 35% speed → 100%
+
+          // ---- Verlet integration + subtle width-wise waves (silk life) ----
+          for (let i = 0; i < count; i++) {
+            const cur = P[i],
+              prev = PP[i];
+
+            let vx = (cur.x - prev.x) * DRAG + GRAV.x * dt * dt;
+            let vy = (cur.y - prev.y) * DRAG + GRAV.y * dt * dt; // GRAV.y must be NEGATIVE
+            let vz = (cur.z - prev.z) * DRAG + GRAV.z * dt * dt;
+
+            const yIdx = (i / COLS) | 0;
+            const xIdx = i - yIdx * COLS;
+            const u = xIdx / (COLS - 1); // 0..1 across width
+            const v = yIdx / (ROWS - 1); // 0..1 down length
+            const wPhase = now * 0.0012 + v * 2.4;
+
+            vx += Math.sin(u * Math.PI * 2 + wPhase) * 0.08 * dt * dt;
+            vz += Math.cos(u * Math.PI * 2 + wPhase) * 0.1 * dt * dt;
+
+            PP[i].copy(cur);
+            cur.x += vx;
+            cur.y += vy;
+            cur.z += vz;
+          }
+
+          // ---- Keep top edge centered & fixed; feed the rest straight down ----
+          const HALF = (COLS - 1) * 0.5;
+          for (let x = 0; x < COLS; x++) {
+            const iTop = idx(x, 0);
+            P[iTop].x = (x - HALF) * DX; // lock horizontally to center
+            P[iTop].y = TOP_Y; // fixed roll height
+          }
+          for (let y = 1; y < ROWS; y++) {
+            for (let x = 0; x < COLS; x++) {
+              P[idx(x, y)].y -= feed; // continuous downward pull (eased)
+            }
+          }
+
+          // ---- Constraints (structural + bending) ----
+          for (let k = 0; k < ITER; k++) {
+            for (let y = 0; y < ROWS; y++)
+              for (let x = 0; x < COLS - 1; x++)
+                enforce(idx(x, y), idx(x + 1, y), DX, x > 0);
+
+            for (let y = 0; y < ROWS - 1; y++)
+              for (let x = 0; x < COLS; x++)
+                enforce(idx(x, y), idx(x, y + 1), DY, y > 0);
+
+            for (let y = 0; y < ROWS; y++)
+              for (let x = 0; x < COLS - 2; x++)
+                enforce(idx(x, y), idx(x + 2, y), DX * 2, x > 0);
+
+            for (let y = 0; y < ROWS - 2; y++)
+              for (let x = 0; x < COLS; x++)
+                enforce(idx(x, y), idx(x, y + 2), DY * 2, y > 0);
+          }
+
+          // ---- Bottom settle (damp jitter) & hem curl for a flowy edge ----
+          const SETTLE_START = -10,
+            SETTLE_END = -55,
+            MAX_DAMP = 0.6;
+          const HEM_START = -20,
+            HEM_END = -55,
+            HEM_AMP = 0.25;
+
+          for (let y = 0; y < ROWS; y++) {
+            for (let x = 0; x < COLS; x++) {
+              const i = idx(x, y);
+              const py = P[i].y;
+
+              // settle zone damping
+              if (py < SETTLE_START) {
+                const t = Math.min(
+                  1,
+                  Math.max(0, (SETTLE_START - py) / (SETTLE_START - SETTLE_END))
+                );
+                const damp = 1 - t * MAX_DAMP;
+                P[i].x = PP[i].x + (P[i].x - PP[i].x) * damp;
+                P[i].y = PP[i].y + (P[i].y - PP[i].y) * damp;
+                P[i].z = PP[i].z + (P[i].z - PP[i].z) * damp;
+              }
+
+              // hem curl
+              if (py < HEM_START) {
+                const tt = Math.min(
+                  1,
+                  Math.max(0, (HEM_START - py) / (HEM_START - HEM_END))
+                );
+                const u = x / (COLS - 1);
+                const phase = u * Math.PI * 2 + now * 0.0012;
+                P[i].z += HEM_AMP * tt * Math.sin(phase);
+              }
+            }
+          }
+
+          // ---- Recycle lower so reset is invisible ----
+          const bottomY = P[idx(0, ROWS - 1)].y;
+          if (bottomY < -110) {
+            const jumpRows = Math.floor(ROWS * 0.66);
+            const jump = jumpRows * DY; // multiple of DY avoids shear
+            for (let i = 0; i < count; i++) {
+              P[i].y += jump;
+              PP[i].y += jump;
+            }
+          }
+
+          // ---- Write vertices + normals ----
+          let o = 0,
+            n = 0;
+          for (let y = 0; y < ROWS; y++) {
+            for (let x = 0; x < COLS; x++) {
+              const i = idx(x, y),
+                vtx = P[i];
+              pos[o++] = vtx.x;
+              pos[o++] = vtx.y;
+              pos[o++] = vtx.z;
+
+              const L = P[idx(Math.max(0, x - 1), y)];
+              const R = P[idx(Math.min(COLS - 1, x + 1), y)];
+              const U = P[idx(x, Math.max(0, y - 1))];
+              const D = P[idx(x, Math.min(ROWS - 1, y + 1))];
+
+              const v1 = new THREE.Vector3().subVectors(R, L);
+              const v2 = new THREE.Vector3().subVectors(D, U);
+              const N = new THREE.Vector3().crossVectors(v2, v1).normalize();
+
+              nor[n++] = N.x;
+              nor[n++] = N.y;
+              nor[n++] = N.z;
+            }
+          }
+          geo.attributes.position.needsUpdate = true;
+          geo.attributes.normal.needsUpdate = true;
+
+          // ---- Scroll flare textures (guard in case flares array not defined) ----
+          if (typeof flares !== "undefined") {
+            const flareScale = 0.35 + 0.65 * ease; // match ease-in
+            for (const f of flares) f.tex.offset.y -= f.speed * flareScale;
+          }
+
+          // ---- FPS badge (optional guard) ----
+          if (typeof statsEl !== "undefined" && statsEl) {
+            frames++;
+            if (now - t0 > 500) {
+              statsEl.textContent = `${(frames * 2) | 0} fps`;
+              frames = 0;
+              t0 = now;
+            }
+          }
+        }
+
+        // ---- Render & schedule next frame ----
+        renderer.setSize(innerWidth, innerHeight, false);
+        camera.aspect = innerWidth / innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.render(scene, camera);
+        requestAnimationFrame(tick);
+      }
+      //  requestAnimationFrame(tick);
+
+      /* Resize */
+      addEventListener("resize", () => {
+        renderer.setPixelRatio(DPR);
+        renderer.setSize(innerWidth, innerHeight);
+        camera.aspect = innerWidth / innerHeight;
+        camera.updateProjectionMatrix();
+      });
+
+      /* Debug keys: 1=base, 2=edge, 3=all flares */
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "1") mesh.visible = !mesh.visible; // base
+        if (e.key === "2") edgeMesh.visible = !edgeMesh.visible; // vignette
+        if (e.key === "3")
+          for (const f of flares) f.mesh.visible = !f.mesh.visible;
+        if (e.key === "4")
+          if (typeof weaveMesh !== "undefined")
+            weaveMesh.visible = !weaveMesh.visible;
+      });
+    </script>
+  </body>
+</html>
