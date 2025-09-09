@@ -304,14 +304,17 @@ body.dark-theme .fabric-list {
   animation: floatImages 6s ease-in-out infinite;
 }
 
-/* Start with layer A visible */
-.textiles-hero-bg::before {
-  opacity: 1;
-}
+
 
 /* JS sets these via CSS variables */
-.textiles-hero-bg::before { opacity: var(--opa-a, 1); }
-.textiles-hero-bg::after  { opacity: var(--opa-b, 0); }
+.textiles-hero-bg::before { 
+  opacity: var(--opa-a, 1); 
+background-image: var(--bg-a);
+}
+.textiles-hero-bg::after  { 
+  opacity: var(--opa-b, 0);
+  background-image: var(--bg-b); 
+}
 
 /* Optional subtle motion */
 @keyframes floatImages {
@@ -335,6 +338,9 @@ body.dark-theme .fabric-list {
   margin: 0 auto;
 }
 
+.hero-text-container {
+  transition: color 0.8s ease;
+}
 /* Filter Section */
 .filter-section {
   background: #f8f9fa;

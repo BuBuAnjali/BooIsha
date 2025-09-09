@@ -38,6 +38,237 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// index.js
+
+// =========================
+// CONFIG
+// =========================
+const MEDIA_DIR = "/Videos/videoCard/"; // trailing slash required
+const MANIFEST_URL = MEDIA_DIR + "manifest.json"; // optional but preferred
+const IMAGE_DURATION = 5000; // ms per image
+const VIDEO_MAX_DURATION = 60000; // safety cap per video (ms)
+
+// Recognized file types
+const VIDEO_RE = /\.(mp4|webm|ogg|mov)$/i;
+const IMAGE_RE = /\.(png|jpe?g|gif|webp|avif|svg)$/i;
+
+// =========================
+// HELPERS
+// =========================
+async function fetchJSON(url) {
+  try {
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
+async function fetchDirectoryIndex(url) {
+  // Works only if your host exposes a browsable index page (e.g., Apache/NGINX listing).
+  try {
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) return [];
+    const html = await res.text();
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    const anchors = Array.from(doc.querySelectorAll("a[href]"));
+    return anchors
+      .map((a) => a.getAttribute("href"))
+      .filter((href) => !!href && href !== "../")
+      .map((href) =>
+        href.startsWith("http") ? href : MEDIA_DIR + href.replace(/^\.?\//, "")
+      );
+  } catch {
+    return [];
+  }
+}
+
+function normalizeList(list) {
+  // Keep only images/videos, sort by name, dedupe
+  const media = (list || [])
+    .filter(Boolean)
+    .filter((src) => VIDEO_RE.test(src) || IMAGE_RE.test(src))
+    .sort((a, b) => a.localeCompare(b));
+  return [...new Set(media)];
+}
+
+async function discoverMedia() {
+  // 1) Prefer manifest.json (array of strings). Items may be relative or absolute.
+  const manifest = await fetchJSON(MANIFEST_URL);
+  if (Array.isArray(manifest) && manifest.length) {
+    const normalized = manifest.map((item) =>
+      item.startsWith("/") ? item : MEDIA_DIR + item
+    );
+    const list = normalizeList(normalized);
+    if (list.length) return list;
+  }
+
+  // 2) Fallback to directory listing parsing
+  const fromIndex = await fetchDirectoryIndex(MEDIA_DIR);
+  if (fromIndex.length) return normalizeList(fromIndex);
+
+  // 3) Nothing found
+  return [];
+}
+
+const REDUCED_MOTION = window.matchMedia(
+  "(prefers-reduced-motion: reduce)"
+).matches;
+
+function applyBaseStyles(el) {
+  el.style.position = "absolute";
+  el.style.inset = "0";
+  el.style.willChange = "opacity";
+  el.style.borderRadius = "16px";
+}
+
+function crossfadeSwap(container, nextEl, duration = 800) {
+  const prevEl = container.lastElementChild || null;
+
+  // Prepare NEXT
+  nextEl.style.position = "absolute";
+  nextEl.style.inset = "0";
+  nextEl.style.opacity = "0"; // start hidden
+  nextEl.style.transition = `opacity ${duration}ms ease`;
+  nextEl.style.borderRadius = "16px";
+  nextEl.style.zIndex = "2"; // above previous
+
+  // Prepare PREV (if present)
+  if (prevEl) {
+    // ensure it has an initial opacity to transition from
+    const cur = getComputedStyle(prevEl).opacity || "1";
+    prevEl.style.opacity = cur;
+    prevEl.style.transition = `opacity ${duration}ms ease`;
+    prevEl.style.zIndex = "1";
+  }
+
+  // IMPORTANT: never clear container here — we need prev to exist during the fade
+  container.appendChild(nextEl);
+
+  // Force a reflow so the browser registers the starting opacity=0
+  // (this guarantees the transition will fire)
+  void nextEl.getBoundingClientRect();
+
+  // Start the crossfade
+  nextEl.style.opacity = "1";
+  if (prevEl) {
+    prevEl.style.opacity = "0";
+    prevEl.addEventListener(
+      "transitionend",
+      () => {
+        if (prevEl.parentNode === container) container.removeChild(prevEl);
+      },
+      { once: true }
+    );
+  }
+}
+
+function preload(src) {
+  return new Promise((resolve) => {
+    const isVideo = VIDEO_RE.test(src);
+    const el = isVideo
+      ? document.createElement("video")
+      : document.createElement("img");
+
+    if (isVideo) {
+      el.muted = true; // necessary for autoplay on most mobile browsers
+      el.playsInline = true;
+      el.autoplay = false;
+      el.loop = false;
+      el.controls = false;
+      el.preload = "auto";
+      el.src = src;
+
+      const onLoaded = () => resolve(el);
+      const onError = () => resolve(null);
+
+      el.addEventListener("loadeddata", onLoaded, { once: true });
+      el.addEventListener("error", onError, { once: true });
+    } else {
+      el.decoding = "async";
+      el.loading = "eager";
+      el.alt = "";
+      el.src = src;
+
+      const onLoaded = () => resolve(el);
+      const onError = () => resolve(null);
+
+      el.addEventListener("load", onLoaded, { once: true });
+      el.addEventListener("error", onError, { once: true });
+    }
+  });
+}
+
+// =========================
+// SLIDESHOW
+// =========================
+function createSlideshow(container, items) {
+  let idx = 0;
+  let timer = null;
+
+  async function step() {
+    if (!items.length) return;
+
+    const src = items[idx % items.length];
+    idx++;
+
+    const el = await preload(src);
+    if (!el) {
+      // Skip broken entries and keep going
+      return step();
+    }
+
+    requestAnimationFrame(() => crossfadeSwap(container, el, 2800));
+    clearTimeout(timer);
+
+    if (VIDEO_RE.test(src)) {
+      // Try to play; if autoplay blocked, we still advance via timeout
+      el.play().catch(() => {
+        /* ignored */
+      });
+
+      const onEnded = () => {
+        el.removeEventListener("ended", onEnded);
+        step();
+      };
+      el.addEventListener("ended", onEnded, { once: true });
+
+      timer = setTimeout(() => {
+        el.removeEventListener("ended", onEnded);
+        step();
+      }, VIDEO_MAX_DURATION);
+    } else {
+      // Image: hold for fixed duration
+      timer = setTimeout(step, IMAGE_DURATION);
+    }
+  }
+
+  step();
+}
+
+// =========================
+// INIT
+// =========================
+document.addEventListener("DOMContentLoaded", async () => {
+  const container = document.querySelector(".story-video");
+  if (!container) {
+    console.warn("Missing .story-video container");
+    return;
+  }
+
+  const items = await discoverMedia();
+
+  if (!items.length) {
+    console.warn(
+      `No media found in ${MEDIA_DIR}. Add a build step to generate manifest.json or enable directory listing.`
+    );
+    return;
+  }
+
+  createSlideshow(container, items);
+});
+
 // Load saved theme on page load and set up form handler
 document.addEventListener("DOMContentLoaded", function () {
   const savedTheme = localStorage.getItem("theme");
@@ -49,7 +280,12 @@ document.addEventListener("DOMContentLoaded", function () {
   } else {
     themeBtn.setAttribute("data-tooltip", "Switch to Dark Mode");
   }
+
   console.log("DOM loaded");
+
+  // Start video slideshow
+  startMediaSlideshow();
+
   // Form submission handler
   const form = document.getElementById("enquiry-form-submit");
   console.log("Form found:", form);
@@ -148,3 +384,23 @@ function showSuccessMessage() {
     }
   }, 1000);
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const watermark = document.querySelector(".watermark");
+  const storySection = document.querySelector("#story");
+
+  if (!watermark || !storySection) return;
+
+  function handleWatermarkPosition() {
+    const top = storySection.getBoundingClientRect().top;
+
+    if (top <= 0) {
+      watermark.classList.add("sticky");
+    } else {
+      watermark.classList.remove("sticky");
+    }
+  }
+
+  window.addEventListener("scroll", handleWatermarkPosition);
+  handleWatermarkPosition(); // run on load
+});

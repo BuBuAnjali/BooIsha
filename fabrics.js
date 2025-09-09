@@ -1107,6 +1107,97 @@ function filterProductsByCategory(category = null) {
   updatePaginationButtons();
 }
 
+// Your existing images
+const cardImages = document.querySelectorAll(".card img");
+const images = Array.from(cardImages).map((img) => img.src);
+
+let currentImageIndex = 0;
+let isEven = true;
+
+function updateTextContrastFromBackground(bgUrl) {
+  const img = new Image();
+  img.crossOrigin = "anonymous";
+  img.src = bgUrl;
+
+  img.onload = function () {
+    const canvas = document.createElement("canvas");
+    canvas.width = 20;
+    canvas.height = 20;
+    const ctx = canvas.getContext("2d");
+
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+
+    let totalLuminance = 0;
+    for (let i = 0; i < imageData.length; i += 4) {
+      const [r, g, b] = [imageData[i], imageData[i + 1], imageData[i + 2]];
+      const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
+      totalLuminance += luminance;
+    }
+
+    const avgLuminance = totalLuminance / (canvas.width * canvas.height);
+    const textContainer = document.querySelector(".hero-text-container");
+
+    if (avgLuminance < 128) {
+      textContainer.style.color = "white";
+    } else {
+      textContainer.style.color = "#1a1a1a";
+    }
+  };
+}
+
+function getActiveHeroBackgroundImageUrl() {
+  const bgEl = document.querySelector(".textiles-hero-bg");
+  const before = window
+    .getComputedStyle(bgEl, "::before")
+    .getPropertyValue("background-image");
+  const after = window
+    .getComputedStyle(bgEl, "::after")
+    .getPropertyValue("background-image");
+
+  const opaA =
+    parseFloat(getComputedStyle(bgEl).getPropertyValue("--opa-a")) || 0;
+  const opaB =
+    parseFloat(getComputedStyle(bgEl).getPropertyValue("--opa-b")) || 0;
+
+  const activeUrl = opaA > opaB ? before : after;
+  const match = activeUrl.match(/url\(["']?([^"')]+)["']?\)/);
+  return match ? match[1] : null;
+}
+
+function cycleHeroBackground() {
+  const nextImage = images[currentImageIndex]; // ✅ from DOM
+
+  const bgElement = document.querySelector(".textiles-hero-bg");
+
+  if (isEven) {
+    bgElement.style.setProperty("--bg-a", `url(${nextImage})`);
+    bgElement.style.setProperty("--opa-a", 1);
+    bgElement.style.setProperty("--opa-b", 0);
+  } else {
+    bgElement.style.setProperty("--bg-b", `url(${nextImage})`);
+    bgElement.style.setProperty("--opa-a", 0);
+    bgElement.style.setProperty("--opa-b", 1);
+  }
+
+  isEven = !isEven;
+  currentImageIndex = (currentImageIndex + 1) % images.length;
+
+  function handleFadeComplete() {
+    const activeImage = getActiveHeroBackgroundImageUrl();
+    if (activeImage) {
+      updateTextContrastFromBackground(activeImage);
+    }
+    bgElement.removeEventListener("transitionend", handleFadeComplete);
+  }
+
+  bgElement.addEventListener("transitionend", handleFadeComplete);
+}
+
+// Initial trigger
+cycleHeroBackground();
+setInterval(cycleHeroBackground, 6000);
+
 // ====== CONFIG ======
 const DIR_URL = "/Images/cardImages/"; // the folder URL
 const INTERVAL = 5000; // 5s per image

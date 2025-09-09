@@ -1,0 +1,14 @@
+{
+  "name": "booshiv",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "prebuild": "node scripts/build-media-manifest.mjs",
+    "build": "echo \"Build complete\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

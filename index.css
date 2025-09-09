@@ -1,3 +1,12 @@
+:root {
+  --glow: rgba(22, 44, 67, 0.9);
+  --text-glow-shadow: 0 0 15px rgba(200, 157, 157, 0.8);
+  --background-color: #20717a;
+  --title-bar-fg: #161313;
+  /* ... other existing variables ... */
+}
+
+
 
 html {
     scroll-behavior: smooth;
@@ -16,26 +25,7 @@ html {
         }
 
 
-  .watermark {
-    position: fixed;
-    top: 90%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0.1;
-    z-index: 1;
-    pointer-events: none;
-}
 
-.watermark img {
-    width: 1000px;
-    height: 1000px;
-    object-fit: contain;
-}
-
-/* Optional: Make it slightly more visible on hover */
-body:hover .watermark {
-    opacity: 0.15;
-}
 
 /* Contact Bar - Above Navigation */
 .contact-bar {
@@ -204,46 +194,47 @@ body:hover .watermark {
 
 .nav-menu a {
   position: relative;
-  color: var(--title-bar-fg);
+  color:#3d878f;
   text-decoration: none;
   font-weight: light;
   transition: color 0.3s ease;
   display: inline-block;
 }
 
-.nav-menu  a span {
+.nav-menu a span {
   position: relative;
 }
 
-.nav-menu  a span::before {
+.nav-menu a span::before {
   content: '';
   position: absolute;
   bottom: -2px;
   left: 50%;
   width: 0;
   height: 1.5px;
- background:var(--background-color);
+  background:rgb(0, 195, 255);
   transition: width 0.7s ease;
   transform: translateX(-50%);
 }
 
-.nav-menu  a:hover {
-  color: var(--glow);
-  text-shadow: var(--text-glow-shadow);
+.nav-menu a:hover {
+  color:rgb(0, 195, 255);
+  text-shadow: white;
   background: transparent;
 }
 
-.nav-menu  a:hover span::before {
+.nav-menu a:hover span::before {
   width: 100%;
 }
 
-.nav-menu  a:not(:last-child):not(.nav-dropdown a)::after {
+.nav-menu a:not(:last-child):not(.nav-dropdown a)::after {
   content: "-";
   margin: 0 0.5rem;
   text-decoration: none;
   display: inline-block;
   pointer-events: none;
 }
+
 
 /* Products Dropdown Navigation */
 .nav-dropdown {
@@ -276,24 +267,26 @@ nav-dropdown::before {
 
 .dropdown-content {
   position: absolute;
-  top: 100%;  /* Changed from calc(100% + 8px) - removes the gap */
+  top: 65px;  /* Changed from calc(100% + 8px) - removes the gap */
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateY(-10px); /* initial offset for slide */
   transform-origin: top center;
-  background-color: rgba(212, 221, 224, 0.95); /* Increased opacity for better visibility */
+  background-color: rgba(173, 221, 237, 0.95);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   width: max-content;
-  min-width: 150px; /* Added minimum width */
+  min-width: 150px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   border-radius: 5px;
-  padding: 8px 0; /* Changed padding */
+  padding: 8px 0;
   opacity: 0;
   visibility: hidden;
-  pointer-events: none;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  pointer-events: auto;
+  transition: 
+    opacity 0.4s ease,
+    transform 0.4s ease,
+    visibility 0.4s;
   z-index: 1002;
-  margin-top: 0; /* Ensure no margin creates gap */
 }
 
 .dropdown-content a {
@@ -337,9 +330,9 @@ nav-dropdown::before {
 }
 
 .nav-dropdown:hover .dropdown-content {
-    transform: translateX(-50%) scaleY(1);
-  opacity: 1;
+    opacity: 1;
   visibility: visible;
+  transform: translateX(-50%) translateY(0);
 }
 
 
@@ -477,9 +470,9 @@ body.dark-theme .contact-bar-content a:hover {
 
 .image-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 1.5rem;
-    max-width: 1200px;
+    max-width: 1600px;
     margin: -3rem auto 2rem;
     padding: 0 1rem;
     position: relative;
@@ -547,6 +540,7 @@ body.dark-theme .image-placeholder {
         }
 
         .nav-container {
+            position: relative;
             max-width: 1200px;
             margin: 0 auto;
             padding: 0.5rem 0.5rem;
@@ -587,15 +581,15 @@ body.dark-theme .image-placeholder {
 
         /* Main Content */
         .container {
-            max-width: 1200px;
+            max-width: 1600px;
             margin: 0 auto;
-            padding: 0 2rem;
+            padding: 0 1rem;
         }
 
         /* Our Story Section */
         .story-section {
             padding: 0;
-            background: #f8f9fa;
+            background: none;
         }
 
         .story-content {
@@ -633,8 +627,8 @@ body.dark-theme .image-placeholder {
         }
 
    .story-video {
-  width: 500px;          
-  height: 450px;         
+  width: 700px;          
+  height: 470px;         
   border-radius: 20px;
   background: none;
   display: flex;
@@ -650,11 +644,24 @@ body.dark-theme .image-placeholder {
   object-fit: cover;     
   border-radius: 16px;
 }
+
+.story-video { position: relative; } /* allow stacking */
+.story-video > * { 
+  position: absolute; 
+  inset: 0; 
+}
+
+.story-video img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+}
         .section-title {
             text-align: center;
             font-size: 2.5rem;
             color: #2c3e50;
-            margin-bottom: 1rem;
+            margin: 1.5rem;
         }
 
         .section-subtitle {
@@ -760,7 +767,6 @@ body.dark-theme .image-placeholder {
         /* Mission Section */
         .mission-section {
             padding: 0;         
-            
             text-align: center;
         }
 body.dark.theme .mission-section {
@@ -772,24 +778,24 @@ body.dark.theme .mission-section {
             background: linear-gradient(135deg, #7bbed0 0%, #4b78a2 100%);
         }
         .mission-content {
-            max-width: 900px;
+            max-width: 1600px;
             margin: 0 auto;
         }
 
         .mission-content h2 {
             font-size: 2.5rem;
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
         }
 
         .mission-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
+            gap: 1rem;
+            margin-top: 1rem;
         }
 
         .mission-item {
-            padding: 2rem;
+            padding: 1rem;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 15px;
             backdrop-filter: blur(10px);
@@ -813,7 +819,7 @@ body.dark.theme .mission-section {
 
         /* Markets Section */
         .markets-section {
-            padding: 1rem 0;
+            padding: 2rem 1rem;
             background: #f8f9fa;
         }
 
@@ -1030,8 +1036,8 @@ body.dark.theme .mission-section {
 
  /* Contact Form Styles */
 .customer-form {
-    max-width: 600px;
-    margin: 3rem auto;
+    max-width: 1000px;
+    margin: 2rem auto;
 }
 
 .customer-form h2 {
@@ -1099,7 +1105,7 @@ body.dark.theme .mission-section {
     width: 100%;
     padding: 1rem;
     margin-top: 2rem;
-    background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+    background: linear-gradient(135deg, #FF6B6B 0%, #A153FF 100%);
     color: white;
     border: none;
     border-radius: 8px;
@@ -1110,6 +1116,7 @@ body.dark.theme .mission-section {
 }
 
 .submit-enquiry-btn:hover {
+     background: linear-gradient(135deg, #ddeb6f 0%, #4e9e16 100%);
     transform: translateY(-2px);
     box-shadow: 0 5px 20px rgba(255, 107, 107, 0.3);
 }
@@ -1175,7 +1182,7 @@ body.dark.theme .mission-section {
   display: inline-block;
   margin-top: 20px;
   padding: 12px 25px;
-  background: #ff6b6b;
+  background: linear-gradient(135deg, #FF6B6B 0%, #A153FF 100%);
   color: white;
   text-decoration: none;
   border-radius: 5px;
@@ -1185,7 +1192,7 @@ body.dark.theme .mission-section {
 }
 
 .view-products-btn:hover {
-  background: #ff5252;
+  background: linear-gradient(135deg, #ddeb6f 0%, #4e9e16 100%);
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
 }
@@ -1200,6 +1207,34 @@ body.dark-mode .view-products-btn:hover {
   background: #ff5252;
   box-shadow: 0 5px 15px rgba(255, 107, 107, 0.2);
 }
+
+.watermark-container {
+  height: 0;
+  position: relative;
+}
+
+.watermark {
+  display: none;
+}
+
+.watermark.sticky {
+  display: block;
+  position: fixed;
+  top: 60%;
+  left: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+}
+
+.watermark.sticky img {
+  max-width: 2000px;
+  width: 50vw;
+  opacity: 0.1;
+  pointer-events: none;
+  user-select: none;
+}
+
 
 /* Responsive adjustments */
 @media (max-width: 768px) {

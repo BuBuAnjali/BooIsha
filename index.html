@@ -26,9 +26,7 @@
     <link rel="stylesheet" href="index.css" />
   </head>
   <body>
-    <div class="watermark">
-      <img src="/Images/BooIshaLogo.png" alt="BooIsha Watermark" />
-    </div>
+</div>
     <!-- Contact Bar -->
     <div class="contact-bar">
       <div class="contact-bar-content">
@@ -105,7 +103,11 @@
         <span class="coming-soon">Coming Soon</span>
       </div>
     </div>
-
+<div class="watermark-container">
+  <div class="watermark">
+    <img src="/Images/BooIshaLogo.png" alt="BooIsha Watermark" />
+  </div>
+</div>
     <!-- Our Story Section -->
     <section class="story-section" id="story">
       <div class="container">
@@ -133,12 +135,8 @@
               lasting connection.
             </p>
           </div>
-          <div class="story-video">
-            <video controls autoplay muted loop>
-              <source src="/Videos/weaving.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          </div>
+          <!-- index.html -->
+          <div class="story-video" aria-live="polite"></div>
         </div>
       </div>
     </section>
@@ -146,7 +144,7 @@
     <!-- Products Section -->
     <section class="products-section" id="products">
       <div class="container">
-        <h2 class="section-title">What We Bring to Australia</h2>
+        <h2 class="section-title">Our Product Range</h2>
         <p class="section-subtitle">
           Premium quality products sourced directly from India's finest
           producers
