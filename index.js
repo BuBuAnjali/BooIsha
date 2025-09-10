@@ -48,9 +48,110 @@ const MANIFEST_URL = MEDIA_DIR + "manifest.json"; // optional but preferred
 const IMAGE_DURATION = 5000; // ms per image
 const VIDEO_MAX_DURATION = 60000; // safety cap per video (ms)
 
+// =========================
+// DROPPING CARDS CONFIG
+// =========================
+
+const DROPPING_IMAGES_DIR = "/Images/droppingImages/";
+const DROPPING_MANIFEST_URL = DROPPING_IMAGES_DIR + "manifest.json";
+
 // Recognized file types
 const VIDEO_RE = /\.(mp4|webm|ogg|mov)$/i;
 const IMAGE_RE = /\.(png|jpe?g|gif|webp|avif|svg)$/i;
+
+async function discoverDroppingImages() {
+  // 1) Prefer manifest.json (array of strings). Items may be relative or absolute.
+  const manifest = await fetchJSON(DROPPING_MANIFEST_URL);
+  if (Array.isArray(manifest) && manifest.length) {
+    const normalized = manifest.map((item) =>
+      item.startsWith("/") ? item : DROPPING_IMAGES_DIR + item
+    );
+    const list = normalizeList(normalized);
+    if (list.length) return list;
+  }
+
+  // 2) Fallback to directory listing parsing
+  const fromIndex = await fetchDirectoryIndex(DROPPING_IMAGES_DIR);
+  if (fromIndex.length) return normalizeList(fromIndex);
+
+  // 3) Nothing found
+  return [];
+}
+
+async function initializeDroppingCards() {
+  console.log("Initializing dropping cards...");
+
+  const cards = document.querySelectorAll(".image-placeholder");
+  console.log("Found cards:", cards.length);
+
+  if (!cards.length) return;
+
+  const images = await discoverDroppingImages();
+  console.log("Found images:", images);
+
+  if (!images.length) {
+    console.warn(`No images found in ${DROPPING_IMAGES_DIR}`);
+    return;
+  }
+
+  // Track current images for each card
+  const cardImages = new Array(cards.length).fill(null);
+
+  function getUniqueImage(excludeIndices = []) {
+    const available = images.filter(
+      (_, index) => !excludeIndices.includes(index)
+    );
+    if (available.length === 0)
+      return images[Math.floor(Math.random() * images.length)];
+    return available[Math.floor(Math.random() * available.length)];
+  }
+
+  function updateCard(cardIndex) {
+    const card = cards[cardIndex];
+
+    // Get currently used image indices (excluding this card)
+    const usedIndices = cardImages
+      .map((img, idx) => (idx !== cardIndex ? images.indexOf(img) : -1))
+      .filter((idx) => idx !== -1);
+
+    // Get a unique image
+    const newImage = getUniqueImage(usedIndices);
+    cardImages[cardIndex] = newImage;
+
+    const img = document.createElement("img");
+    img.src = newImage;
+    img.alt = `Product ${cardIndex + 1}`;
+    img.style.width = "100%";
+    img.style.height = "100%";
+    img.style.objectFit = "cover";
+    img.style.borderRadius = "15px";
+
+    console.log(`Card ${cardIndex} now showing:`, newImage);
+
+    card.innerHTML = "";
+    card.appendChild(img);
+  }
+
+  // Initialize each card with unique images
+  cards.forEach((_, index) => {
+    updateCard(index);
+  });
+
+  // Set up image changes to sync with CSS animation cycles
+  // Animation duration is 9.6s, with different delays for each card
+  const animationDuration = 9600; // 9.6 seconds in milliseconds
+
+  cards.forEach((_, index) => {
+    // Each card has different animation delay from CSS
+    const delays = [0, 2400, 4800, 7200]; // milliseconds (0s, 2.4s, 4.8s, 7.2s)
+    const cardDelay = delays[index] || 0;
+
+    // Change image at the start of each new animation cycle
+    setInterval(() => {
+      updateCard(index);
+    }, animationDuration);
+  });
+}
 
 // =========================
 // HELPERS
@@ -283,8 +384,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   console.log("DOM loaded");
 
-  // Start video slideshow
-  startMediaSlideshow();
+  // Initialize dropping cards with images
+  initializeDroppingCards();
 
   // Form submission handler
   const form = document.getElementById("enquiry-form-submit");

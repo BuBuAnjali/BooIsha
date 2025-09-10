@@ -488,7 +488,7 @@ body.dark-theme .contact-bar-content a:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
   border: 2px solid #f0f0f0;
   animation: paperUnroll 9.6s ease-in-out infinite;
   transform-origin: top center;
@@ -496,19 +496,61 @@ body.dark-theme .contact-bar-content a:hover {
 }
 
 @keyframes paperUnroll {
-0% {
-    transform: scaleY(0) rotateX(-45deg); /* tightly rolled */
+  0% {
+    transform: scaleY(0) rotateX(-70deg);
+    border-bottom-left-radius: 80px 50px;
+    border-bottom-right-radius: 80px 50px;
   }
+
   20% {
-    transform: scaleY(1.05) rotateX(12deg); /* quick unroll + overshoot */
+    transform: scaleY(1.1) rotateX(20deg) translateY(0);
+    border-bottom-left-radius: 50px 25px;
+    border-bottom-right-radius: 50px 25px;
   }
-  40% {
-    transform: scaleY(1) rotateX(0deg); /* fully dropped */
+
+  35% {
+    transform: scaleY(1) rotateX(0deg) translateY(0);
+    border-bottom-left-radius: 25px 15px;
+    border-bottom-right-radius: 25px 15px;
   }
+
+  45% {
+    transform: scaleY(1) rotateX(0deg) translateY(-10px);
+    border-bottom-left-radius: 40px 20px;
+    border-bottom-right-radius: 40px 20px;
+  }
+
+  55% {
+    transform: scaleY(1) rotateX(0deg) translateY(8px);
+    border-bottom-left-radius: 20px 10px;
+    border-bottom-right-radius: 20px 10px;
+  }
+
+  65% {
+    transform: scaleY(1) rotateX(0deg) translateY(-6px);
+    border-bottom-left-radius: 35px 20px;
+    border-bottom-right-radius: 35px 20px;
+  }
+
+  75% {
+    transform: scaleY(1) rotateX(0deg) translateY(4px);
+    border-bottom-left-radius: 18px 8px;
+    border-bottom-right-radius: 18px 8px;
+  }
+
+  90% {
+    transform: scaleY(1) rotateX(0deg) translateY(0);
+    border-bottom-left-radius: 25px 10px;
+    border-bottom-right-radius: 25px 10px;
+  }
+
   100% {
-    transform: scaleY(0) rotateX(-30deg); /* slowly curl back */
+    transform: scaleY(0) rotateX(-70deg);
+    border-bottom-left-radius: 80px 50px;
+    border-bottom-right-radius: 80px 50px;
   }
 }
+
 
 .image-placeholder:nth-child(1) { animation-delay: 0s; }
 .image-placeholder:nth-child(2) { animation-delay: 2.4s; }

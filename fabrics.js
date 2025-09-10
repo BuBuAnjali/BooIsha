@@ -1011,352 +1011,7 @@ const fabricProducts = [
   },
 ];
 
-// Template function to generate product cards
-function generateProductCard(product, index) {
-  const badgesHTML = product.badges
-    .map(
-      (badge) =>
-        `<span class="badge ${badge}">${
-          badge.charAt(0).toUpperCase() + badge.slice(1)
-        }</span>`
-    )
-    .join("");
-  const specsHTML = product.specs
-    .map((spec) => `<span class="spec">${spec}</span>`)
-    .join("");
-
-  return `
-    <div class="product-card" data-category="${
-      product.category
-    }" data-name="${product.name.toLowerCase()}">
-      <div class="product-image">
-        <span class="coming-soon-badge">Coming Soon</span>
-        <div class="product-badges">
-          ${badgesHTML}
-        </div>
-      </div>
-      <div class="product-details">
-        <h3>${product.name}</h3>
-        <p class="product-description">${product.description}</p>
-        <div class="product-specs">
-          ${specsHTML}
-        </div>
-        <div class="product-footer">
-          <span class="availability">${product.availability}</span>
-          <button class="enquire-btn">Enquire Now</button>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-//Render pages
-function renderCurrentPage() {
-  const productsGrid = document.querySelector(".products-grid");
-  if (!productsGrid) return;
-
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = Math.min(startIndex + itemsPerPage, filteredProducts.length);
-  const pageProducts = filteredProducts.slice(startIndex, endIndex);
-
-  const productsHTML = pageProducts
-    .map((product, index) => generateProductCard(product, startIndex + index))
-    .join("");
-
-  productsGrid.innerHTML = productsHTML;
-
-  // Re-attach event listeners for new products
-  attachEnquireListeners();
-}
-
-let filteredProducts = [...fabricProducts]; // Initialize with all products
-
-// Replace the filterProductsByCategory function:
-function filterProductsByCategory(category = null) {
-  const categorySelect = document.querySelector(".filter-select");
-  const sortSelect = document.querySelectorAll(".filter-select")[1];
-
-  const selectedCategory =
-    category || (categorySelect ? categorySelect.value : "All Categories");
-  const sortBy = sortSelect ? sortSelect.value : "Featured";
-
-  // Filter products in data array, not DOM
-  if (selectedCategory === "All Categories") {
-    filteredProducts = [...fabricProducts];
-  } else {
-    filteredProducts = fabricProducts.filter((product) => {
-      const matchesCategory =
-        product.category === selectedCategory ||
-        product.name.toLowerCase().includes(selectedCategory.toLowerCase());
-      return matchesCategory;
-    });
-  }
-
-  // Sort filtered products
-  if (sortBy !== "Featured") {
-    sortFilteredProducts(sortBy);
-  }
-
-  // Reset to page 1 and render
-  currentPage = 1;
-  renderCurrentPage();
-
-  // Update UI
-  updateResultsCount(filteredProducts.length);
-  updatePagination(Math.ceil(filteredProducts.length / itemsPerPage));
-  updatePaginationButtons();
-}
-
-// Your existing images
-const cardImages = document.querySelectorAll(".card img");
-const images = Array.from(cardImages).map((img) => img.src);
-
-let currentImageIndex = 0;
-let isEven = true;
-
-function updateTextContrastFromBackground(bgUrl) {
-  const img = new Image();
-  img.crossOrigin = "anonymous";
-  img.src = bgUrl;
-
-  img.onload = function () {
-    const canvas = document.createElement("canvas");
-    canvas.width = 20;
-    canvas.height = 20;
-    const ctx = canvas.getContext("2d");
-
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-
-    let totalLuminance = 0;
-    for (let i = 0; i < imageData.length; i += 4) {
-      const [r, g, b] = [imageData[i], imageData[i + 1], imageData[i + 2]];
-      const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
-      totalLuminance += luminance;
-    }
-
-    const avgLuminance = totalLuminance / (canvas.width * canvas.height);
-    const textContainer = document.querySelector(".hero-text-container");
-
-    if (avgLuminance < 128) {
-      textContainer.style.color = "white";
-    } else {
-      textContainer.style.color = "#1a1a1a";
-    }
-  };
-}
-
-function getActiveHeroBackgroundImageUrl() {
-  const bgEl = document.querySelector(".textiles-hero-bg");
-  const before = window
-    .getComputedStyle(bgEl, "::before")
-    .getPropertyValue("background-image");
-  const after = window
-    .getComputedStyle(bgEl, "::after")
-    .getPropertyValue("background-image");
-
-  const opaA =
-    parseFloat(getComputedStyle(bgEl).getPropertyValue("--opa-a")) || 0;
-  const opaB =
-    parseFloat(getComputedStyle(bgEl).getPropertyValue("--opa-b")) || 0;
-
-  const activeUrl = opaA > opaB ? before : after;
-  const match = activeUrl.match(/url\(["']?([^"')]+)["']?\)/);
-  return match ? match[1] : null;
-}
-
-function cycleHeroBackground() {
-  const nextImage = images[currentImageIndex]; // ✅ from DOM
-
-  const bgElement = document.querySelector(".textiles-hero-bg");
-
-  if (isEven) {
-    bgElement.style.setProperty("--bg-a", `url(${nextImage})`);
-    bgElement.style.setProperty("--opa-a", 1);
-    bgElement.style.setProperty("--opa-b", 0);
-  } else {
-    bgElement.style.setProperty("--bg-b", `url(${nextImage})`);
-    bgElement.style.setProperty("--opa-a", 0);
-    bgElement.style.setProperty("--opa-b", 1);
-  }
-
-  isEven = !isEven;
-  currentImageIndex = (currentImageIndex + 1) % images.length;
-
-  function handleFadeComplete() {
-    const activeImage = getActiveHeroBackgroundImageUrl();
-    if (activeImage) {
-      updateTextContrastFromBackground(activeImage);
-    }
-    bgElement.removeEventListener("transitionend", handleFadeComplete);
-  }
-
-  bgElement.addEventListener("transitionend", handleFadeComplete);
-}
-
-// Initial trigger
-cycleHeroBackground();
-setInterval(cycleHeroBackground, 6000);
-
-// ====== CONFIG ======
-const DIR_URL = "/Images/cardImages/"; // the folder URL
-const INTERVAL = 5000; // 5s per image
-const EXT_REGEX = /\.(png|jpe?g|webp|gif)$/i;
-
-// ====== Helpers ======
-const hero = document.querySelector(".textiles-hero-bg");
-const layers = {
-  a: getComputedStyle(hero, "::before"),
-  b: getComputedStyle(hero, "::after"),
-};
-// utilities to set pseudo-element backgrounds via CSS variables
-hero.style.setProperty("--img-a", "");
-hero.style.setProperty("--img-b", "");
-const sheet = new CSSStyleSheet();
-sheet.replaceSync(`
-  .textiles-hero-bg::before{ background-image: var(--img-a); }
-  .textiles-hero-bg::after { background-image: var(--img-b); }
-`);
-document.adoptedStyleSheets = [...document.adoptedStyleSheets, sheet];
-
-function preload(src) {
-  return new Promise((res) => {
-    const i = new Image();
-    i.onload = res;
-    i.onerror = res;
-    i.src = src;
-  });
-}
-
-// ====== Try to fetch the directory listing and parse links ======
-async function listImagesFromDirectory(dirUrl) {
-  const res = await fetch(dirUrl, { mode: "same-origin" }); // must be same-origin & directory listing enabled
-  if (!res.ok) throw new Error("Cannot fetch directory listing");
-  const html = await res.text();
-  const tmp = document.createElement("div");
-  tmp.innerHTML = html;
-
-  // Collect links that look like files
-  const hrefs = Array.from(tmp.querySelectorAll("a[href]"))
-    .map((a) => a.getAttribute("href"))
-    .filter((h) => h && !h.endsWith("/") && EXT_REGEX.test(h))
-    .map((h) => (h.startsWith("http") || h.startsWith("/") ? h : dirUrl + h));
-
-  // Deduplicate & sort (by name; no mtime available)
-  return Array.from(new Set(hrefs)).sort();
-}
-
-// ====== Fallback list if listing isn’t available ======
-const FALLBACK = [
-  "/Images/silkPattern.jpeg",
-  "/Images/Silk.jpeg",
-  "/Images/RedSilk.png",
-];
-
-// ====== Slideshow logic (crossfade using ::before/::after) ======
-async function start() {
-  let images;
-  try {
-    images = await listImagesFromDirectory(DIR_URL);
-  } catch (e) {
-    images = FALLBACK;
-  }
-  if (!images.length) return;
-
-  // Preload all (best-effort)
-  await Promise.all(images.map(preload));
-
-  let i = 0,
-    useA = true;
-
-  // seed first two images
-  hero.style.setProperty("--img-a", `url("${images[i]}")`);
-  i = (i + 1) % images.length;
-  hero.style.setProperty("--img-b", `url("${images[i]}")`);
-
-  // initial visibility: show A, hide B
-  hero.style.setProperty("--opa-a", "1");
-  hero.style.setProperty("--opa-b", "0");
-
-  // Crossfade loop
-  setInterval(() => {
-    i = (i + 1) % images.length;
-
-    if (useA) {
-      // fade from ::before (A) → ::after (B)
-      hero.style.setProperty("--img-b", `url("${images[i]}")`);
-      hero.style.setProperty("--opa-a", "0");
-      hero.style.setProperty("--opa-b", "1");
-    } else {
-      // fade from ::after (B) → ::before (A)
-      hero.style.setProperty("--img-a", `url("${images[i]}")`);
-      hero.style.setProperty("--opa-a", "1");
-      hero.style.setProperty("--opa-b", "0");
-    }
-
-    useA = !useA; // <<< important
-  }, INTERVAL);
-}
-
-// Ensure pseudo-element opacity can be driven by variables
-const fadeSheet = new CSSStyleSheet();
-fadeSheet.replaceSync(`
-  .textiles-hero-bg::before{ opacity: var(--opa-a,1); }
-  .textiles-hero-bg::after { opacity: var(--opa-b,0); }
-`);
-document.adoptedStyleSheets = [...document.adoptedStyleSheets, fadeSheet];
-
-start();
-
-function sortFilteredProducts(sortBy) {
-  filteredProducts.sort((a, b) => {
-    switch (sortBy) {
-      case "Name (A-Z)":
-        return a.name.localeCompare(b.name);
-      case "Name (Z-A)":
-        return b.name.localeCompare(a.name);
-      case "Newest First":
-        const hasNewA = a.badges.includes("new") ? 1 : 0;
-        const hasNewB = b.badges.includes("new") ? 1 : 0;
-        return hasNewB - hasNewA;
-      default:
-        return 0;
-    }
-  });
-}
-
-function displayPage(page) {
-  currentPage = page;
-  renderCurrentPage();
-
-  // Update current page display
-  const currentPageSpan = document.querySelector(".current-page");
-  if (currentPageSpan) {
-    currentPageSpan.textContent = page;
-  }
-
-  // Scroll to top of products
-  document.querySelector(".products-listing").scrollIntoView({
-    behavior: "smooth",
-    block: "start",
-  });
-}
-
-// Add new function to attach event listeners:
-function attachEnquireListeners() {
-  const enquireButtons = document.querySelectorAll(".enquire-btn");
-  enquireButtons.forEach((button) => {
-    button.addEventListener("click", function () {
-      const productCard = this.closest(".product-card");
-      const productName = productCard.querySelector("h3").textContent;
-      window.location.href = `index.html#enquiry-form?product=${encodeURIComponent(
-        productName
-      )}`;
-    });
-  });
-}
-
-// Add wool and blended fabric data to complete the database
+// Additional fabrics
 const additionalFabrics = [
   // Wool Fabrics (15 products)
   {
@@ -1778,7 +1433,7 @@ const additionalFabrics = [
   },
 ];
 
-// Specialty Fabrics (to complete the specialty category - 49 products)
+// Specialty Fabrics
 const specialtyFabrics = [
   // Ikat Weave (6 products)
   {
@@ -1932,42 +1587,311 @@ const specialtyFabrics = [
 // Combine all fabric arrays
 fabricProducts.push(...additionalFabrics, ...specialtyFabrics);
 
-// Initialize products on page load
-document.addEventListener("DOMContentLoaded", function () {
-  // Initialize filtered products
-  filteredProducts = [...fabricProducts];
+// Template function to generate product cards
+function generateProductCard(product, index) {
+  const badgesHTML = product.badges
+    .map(
+      (badge) =>
+        `<span class="badge ${badge}">${
+          badge.charAt(0).toUpperCase() + badge.slice(1)
+        }</span>`
+    )
+    .join("");
+  const specsHTML = product.specs
+    .map((spec) => `<span class="spec">${spec}</span>`)
+    .join("");
 
-  // Render first page only
+  return `
+    <div class="product-card" data-category="${
+      product.category
+    }" data-name="${product.name.toLowerCase()}">
+      <div class="product-image">
+        <span class="coming-soon-badge">Coming Soon</span>
+        <div class="product-badges">
+          ${badgesHTML}
+        </div>
+      </div>
+      <div class="product-details">
+        <h3>${product.name}</h3>
+        <p class="product-description">${product.description}</p>
+        <div class="product-specs">
+          ${specsHTML}
+        </div>
+        <div class="product-footer">
+          <span class="availability">${product.availability}</span>
+          <button class="enquire-btn">Enquire Now</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+let filteredProducts = [...fabricProducts];
+let currentPage = 1;
+const itemsPerPage = 12;
+
+//Render pages
+function renderCurrentPage() {
+  const productsGrid = document.querySelector(".products-grid");
+  if (!productsGrid) return;
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, filteredProducts.length);
+  const pageProducts = filteredProducts.slice(startIndex, endIndex);
+
+  const productsHTML = pageProducts
+    .map((product, index) => generateProductCard(product, startIndex + index))
+    .join("");
+
+  productsGrid.innerHTML = productsHTML;
+
+  // Re-attach event listeners for new products
+  attachEnquireListeners();
+}
+
+// Filter function
+function filterProductsByCategory(category = null) {
+  const categorySelect = document.querySelector(".filter-select");
+  const sortSelect = document.querySelectorAll(".filter-select")[1];
+
+  const selectedCategory =
+    category || (categorySelect ? categorySelect.value : "All Categories");
+  const sortBy = sortSelect ? sortSelect.value : "Featured";
+
+  // Filter products in data array, not DOM
+  if (selectedCategory === "All Categories") {
+    filteredProducts = [...fabricProducts];
+  } else {
+    filteredProducts = fabricProducts.filter((product) => {
+      const matchesCategory =
+        product.category === selectedCategory ||
+        product.name.toLowerCase().includes(selectedCategory.toLowerCase());
+      return matchesCategory;
+    });
+  }
+
+  // Sort filtered products
+  if (sortBy !== "Featured") {
+    sortFilteredProducts(sortBy);
+  }
+
+  // Reset to page 1 and render
+  currentPage = 1;
   renderCurrentPage();
 
-  // Initialize the menu categories (all closed by default)
-  document.querySelectorAll(".fabric-list").forEach((list) => {
-    list.classList.remove("active");
-  });
+  // Update UI
+  updateResultsCount(filteredProducts.length);
+  updatePagination(Math.ceil(filteredProducts.length / itemsPerPage));
+  updatePaginationButtons();
+}
 
-  // Enhanced filter functionality
-  const filterSelects = document.querySelectorAll(".filter-select");
-  filterSelects.forEach((select) => {
-    select.addEventListener("change", function () {
-      filterProductsByCategory();
-    });
-  });
-
-  // Initialize pagination with total count
-  updateResultsCount(fabricProducts.length);
-  updatePagination(Math.ceil(fabricProducts.length / itemsPerPage));
-
-  // ESC key to close menu
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") {
-      closeSideMenu();
+function sortFilteredProducts(sortBy) {
+  filteredProducts.sort((a, b) => {
+    switch (sortBy) {
+      case "Name (A-Z)":
+        return a.name.localeCompare(b.name);
+      case "Name (Z-A)":
+        return b.name.localeCompare(a.name);
+      case "Newest First":
+        const hasNewA = a.badges.includes("new") ? 1 : 0;
+        const hasNewB = b.badges.includes("new") ? 1 : 0;
+        return hasNewB - hasNewA;
+      default:
+        return 0;
     }
   });
-});
+}
 
-// Add these missing functions at the end of your file:
+// Text contrast function (KEEP THIS - IT'S WORKING)
+function updateTextContrastFromBackground(bgUrl) {
+  const img = new Image();
+  img.crossOrigin = "anonymous";
+  img.src = bgUrl;
 
-// Side Menu Functionality
+  img.onload = function () {
+    try {
+      const canvas = document.createElement("canvas");
+      canvas.width = 20;
+      canvas.height = 20;
+      const ctx = canvas.getContext("2d");
+
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      const imageData = ctx.getImageData(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      ).data;
+
+      let totalLuminance = 0;
+      for (let i = 0; i < imageData.length; i += 4) {
+        const [r, g, b] = [imageData[i], imageData[i + 1], imageData[i + 2]];
+        const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
+        totalLuminance += luminance;
+      }
+
+      const avgLuminance = totalLuminance / (canvas.width * canvas.height);
+      const textContainer = document.querySelector(".hero-text-container");
+
+      if (textContainer) {
+        if (avgLuminance < 128) {
+          textContainer.style.color = "white";
+          textContainer.style.textShadow = "2px 2px 4px rgba(0,0,0,0.8)";
+        } else {
+          textContainer.style.color = "#1a1a1a";
+          textContainer.style.textShadow = "2px 2px 4px rgba(255,255,255,0.8)";
+        }
+      }
+    } catch (error) {
+      console.error("Error analyzing image:", error);
+    }
+    const textContainer = document.querySelector(".hero-text-container");
+    if (textContainer) {
+      if (avgLuminance < 128) {
+        textContainer.style.color = "white";
+      } else {
+        textContainer.style.color = "#1a1a1a";
+      }
+    }
+  };
+
+  img.onerror = function () {
+    const textContainer = document.querySelector(".hero-text-container");
+    if (textContainer) {
+      textContainer.style.color = "white";
+      textContainer.style.textShadow = "2px 2px 4px rgba(0,0,0,0.8)";
+    }
+  };
+}
+
+// ====== CONFIG ======
+const INTERVAL = 5000;
+
+// ====== Helpers ======
+const hero = document.querySelector(".textiles-hero-bg");
+
+// Set up CSS variables for hero background
+if (hero) {
+  hero.style.setProperty("--img-a", "");
+  hero.style.setProperty("--img-b", "");
+}
+
+const sheet = new CSSStyleSheet();
+sheet.replaceSync(`
+  .textiles-hero-bg::before{ background-image: var(--img-a); }
+  .textiles-hero-bg::after { background-image: var(--img-b); }
+`);
+document.adoptedStyleSheets = [...document.adoptedStyleSheets, sheet];
+
+// Opacity control
+const fadeSheet = new CSSStyleSheet();
+fadeSheet.replaceSync(`
+  .textiles-hero-bg::before{ opacity: var(--opa-a,1); }
+  .textiles-hero-bg::after { opacity: var(--opa-b,0); }
+`);
+document.adoptedStyleSheets = [...document.adoptedStyleSheets, fadeSheet];
+
+function preload(src) {
+  return new Promise((res) => {
+    const i = new Image();
+    i.onload = res;
+    i.onerror = res;
+    i.src = src;
+  });
+}
+
+// Load images from JSON
+async function listImagesFromManifest() {
+  try {
+    const res = await fetch("/Images/cardImages/images.json");
+    if (!res.ok) throw new Error("Cannot fetch images.json");
+    const data = await res.json();
+    return data.fabrics.map((f) => `/Images/cardImages/${f}`);
+  } catch (err) {
+    console.error("Error loading manifest:", err);
+    return [
+      "/Images/silkPattern.jpeg",
+      "/Images/Silk.jpeg",
+      "/Images/RedSilk.png",
+    ];
+  }
+}
+
+async function initHeroSlideshow() {
+  if (!hero) return;
+
+  const images = await listImagesFromManifest();
+  if (!images.length) return;
+
+  let i = 0;
+  let showingA = true;
+
+  // Preload first two images
+  await preload(images[0]);
+  if (images[1]) await preload(images[1]);
+
+  // Set initial image
+  hero.style.setProperty("--img-a", `url(${images[0]})`);
+  hero.style.setProperty("--opa-a", "1");
+  hero.style.setProperty("--opa-b", "0");
+
+  // Set initial text contrast
+  setTimeout(() => {
+    updateTextContrastFromBackground(images[0]);
+  }, 100);
+
+  // Start slideshow with proper cycling
+  setInterval(async () => {
+    const nextIndex = (i + 1) % images.length;
+    const nextImg = images[nextIndex];
+
+    if (showingA) {
+      hero.style.setProperty("--img-b", `url(${nextImg})`);
+      hero.style.setProperty("--opa-a", "0");
+      hero.style.setProperty("--opa-b", "1");
+    } else {
+      hero.style.setProperty("--img-a", `url(${nextImg})`);
+      hero.style.setProperty("--opa-a", "1");
+      hero.style.setProperty("--opa-b", "0");
+    }
+
+    // Update text contrast
+    setTimeout(() => updateTextContrastFromBackground(nextImg), 1000);
+
+    i = nextIndex;
+    showingA = !showingA;
+  }, 5000); // 5 second intervals
+}
+
+function displayPage(page) {
+  currentPage = page;
+  renderCurrentPage();
+
+  const currentPageSpan = document.querySelector(".current-page");
+  if (currentPageSpan) {
+    currentPageSpan.textContent = page;
+  }
+
+  document.querySelector(".products-listing").scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+}
+
+function attachEnquireListeners() {
+  const enquireButtons = document.querySelectorAll(".enquire-btn");
+  enquireButtons.forEach((button) => {
+    button.addEventListener("click", function () {
+      const productCard = this.closest(".product-card");
+      const productName = productCard.querySelector("h3").textContent;
+      window.location.href = `index.html#enquiry-form?product=${encodeURIComponent(
+        productName
+      )}`;
+    });
+  });
+}
+
+// Side Menu Functions
 function toggleSideMenu() {
   const menuToggle = document.querySelector(".menu-toggle");
   const menuOverlay = document.querySelector(".menu-overlay");
@@ -1975,11 +1899,9 @@ function toggleSideMenu() {
 
   if (!menuToggle || !menuOverlay || !sideMenu) return;
 
-  // Get hamburger position
   const rect = menuToggle.getBoundingClientRect();
   const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-  // Position dropdown below hamburger
   sideMenu.style.position = "absolute";
   sideMenu.style.top = rect.bottom + scrollTop + 10 + "px";
   sideMenu.style.left = rect.left + "px";
@@ -1994,48 +1916,35 @@ function closeSideMenu() {
   const menuOverlay = document.querySelector(".menu-overlay");
   const sideMenu = document.querySelector(".side-menu");
 
-  // Add closing class for left-slide animation
   sideMenu.classList.add("closing");
-
-  // Remove active classes
   menuToggle.classList.remove("active");
   menuOverlay.classList.remove("active");
 
-  // Remove closing class after animation completes
   setTimeout(() => {
     sideMenu.classList.remove("active", "closing");
   }, 250);
 }
 
-// Category Toggle Functionality
 function toggleCategory(header) {
   const fabricList = header.nextElementSibling;
   const isActive = header.classList.contains("active");
 
-  // Close all other categories
   document.querySelectorAll(".category-header").forEach((h) => {
     h.classList.remove("active");
     h.nextElementSibling.classList.remove("active");
   });
 
-  // Toggle current category
   if (!isActive) {
     header.classList.add("active");
     fabricList.classList.add("active");
   }
 }
 
-// Filter by specific fabric
 function filterByFabric(fabricName) {
-  console.log("Filtering by fabric:", fabricName);
-
-  // Close the side menu
   closeSideMenu();
 
-  // Update the filter dropdown to show the selected fabric
   const categorySelect = document.querySelector(".filter-select");
   if (categorySelect) {
-    // Add the fabric to the dropdown if it doesn't exist
     const existingOption = Array.from(categorySelect.options).find(
       (option) => option.value === fabricName
     );
@@ -2046,10 +1955,8 @@ function filterByFabric(fabricName) {
     categorySelect.value = fabricName;
   }
 
-  // Filter the products
   filterProductsByCategory(fabricName);
 
-  // Scroll to products section
   document.querySelector(".products-listing").scrollIntoView({
     behavior: "smooth",
     block: "start",
@@ -2057,9 +1964,6 @@ function filterByFabric(fabricName) {
 }
 
 // Pagination functions
-let currentPage = 1;
-const itemsPerPage = 12;
-
 function goToPage(page) {
   currentPage = page;
   displayPage(page);
@@ -2086,13 +1990,11 @@ function updateResultsCount(count) {
 }
 
 function updatePagination(totalPages) {
-  // Remove existing pagination
   const existingPagination = document.querySelector(".pagination");
   if (existingPagination) {
     existingPagination.remove();
   }
 
-  // Create new pagination if needed
   if (totalPages > 1) {
     createPagination(totalPages);
   }
@@ -2149,7 +2051,43 @@ function updatePaginationButtons() {
   });
 }
 
-// Add smooth scroll behavior for anchor links
+// Initialize everything when DOM loads
+document.addEventListener("DOMContentLoaded", function () {
+  // Initialize filtered products
+  filteredProducts = [...fabricProducts];
+
+  // Render first page
+  renderCurrentPage();
+
+  // Initialize menu categories (all closed)
+  document.querySelectorAll(".fabric-list").forEach((list) => {
+    list.classList.remove("active");
+  });
+
+  // Filter functionality
+  const filterSelects = document.querySelectorAll(".filter-select");
+  filterSelects.forEach((select) => {
+    select.addEventListener("change", function () {
+      filterProductsByCategory();
+    });
+  });
+
+  // Initialize pagination
+  updateResultsCount(fabricProducts.length);
+  updatePagination(Math.ceil(fabricProducts.length / itemsPerPage));
+
+  // ESC key to close menu
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      closeSideMenu();
+    }
+  });
+
+  // Start hero slideshow
+  initHeroSlideshow();
+});
+
+// Smooth scroll for anchor links
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
   anchor.addEventListener("click", function (e) {
     e.preventDefault();
