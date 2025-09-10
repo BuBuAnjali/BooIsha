@@ -6,9 +6,17 @@
   "type": "module",
   "scripts": {
     "prebuild": "node scripts/build-media-manifest.mjs",
-    "build": "echo \"Build complete\""
-  },
+     "build": "node scripts/build-manifest.mjs && echo \"Build complete\""
+},
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BuBuAnjali/BooShiv.git"
+  },
+  "bugs": {
+    "url": "https://github.com/BuBuAnjali/BooShiv/issues"
+  },
+  "homepage": "https://github.com/BuBuAnjali/BooShiv#readme"
 }
