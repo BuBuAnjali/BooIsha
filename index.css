@@ -1433,6 +1433,15 @@ body.dark-mode .view-products-btn:hover {
     transform: translate(-50%, -50%); /* Center the image */
 }
 
+@supports (-webkit-appearance: none) and (not (appearance: none)) {
+    .chat-avatar img {
+        width: 38px !important;
+        height: 38px !important;
+        max-width: 38px;
+        max-height: 38px;
+    }
+}
+
 .chat-toggle-content {
     flex: 1;
     display: flex;
