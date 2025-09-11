@@ -507,52 +507,18 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // =================== CHAT WIDGET JAVASCRIPT ===================
-// Copy this entire section and paste at the end of index.js
-
 let chatOpen = false;
-let messageCount = 0;
-
-// Predefined responses for common queries
-const botResponses = {
-  "product inquiry":
-    "I'd be happy to help with product information! We specialize in premium silk, cotton, linen, and specialty fabrics. What specific products are you interested in?",
-  "bulk orders":
-    "We offer excellent bulk pricing for businesses! Minimum order quantities vary by product. Can you tell me which fabrics you're interested in and approximate quantities?",
-  pricing:
-    "Our pricing varies by product type and quantity. For detailed quotes, please contact us at info@booshiv.com or call 0478 257 409. We offer competitive wholesale rates!",
-  shipping:
-    "We ship Australia-wide from our Melbourne warehouse. Delivery times: Metro areas 2-3 days, Regional 3-5 days. Free shipping on orders over $500!",
-  hello:
-    "Hello! Welcome to BooIsha. How can I assist you with our premium textiles today?",
-  hi: "Hi there! I'm here to help with any questions about our fabrics and spices. What would you like to know?",
-  help: "I can help you with: Product information, Bulk orders, Pricing, or connect you with our team via WhatsApp. What interests you?",
-  contact:
-    "You can reach us at: 📧 info@booshiv.com | 📞 0478 257 409 | WhatsApp: Click the WhatsApp button above. We're available Monday-Friday 9AM-6PM AEST.",
-  fabrics:
-    "We offer an extensive range including: Silk (Mulberry, Tussar, Banarasi), Cotton (Khadi, Organic, Handloom), Linen, Wool, and Specialty weaves. Visit our Fabrics page for the full catalog!",
-  whatsapp:
-    "Great choice! Click the WhatsApp button above or the quick action below to start chatting with us on WhatsApp for faster responses.",
-  default:
-    "Thank you for your message! For detailed assistance, contact us at info@booshiv.com, call 0478 257 409, or chat with us on WhatsApp. Our team will get back to you within 24 hours.",
-};
+let welcomeMode = true;
 
 // WhatsApp integration
 function openWhatsApp() {
-  const phoneNumber = "61478257409"; // Your phone number in international format (without + sign)
+  const phoneNumber = "61478257409";
   const message =
     "Hello! I'm interested in BooIsha's premium textiles and fabrics. Can you help me with more information?";
   const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
     message
   )}`;
-
-  // Open WhatsApp in a new tab
   window.open(whatsappURL, "_blank");
-
-  // Add a message to the chat about WhatsApp
-  addMessage(
-    "Opening WhatsApp chat... You can also continue our conversation there for faster responses!",
-    "bot"
-  );
 }
 
 function toggleChat(event) {
@@ -570,15 +536,27 @@ function toggleChat(event) {
     chatWindow.classList.add("open");
     chatToggle.classList.add("active");
     badge.classList.remove("show");
-
-    // Focus on input when chat opens
-    setTimeout(() => {
-      document.getElementById("chat-input").focus();
-    }, 300);
   } else {
     chatWindow.classList.remove("open");
     chatToggle.classList.remove("active");
+    // Reset to welcome mode when closed
+    welcomeMode = true;
+    chatWindow.classList.remove("chat-mode");
+    chatWindow.classList.add("welcome-mode");
   }
+}
+
+function startConversation() {
+  const chatWindow = document.getElementById("chat-window");
+  welcomeMode = false;
+
+  chatWindow.classList.remove("welcome-mode");
+  chatWindow.classList.add("chat-mode");
+
+  // Focus on input
+  setTimeout(() => {
+    document.getElementById("chat-input").focus();
+  }, 300);
 }
 
 function handleKeyPress(event) {
@@ -593,19 +571,16 @@ function sendMessage() {
 
   if (message === "") return;
 
-  // Add user message
   addMessage(message, "user");
   input.value = "";
 
-  // Show typing indicator
-  showTypingIndicator();
-
-  // Simulate bot response delay
+  // Simple bot response
   setTimeout(() => {
-    hideTypingIndicator();
-    const response = getBotResponse(message);
-    addMessage(response, "bot");
-  }, 1000 + Math.random() * 1000);
+    addMessage(
+      "Thank you for your message! Our team will get back to you shortly. You can also contact us directly via WhatsApp for faster response.",
+      "bot"
+    );
+  }, 1000);
 }
 
 function sendQuickMessage(message) {
@@ -619,87 +594,41 @@ function addMessage(content, sender) {
   const messageDiv = document.createElement("div");
   messageDiv.className = `message ${sender}`;
 
-  const time = new Date().toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-
   messageDiv.innerHTML = `
-        <div class="message-content">
-            ${content}
-            <div class="message-time">${time}</div>
-        </div>
-    `;
+                <div class="message-content">
+                    ${content}
+                </div>
+            `;
 
   messagesContainer.appendChild(messageDiv);
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
-  messageCount++;
-
-  // Show notification if chat is closed
-  if (!chatOpen && sender === "bot") {
-    showNotification();
-  }
 }
 
-function getBotResponse(message) {
-  const lowerMessage = message.toLowerCase();
-
-  // Check for keyword matches
-  for (const [key, response] of Object.entries(botResponses)) {
-    if (lowerMessage.includes(key)) {
-      return response;
-    }
-  }
-
-  return botResponses.default;
-}
-
-function showTypingIndicator() {
-  const messagesContainer = document.getElementById("chat-messages");
-  const typingDiv = document.createElement("div");
-  typingDiv.className = "message bot";
-  typingDiv.id = "typing-indicator";
-  typingDiv.innerHTML = `
-        <div class="typing-indicator show">
-            <div class="typing-dots">
-                <div class="typing-dot"></div>
-                <div class="typing-dot"></div>
-                <div class="typing-dot"></div>
-            </div>
-        </div>
-    `;
-
-  messagesContainer.appendChild(typingDiv);
-  messagesContainer.scrollTop = messagesContainer.scrollHeight;
-}
-
-function hideTypingIndicator() {
-  const typingIndicator = document.getElementById("typing-indicator");
-  if (typingIndicator) {
-    typingIndicator.remove();
-  }
-}
-
-function showNotification() {
-  const badge = document.getElementById("notification-badge");
-  badge.textContent = messageCount;
-  badge.classList.add("show");
-}
-
-// Initialize chat with welcome message after a delay
+// Show notification after 3 seconds
 setTimeout(() => {
   if (!chatOpen) {
-    showNotification();
+    document.getElementById("notification-badge").classList.add("show");
   }
 }, 3000);
 
-// Auto-hide notification after 5 seconds
-setTimeout(() => {
-  const badge = document.getElementById("notification-badge");
-  if (!chatOpen) {
-    badge.classList.remove("show");
-  }
-}, 8000);
-
 // =================== END CHAT WIDGET JAVASCRIPT ===================
+document.addEventListener("DOMContentLoaded", () => {
+  const header = document.querySelector(".contact-bar"); // sticky top bar
+  const contentRows = document.querySelectorAll(".product-card"); // or any scrollable rows/items
+
+  const applyBlurOnScroll = () => {
+    const headerBottom = header.getBoundingClientRect().bottom;
+
+    contentRows.forEach((row) => {
+      const rowTop = row.getBoundingClientRect().top;
+      if (rowTop < headerBottom) {
+        row.classList.add("blurred");
+      } else {
+        row.classList.remove("blurred");
+      }
+    });
+  };
+
+  window.addEventListener("scroll", applyBlurOnScroll);
+  applyBlurOnScroll(); // run on initial load
+});

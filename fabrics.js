@@ -1983,9 +1983,28 @@ function changePage(direction) {
 }
 
 function updateResultsCount(count) {
-  const resultsCount = document.querySelector(".results-count strong");
-  if (resultsCount) {
-    resultsCount.textContent = count;
+  const unifiedDisplay = document.getElementById("unified-results-display");
+
+  if (unifiedDisplay) {
+    const searchInput = document.getElementById("fabric-search-input");
+    const hasSearch = searchInput && searchInput.value.trim();
+
+    // Calculate items shown on current page
+    const startItem = (currentPage - 1) * itemsPerPage + 1;
+    const endItem = Math.min(currentPage * itemsPerPage, count);
+    const itemsOnPage = Math.min(
+      itemsPerPage,
+      count - (currentPage - 1) * itemsPerPage
+    );
+
+    if (hasSearch || Object.keys(activeSearchFilters || {}).length > 0) {
+      // When search/filter is active, show current page items vs total filtered results
+      unifiedDisplay.textContent = `Showing ${itemsOnPage} of ${count} products`;
+    } else {
+      // When no search/filter, show current page items vs total available products
+      const totalProducts = fabricProducts.length;
+      unifiedDisplay.textContent = `Showing ${itemsOnPage} of ${totalProducts} products`;
+    }
   }
 }
 
@@ -2099,4 +2118,395 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
       });
     }
   });
+});
+
+// Search
+
+let searchResults = [...fabricProducts];
+let activeSearchFilters = {};
+
+// Initialize search suggestions based on your product data
+function initializeSearchSuggestions() {
+  const suggestions = new Set();
+
+  fabricProducts.forEach((product) => {
+    // Add product name words
+    product.name
+      .toLowerCase()
+      .split(" ")
+      .forEach((word) => {
+        if (word.length > 2) suggestions.add(word);
+      });
+
+    // Add category
+    suggestions.add(product.category.toLowerCase());
+
+    // Add material types from specs
+    product.specs.forEach((spec) => {
+      if (spec.includes("%")) {
+        const materials = spec
+          .split(/[%\s]+/)
+          .filter((part) => isNaN(part) && part.length > 2);
+        materials.forEach((material) =>
+          suggestions.add(material.toLowerCase())
+        );
+      }
+    });
+
+    // Add badges
+    product.badges.forEach((badge) => suggestions.add(badge.toLowerCase()));
+  });
+
+  return Array.from(suggestions).map((term) => ({
+    text: term,
+    category: getCategoryForTerm(term),
+    icon: getIconForTerm(term),
+  }));
+}
+
+function getCategoryForTerm(term) {
+  const categories = {
+    silk: "Material",
+    cotton: "Material",
+    linen: "Material",
+    hemp: "Material",
+    wool: "Material",
+    bamboo: "Material",
+    jute: "Material",
+    premium: "Quality",
+    eco: "Quality",
+    new: "Quality",
+    organic: "Quality",
+    handloom: "Type",
+    handwoven: "Type",
+    block: "Type",
+    print: "Type",
+    banarasi: "Traditional",
+    kanjivaram: "Traditional",
+    chanderi: "Traditional",
+    tussar: "Specific",
+    mulberry: "Specific",
+    pashmina: "Specific",
+  };
+  return categories[term] || "General";
+}
+
+function getIconForTerm(term) {
+  const icons = {
+    silk: "🧵",
+    cotton: "🌱",
+    linen: "🌾",
+    hemp: "🌿",
+    wool: "🐑",
+    bamboo: "🎋",
+    jute: "🌾",
+    premium: "⭐",
+    eco: "♻️",
+    new: "✨",
+    organic: "🌿",
+    handloom: "🧶",
+    handwoven: "👐",
+    block: "🎨",
+    print: "🖨️",
+  };
+  return icons[term] || "📦";
+}
+
+// Enhanced search functionality
+function setupSearchFunctionality() {
+  const searchInput = document.querySelector("#fabric-search-input");
+  const suggestionsContainer = document.querySelector("#search-suggestions");
+
+  if (!searchInput) {
+    console.warn("Search input not found");
+    return;
+  }
+
+  const suggestions = initializeSearchSuggestions();
+
+  // Search input events
+  searchInput.addEventListener("input", (e) =>
+    handleSearchInput(e, suggestions)
+  );
+  searchInput.addEventListener("focus", () =>
+    showSearchSuggestions(suggestions)
+  );
+  searchInput.addEventListener("blur", () => hideSearchSuggestions());
+
+  // Search on Enter key
+  searchInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      performFabricSearch();
+    }
+  });
+}
+
+function handleSearchInput(e, suggestions) {
+  const query = e.target.value.toLowerCase().trim();
+
+  if (query.length > 0) {
+    showFilteredSuggestions(query, suggestions);
+    // Perform live search as user types
+    if (query.length > 2) {
+      performFabricSearch(query);
+    }
+  } else {
+    hideSearchSuggestions();
+    resetToAllProducts();
+  }
+}
+
+function showFilteredSuggestions(query, suggestions) {
+  const suggestionsContainer = document.querySelector("#search-suggestions");
+  if (!suggestionsContainer) return;
+
+  const filtered = suggestions
+    .filter((suggestion) => suggestion.text.toLowerCase().includes(query))
+    .slice(0, 8); // Limit to 8 suggestions
+
+  if (filtered.length > 0) {
+    suggestionsContainer.innerHTML = filtered
+      .map(
+        (suggestion) => `
+      <div class="search-suggestion-item" onclick="selectSearchSuggestion('${suggestion.text}')">
+        <span class="suggestion-icon">${suggestion.icon}</span>
+        <span class="suggestion-text">${suggestion.text}</span>
+        <span class="suggestion-category">${suggestion.category}</span>
+      </div>
+    `
+      )
+      .join("");
+    suggestionsContainer.style.display = "block";
+  } else {
+    hideSearchSuggestions();
+  }
+}
+
+function showSearchSuggestions(suggestions) {
+  const suggestionsContainer = document.querySelector("#search-suggestions");
+  const searchInput = document.querySelector("#fabric-search-input");
+
+  if (!suggestionsContainer || !searchInput) return;
+
+  const query = searchInput.value.toLowerCase().trim();
+  if (query.length > 0) {
+    showFilteredSuggestions(query, suggestions);
+  }
+}
+
+function hideSearchSuggestions() {
+  setTimeout(() => {
+    const suggestionsContainer = document.querySelector("#search-suggestions");
+    if (suggestionsContainer) {
+      suggestionsContainer.style.display = "none";
+    }
+  }, 200);
+}
+
+function selectSearchSuggestion(text) {
+  const searchInput = document.querySelector("#fabric-search-input");
+  if (searchInput) {
+    searchInput.value = text;
+    hideSearchSuggestions();
+    performFabricSearch(text);
+  }
+}
+
+// Main search function
+function performFabricSearch(query = null) {
+  const searchInput = document.querySelector("#fabric-search-input");
+  query = query || (searchInput ? searchInput.value.toLowerCase().trim() : "");
+
+  if (!query) {
+    resetToAllProducts();
+    return;
+  }
+
+  // Enhanced search algorithm
+  searchResults = fabricProducts.filter((product) => {
+    const searchableText = [
+      product.name,
+      product.description,
+      product.category,
+      ...product.specs,
+      ...product.badges,
+      product.availability,
+    ]
+      .join(" ")
+      .toLowerCase();
+
+    // Direct match
+    if (searchableText.includes(query)) {
+      return true;
+    }
+
+    // Word-by-word search
+    const queryWords = query.split(" ").filter((word) => word.length > 2);
+    if (queryWords.length > 1) {
+      return queryWords.every((word) => searchableText.includes(word));
+    }
+
+    return false;
+  });
+
+  // Apply current filters to search results
+  applySearchFilters();
+  updateSearchResultsDisplay();
+  updateSearchInfo(query, searchResults.length);
+}
+
+function applySearchFilters() {
+  let filtered = [...searchResults];
+
+  // Category filter
+  const categorySelect = document.querySelector(".filter-select");
+  if (
+    categorySelect &&
+    categorySelect.value &&
+    categorySelect.value !== "All Categories"
+  ) {
+    filtered = filtered.filter(
+      (product) => product.category === categorySelect.value
+    );
+  }
+
+  // Apply additional filters from the enhanced filter system
+  Object.keys(activeSearchFilters).forEach((filterKey) => {
+    const filterValue = activeSearchFilters[filterKey];
+
+    switch (filterKey) {
+      case "material":
+        filtered = filtered.filter((product) =>
+          product.specs.some((spec) =>
+            spec.toLowerCase().includes(filterValue.toLowerCase())
+          )
+        );
+        break;
+      case "quality":
+        filtered = filtered.filter((product) =>
+          product.badges.includes(filterValue)
+        );
+        break;
+      case "availability":
+        filtered = filtered.filter(
+          (product) => product.availability === filterValue
+        );
+        break;
+    }
+  });
+
+  filteredProducts = filtered;
+}
+
+function updateSearchResultsDisplay() {
+  currentPage = 1;
+  renderCurrentPage();
+  updateResultsCount(filteredProducts.length);
+  updatePagination(Math.ceil(filteredProducts.length / itemsPerPage));
+}
+
+function updateSearchInfo(query, count) {
+  // Update search results info
+  const searchInfoElements = document.querySelectorAll(".search-results-info");
+  searchInfoElements.forEach((element) => {
+    element.innerHTML = query
+      ? `Found <strong>${count}</strong> results for "${query}"`
+      : `Showing <strong>${count}</strong> products`;
+  });
+}
+
+function resetToAllProducts() {
+  searchResults = [...fabricProducts];
+  filteredProducts = [...fabricProducts];
+  updateSearchResultsDisplay();
+  updateSearchInfo("", fabricProducts.length);
+}
+
+// Advanced filter functions
+function addSearchFilter(filterType, value) {
+  activeSearchFilters[filterType] = value;
+  applySearchFilters();
+  updateSearchResultsDisplay();
+  updateActiveSearchFilters();
+}
+
+function removeSearchFilter(filterType) {
+  delete activeSearchFilters[filterType];
+  applySearchFilters();
+  updateSearchResultsDisplay();
+  updateActiveSearchFilters();
+}
+
+function clearAllSearchFilters() {
+  activeSearchFilters = {};
+
+  // Reset filter dropdowns
+  const filterSelects = document.querySelectorAll(".search-filter-select");
+  filterSelects.forEach((select) => {
+    select.value = "";
+  });
+
+  applySearchFilters();
+  updateSearchResultsDisplay();
+  updateActiveSearchFilters();
+}
+
+function updateActiveSearchFilters() {
+  const activeFiltersContainer = document.querySelector(
+    "#active-search-filters"
+  );
+  if (!activeFiltersContainer) return;
+
+  const filterEntries = Object.entries(activeSearchFilters);
+
+  if (filterEntries.length === 0) {
+    activeFiltersContainer.innerHTML = "";
+    return;
+  }
+
+  activeFiltersContainer.innerHTML = filterEntries
+    .map(
+      ([key, value]) => `
+    <div class="search-filter-tag">
+      ${key}: ${value}
+      <span class="filter-remove" onclick="removeSearchFilter('${key}')">&times;</span>
+    </div>
+  `
+    )
+    .join("");
+}
+
+// Search sorting
+function sortSearchResults(sortBy) {
+  switch (sortBy) {
+    case "name-asc":
+      filteredProducts.sort((a, b) => a.name.localeCompare(b.name));
+      break;
+    case "name-desc":
+      filteredProducts.sort((a, b) => b.name.localeCompare(a.name));
+      break;
+    case "newest":
+      filteredProducts.sort((a, b) => {
+        const aNew = a.badges.includes("new") ? 1 : 0;
+        const bNew = b.badges.includes("new") ? 1 : 0;
+        return bNew - aNew;
+      });
+      break;
+    case "category":
+      filteredProducts.sort((a, b) => a.category.localeCompare(b.category));
+      break;
+    default: // relevance
+      // Keep search relevance order
+      break;
+  }
+
+  updateSearchResultsDisplay();
+}
+
+// Initialize search when DOM is ready
+document.addEventListener("DOMContentLoaded", function () {
+  // Setup search functionality after a small delay to ensure other elements are loaded
+  setTimeout(() => {
+    setupSearchFunctionality();
+  }, 100);
 });
