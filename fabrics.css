@@ -341,6 +341,68 @@ background-image: var(--bg-a);
 .hero-text-container {
   transition: color 0.8s ease;
 }
+
+/* Marquee Section */
+.marquee-section {
+  background: linear-gradient(135deg, #0582d6 0%, #ead445 100%);
+  padding: 5px 0;
+  overflow: hidden;
+  position: relative;
+  border-top: 2px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.marquee-content {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  animation: marqueeScroll 25s linear infinite;
+  color: rgb(7, 7, 7);
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.marquee-item {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 100px;
+  min-width: max-content;
+}
+
+.marquee-icon {
+  margin-right: 10px;
+  font-size: 1.3rem;
+}
+
+@keyframes marqueeScroll {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+/* Dark theme support */
+body.dark-theme .marquee-section {
+  background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .marquee-content {
+    font-size: 0.95rem;
+    animation-duration: 20s;
+  }
+  
+  .marquee-item {
+    margin-right: 80px;
+  }
+}
+
+
 /* Filter Section */
 .filter-section {
   background: #f8f9fa;
