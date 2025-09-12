@@ -38,6 +38,65 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// Mobile dropdown toggle for nav (≤800px)
+// Mobile-only dropdown (≤800px): tap to toggle; desktop remains hover-based
+function setupMobileOnlyDropdown() {
+  const dropdown = document.querySelector(".nav-dropdown");
+  const trigger = dropdown ? dropdown.querySelector(":scope > a") : null;
+  if (!dropdown || !trigger) return;
+
+  const mq = window.matchMedia("(max-width: 800px)");
+  let attached = false;
+
+  const onClick = (e) => {
+    // Intercept only on mobile widths
+    if (!mq.matches) return;
+    e.preventDefault();
+    const isOpen = dropdown.classList.toggle("open");
+    trigger.setAttribute("aria-expanded", String(isOpen));
+  };
+
+  const apply = () => {
+    if (mq.matches && !attached) {
+      trigger.addEventListener("click", onClick);
+      trigger.setAttribute("aria-haspopup", "true");
+      trigger.setAttribute("aria-expanded", "false");
+      attached = true;
+    } else if (!mq.matches && attached) {
+      trigger.removeEventListener("click", onClick);
+      dropdown.classList.remove("open");
+      trigger.removeAttribute("aria-expanded");
+      trigger.removeAttribute("aria-haspopup");
+      attached = false;
+    }
+  };
+
+  mq.addEventListener("change", apply);
+  apply();
+
+  // Close on outside click on mobile
+  document.addEventListener("click", (e) => {
+    if (!mq.matches) return;
+    if (!dropdown.contains(e.target)) {
+      dropdown.classList.remove("open");
+      trigger.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  // Close on Escape on mobile
+  document.addEventListener("keydown", (e) => {
+    if (!mq.matches) return;
+    if (e.key === "Escape") {
+      dropdown.classList.remove("open");
+      trigger.setAttribute("aria-expanded", "false");
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  setupMobileOnlyDropdown();
+});
+
 // index.js
 
 // =========================
@@ -78,13 +137,14 @@ async function discoverDroppingImages() {
   return [];
 }
 
+// Updated initializeDroppingCards function for single card
 async function initializeDroppingCards() {
-  console.log("Initializing dropping cards...");
+  console.log("Initializing single flowing card...");
 
-  const cards = document.querySelectorAll(".image-placeholder");
-  console.log("Found cards:", cards.length);
+  const card = document.querySelector(".image-placeholder");
+  console.log("Found card:", card ? 1 : 0);
 
-  if (!cards.length) return;
+  if (!card) return;
 
   const images = await discoverDroppingImages();
   console.log("Found images:", images);
@@ -94,63 +154,58 @@ async function initializeDroppingCards() {
     return;
   }
 
-  // Track current images for each card
-  const cardImages = new Array(cards.length).fill(null);
+  let currentImageIndex = 0;
 
-  function getUniqueImage(excludeIndices = []) {
-    const available = images.filter(
-      (_, index) => !excludeIndices.includes(index)
-    );
-    if (available.length === 0)
-      return images[Math.floor(Math.random() * images.length)];
-    return available[Math.floor(Math.random() * available.length)];
-  }
-
-  function updateCard(cardIndex) {
-    const card = cards[cardIndex];
-
-    // Get currently used image indices (excluding this card)
-    const usedIndices = cardImages
-      .map((img, idx) => (idx !== cardIndex ? images.indexOf(img) : -1))
-      .filter((idx) => idx !== -1);
-
-    // Get a unique image
-    const newImage = getUniqueImage(usedIndices);
-    cardImages[cardIndex] = newImage;
+  function updateCard() {
+    // Get the current image
+    const newImage = images[currentImageIndex % images.length];
+    currentImageIndex++;
 
     const img = document.createElement("img");
     img.src = newImage;
-    img.alt = `Product ${cardIndex + 1}`;
+    img.alt = `Product Image`;
     img.style.width = "100%";
     img.style.height = "100%";
     img.style.objectFit = "cover";
     img.style.borderRadius = "15px";
+    img.style.opacity = "0";
+    img.style.transition = "opacity 1.5s ease-in-out";
 
-    console.log(`Card ${cardIndex} now showing:`, newImage);
+    console.log(`Card now showing:`, newImage);
 
-    card.innerHTML = "";
+    // If there's an existing image, fade it out
+    const existingImg = card.querySelector("img");
+    if (existingImg) {
+      existingImg.style.opacity = "0";
+      setTimeout(() => {
+        if (existingImg.parentNode) {
+          existingImg.remove();
+        }
+      }, 1500);
+    } else {
+      // Remove "Coming Soon" text if it exists
+      const comingSoon = card.querySelector(".coming-soon");
+      if (comingSoon) {
+        comingSoon.remove();
+      }
+    }
+
+    // Add new image and fade it in
     card.appendChild(img);
+
+    // Trigger fade in after a brief delay
+    setTimeout(() => {
+      img.style.opacity = "1";
+    }, 100);
   }
 
-  // Initialize each card with unique images
-  cards.forEach((_, index) => {
-    updateCard(index);
-  });
+  // Initialize with first image
+  updateCard();
 
-  // Set up image changes to sync with CSS animation cycles
-  // Animation duration is 9.6s, with different delays for each card
-  const animationDuration = 9600; // 9.6 seconds in milliseconds
-
-  cards.forEach((_, index) => {
-    // Each card has different animation delay from CSS
-    const delays = [0, 2400, 4800, 7200]; // milliseconds (0s, 2.4s, 4.8s, 7.2s)
-    const cardDelay = delays[index] || 0;
-
-    // Change image at the start of each new animation cycle
-    setInterval(() => {
-      updateCard(index);
-    }, animationDuration);
-  });
+  // Change image every 6 seconds (matching the flag wave animation)
+  setInterval(() => {
+    updateCard();
+  }, 6000);
 }
 
 // =========================
@@ -507,10 +562,10 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // =================== CHAT WIDGET JAVASCRIPT ===================
+// =================== CLEAN CHAT WIDGET ===================
 let chatOpen = false;
 let welcomeMode = true;
 
-// WhatsApp integration
 function openWhatsApp() {
   const phoneNumber = "61478257409";
   const message =
@@ -528,18 +583,15 @@ function toggleChat(event) {
 
   const chatWindow = document.getElementById("chat-window");
   const chatToggle = document.querySelector(".chat-toggle");
-  const badge = document.getElementById("notification-badge");
 
   chatOpen = !chatOpen;
 
   if (chatOpen) {
     chatWindow.classList.add("open");
     chatToggle.classList.add("active");
-    badge.classList.remove("show");
   } else {
     chatWindow.classList.remove("open");
     chatToggle.classList.remove("active");
-    // Reset to welcome mode when closed
     welcomeMode = true;
     chatWindow.classList.remove("chat-mode");
     chatWindow.classList.add("welcome-mode");
@@ -549,13 +601,12 @@ function toggleChat(event) {
 function startConversation() {
   const chatWindow = document.getElementById("chat-window");
   welcomeMode = false;
-
   chatWindow.classList.remove("welcome-mode");
   chatWindow.classList.add("chat-mode");
 
-  // Focus on input
   setTimeout(() => {
-    document.getElementById("chat-input").focus();
+    const input = document.getElementById("chat-input");
+    if (input) input.focus();
   }, 300);
 }
 
@@ -568,13 +619,11 @@ function handleKeyPress(event) {
 function sendMessage() {
   const input = document.getElementById("chat-input");
   const message = input.value.trim();
-
   if (message === "") return;
 
   addMessage(message, "user");
   input.value = "";
 
-  // Simple bot response
   setTimeout(() => {
     addMessage(
       "Thank you for your message! Our team will get back to you shortly. You can also contact us directly via WhatsApp for faster response.",
@@ -593,42 +642,77 @@ function addMessage(content, sender) {
   const messagesContainer = document.getElementById("chat-messages");
   const messageDiv = document.createElement("div");
   messageDiv.className = `message ${sender}`;
-
-  messageDiv.innerHTML = `
-                <div class="message-content">
-                    ${content}
-                </div>
-            `;
-
+  messageDiv.innerHTML = `<div class="message-content">${content}</div>`;
   messagesContainer.appendChild(messageDiv);
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
-// Show notification after 3 seconds
-setTimeout(() => {
-  if (!chatOpen) {
-    document.getElementById("notification-badge").classList.add("show");
+// Functions for real notifications only
+function showNotificationBadge(count = 1) {
+  const badge = document.getElementById("notification-badge");
+  if (badge) {
+    badge.textContent = count;
+    badge.classList.add("show");
   }
-}, 3000);
+}
 
-// =================== END CHAT WIDGET JAVASCRIPT ===================
+function hideNotificationBadge() {
+  const badge = document.getElementById("notification-badge");
+  if (badge) {
+    badge.classList.remove("show");
+    badge.textContent = "";
+  }
+}
+
+// Initialize chat - notification badge starts hidden
 document.addEventListener("DOMContentLoaded", () => {
-  const header = document.querySelector(".contact-bar"); // sticky top bar
-  const contentRows = document.querySelectorAll(".product-card"); // or any scrollable rows/items
+  const badge = document.getElementById("notification-badge");
+  if (badge) {
+    badge.classList.remove("show");
+    badge.textContent = ""; // Clear any initial content
+  }
 
-  const applyBlurOnScroll = () => {
-    const headerBottom = header.getBoundingClientRect().bottom;
+  // Example: If you implement real messaging, you would call:
+  // showNotificationBadge(2); // Shows "2" unread messages
+});
+// =================== END CHAT WIDGET JAVASCRIPT ===================
 
-    contentRows.forEach((row) => {
-      const rowTop = row.getBoundingClientRect().top;
-      if (rowTop < headerBottom) {
-        row.classList.add("blurred");
-      } else {
-        row.classList.remove("blurred");
-      }
-    });
+// Ensure first card row tucks under header blur consistently across sizes
+document.addEventListener("DOMContentLoaded", () => {
+  const grid = document.querySelector(".image-grid");
+  const contact = document.querySelector(".contact-bar");
+  const nav = document.querySelector("nav");
+  if (!grid || !nav) return;
+
+  const adjustGridTuck = () => {
+    // Measure visual gap between nav bottom and grid top
+    const navRect = nav.getBoundingClientRect();
+    const gridRect = grid.getBoundingClientRect();
+    const contactRect = contact ? contact.getBoundingClientRect() : null;
+
+    // Visual bottom of stacked header (contact + nav)
+    const headerBottom = Math.max(
+      navRect.bottom,
+      contactRect ? contactRect.bottom : 0
+    );
+    const gap = Math.round(gridRect.top - headerBottom);
+
+    // Desired overlap to hide the header shadow edge
+    const overlap = window.innerWidth <= 1024 ? 10 : 8; // px
+
+    // If there's a gap, tuck by gap + overlap; otherwise ensure a minimal tuck
+    const tuck = gap > 0 ? -(gap + overlap) : -overlap;
+    grid.style.marginTop = `${tuck}px`;
   };
 
-  window.addEventListener("scroll", applyBlurOnScroll);
-  applyBlurOnScroll(); // run on initial load
+  adjustGridTuck();
+  window.addEventListener("resize", adjustGridTuck);
+  window.addEventListener("load", adjustGridTuck);
+});
+// Dionic-style header blur: no extra strip; remove any legacy strip if present
+document.addEventListener("DOMContentLoaded", () => {
+  const strip = document.querySelector(".dynamic-top-blur");
+  if (strip && strip.parentElement) {
+    strip.parentElement.removeChild(strip);
+  }
 });

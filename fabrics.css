@@ -209,6 +209,7 @@
 .breadcrumb {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 10px;
   margin-left: auto;
   font-size: 0.9rem;
@@ -1256,6 +1257,16 @@ body.dark-theme .popular-search-tag:hover {
   }
 }
 
+/* Center header/breadcrumb on small and narrow tablet */
+@media (max-width: 800px) {
+  .breadcrumb {
+    margin-left: 0;           /* remove right-push in column layout */
+    justify-content: center;  /* center items */
+    width: 100%;
+    text-align: center;
+  }
+}
+
 /* Mobile Small styles (480px and below) */
 @media (max-width: 480px) {
   .side-menu {
@@ -1452,3 +1463,6 @@ body.dark-theme .popular-search-tag:hover {
     font-size: 0.85rem;
   }
 }
+  .search-row { margin-left: 0; padding: 0 12px; }
+  .search-input-wrapper { width: 100%; max-width: 600px; }
+  .breadcrumb { justify-content: flex-start; }
