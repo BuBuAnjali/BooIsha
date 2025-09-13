@@ -673,7 +673,7 @@ section[id]::before {
 }
 
 .search-header h2 {
-  font-size: 2.2rem;
+  font-size: 1.8rem;
   margin-bottom: 1rem;
   color: var(--text-on-dark);
   font-weight: 600;
@@ -683,7 +683,7 @@ section[id]::before {
 }
 
 .search-header p {
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: var(--text-on-dark);
   font-weight: 500;
   line-height: 1.6;
@@ -775,10 +775,10 @@ section[id]::before {
 
 .main-search-input {
   flex: 1;
-  padding: 20px 30px;
+  padding: 15px 25px;
   border: none;
   outline: none;
-  font-size: 1.2rem;
+  font-size: 1rem;
   background: transparent;
   color: var(--search-text);
   font-weight: 400;
@@ -791,7 +791,7 @@ section[id]::before {
 }
 
 .main-search-btn {
-  padding: 20px 30px;
+  padding: 15px 25px;
   border: none;
   background: rgba(107, 191, 255, 0.3);
   color: white;
@@ -817,14 +817,14 @@ section[id]::before {
 }
 
 .category-chip {
-  padding: 12px 24px;
+  padding: 10px 20px;
   border: 2px solid rgba(255, 255, 255, 0.3);
   background: rgba(0, 0, 0, 0.6);
   color: white;
   border-radius: 20px;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   font-weight: 500;
   backdrop-filter: blur(10px);
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
@@ -1143,6 +1143,7 @@ body.light.theme .mission-section {
   padding: 3rem 2rem;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 2px solid #508ea1;
 }
 
 .mission-content h2 {
