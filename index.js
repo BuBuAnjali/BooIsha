@@ -7,6 +7,9 @@ function toggleThemeMenu() {
   const arrow = document.querySelector(".arrow-toggle");
   menu.classList.toggle("show");
   arrow.classList.toggle("active");
+  
+  // Hide tooltip when clicked
+  arrow.classList.add("tooltip-clicked");
 }
 
 function toggleTheme() {
@@ -119,21 +122,43 @@ const VIDEO_RE = /\.(mp4|webm|ogg|mov)$/i;
 const IMAGE_RE = /\.(png|jpe?g|gif|webp|avif|svg)$/i;
 
 async function discoverDroppingImages() {
+  console.log('🔍 discoverDroppingImages called');
+  console.log('📁 Manifest URL:', DROPPING_MANIFEST_URL);
+  
   // 1) Prefer manifest.json (array of strings). Items may be relative or absolute.
-  const manifest = await fetchJSON(DROPPING_MANIFEST_URL);
-  if (Array.isArray(manifest) && manifest.length) {
-    const normalized = manifest.map((item) =>
-      item.startsWith("/") ? item : DROPPING_IMAGES_DIR + item
-    );
-    const list = normalizeList(normalized);
-    if (list.length) return list;
+  try {
+    const manifest = await fetchJSON(DROPPING_MANIFEST_URL);
+    console.log('📄 Loaded manifest:', manifest);
+    
+    if (Array.isArray(manifest) && manifest.length) {
+      const normalized = manifest.map((item) => {
+        const fullPath = item.startsWith("/") ? item : DROPPING_IMAGES_DIR + item;
+        console.log(`📎 Normalizing: ${item} → ${fullPath}`);
+        return fullPath;
+      });
+      const list = normalizeList(normalized);
+      console.log(`✅ Discovered ${list.length} images from manifest:`, list);
+      if (list.length) return list;
+    }
+  } catch (error) {
+    console.error('❌ Failed to load manifest:', error);
   }
 
   // 2) Fallback to directory listing parsing
-  const fromIndex = await fetchDirectoryIndex(DROPPING_IMAGES_DIR);
-  if (fromIndex.length) return normalizeList(fromIndex);
+  console.log('🔄 Falling back to directory listing...');
+  try {
+    const fromIndex = await fetchDirectoryIndex(DROPPING_IMAGES_DIR);
+    if (fromIndex.length) {
+      const list = normalizeList(fromIndex);
+      console.log(`✅ Discovered ${list.length} images from directory:`, list);
+      return list;
+    }
+  } catch (error) {
+    console.error('❌ Failed to load from directory:', error);
+  }
 
   // 3) Nothing found
+  console.warn('⚠️ No images found in any method');
   return [];
 }
 
@@ -716,3 +741,624 @@ document.addEventListener("DOMContentLoaded", () => {
     strip.parentElement.removeChild(strip);
   }
 });
+
+// =================== CONTACT PANEL FUNCTIONALITY ===================
+function openContactPanel() {
+  const panel = document.getElementById('contactPanel');
+  const overlay = document.getElementById('contactPanelOverlay');
+  
+  if (panel && overlay) {
+    panel.classList.add('active');
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    document.body.classList.add('contact-panel-open'); // Hide main chat widget
+  }
+}
+
+function closeContactPanel() {
+  const panel = document.getElementById('contactPanel');
+  const overlay = document.getElementById('contactPanelOverlay');
+  const form = document.getElementById('contactPanelForm');
+  const chatInterface = document.getElementById('panelChatInterface');
+  
+  if (panel && overlay) {
+    panel.classList.remove('active');
+    overlay.classList.remove('active');
+    document.body.style.overflow = ''; // Restore background scrolling
+    document.body.classList.remove('contact-panel-open'); // Show main chat widget
+    
+    // Close form if it's open
+    if (form && form.classList.contains('active')) {
+      form.classList.remove('active');
+    }
+    
+    // Close inline chat if it's open
+    if (chatInterface && chatInterface.classList.contains('active')) {
+      chatInterface.classList.remove('active');
+    }
+  }
+}
+
+function toggleContactForm() {
+  const form = document.getElementById('contactPanelForm');
+  const panel = document.getElementById('contactPanel');
+  
+  if (form) {
+    form.classList.toggle('active');
+    
+    // If opening the form, ensure it's fully visible
+    if (form.classList.contains('active')) {
+      // Wait for the form animation to start
+      setTimeout(() => {
+        // Scroll the panel to show the form
+        const formRect = form.getBoundingClientRect();
+        const panelRect = panel.getBoundingClientRect();
+        
+        // If form extends beyond panel bottom, scroll panel to show form
+        if (formRect.bottom > panelRect.bottom - 20) {
+          panel.scrollTo({
+            top: panel.scrollTop + (formRect.bottom - panelRect.bottom + 40),
+            behavior: 'smooth'
+          });
+        }
+        
+        // Focus on first input for better UX
+        const firstInput = form.querySelector('input[type="text"], input[type="email"]');
+        if (firstInput) {
+          firstInput.focus();
+        }
+      }, 300); // Wait for animation to progress
+    }
+  }
+}
+
+// Initialize contact panel event listeners
+document.addEventListener('DOMContentLoaded', () => {
+  const contactTrigger = document.querySelector('.contact-left a');
+  const closeButton = document.getElementById('contactPanelClose');
+  const overlay = document.getElementById('contactPanelOverlay');
+  
+  // Open panel when clicking "Contact us" in top bar
+  if (contactTrigger) {
+    contactTrigger.addEventListener('click', (e) => {
+      e.preventDefault();
+      openContactPanel();
+    });
+  }
+  
+  // Close panel when clicking close button
+  if (closeButton) {
+    closeButton.addEventListener('click', closeContactPanel);
+  }
+  
+  // Close panel when clicking overlay
+  if (overlay) {
+    overlay.addEventListener('click', closeContactPanel);
+  }
+  
+  // Close panel when pressing Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeContactPanel();
+    }
+  });
+  
+  // Handle panel form submission
+  const panelForm = document.getElementById('contactPanelFormSubmit');
+  if (panelForm) {
+    panelForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const submitBtn = panelForm.querySelector('.form-submit-btn');
+      const originalText = submitBtn.textContent;
+      
+      // Show loading state
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting...';
+      
+      try {
+        const formData = new FormData(panelForm);
+        const response = await fetch('/api/submit-form', {
+          method: 'POST',
+          body: formData
+        });
+        
+        if (response.ok) {
+          // Success - show brief message and close panel
+          submitBtn.textContent = 'Sent!';
+          submitBtn.style.background = 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)';
+          
+          setTimeout(() => {
+            panelForm.reset();
+            closeContactPanel();
+            
+            // Reset button
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+            submitBtn.style.background = '';
+          }, 1500);
+        } else {
+          throw new Error('Network response was not ok');
+        }
+      } catch (error) {
+        console.error('Form submission error:', error);
+        alert('Sorry, there was an error submitting your form. Please try again or email us directly.');
+        
+        // Reset button
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+      }
+    });
+  }
+});
+
+// =================== PANEL CHAT FUNCTIONALITY ===================
+function togglePanelChat() {
+  const chatInterface = document.getElementById('panelChatInterface');
+  const panel = document.getElementById('contactPanel');
+  
+  if (chatInterface) {
+    chatInterface.classList.toggle('active');
+    
+    // If opening the chat, ensure it's visible and focus input
+    if (chatInterface.classList.contains('active')) {
+      setTimeout(() => {
+        // Scroll to show the chat interface
+        const chatRect = chatInterface.getBoundingClientRect();
+        const panelRect = panel.getBoundingClientRect();
+        
+        if (chatRect.bottom > panelRect.bottom - 20) {
+          panel.scrollTo({
+            top: panel.scrollTop + (chatRect.bottom - panelRect.bottom + 40),
+            behavior: 'smooth'
+          });
+        }
+        
+        // Focus on input
+        const input = document.getElementById('panelChatInput');
+        if (input) {
+          input.focus();
+        }
+      }, 300);
+    }
+  }
+}
+
+function sendPanelMessage() {
+  const input = document.getElementById('panelChatInput');
+  const message = input.value.trim();
+  
+  if (message === '') return;
+  
+  addPanelMessage(message, 'user');
+  input.value = '';
+  
+  // Auto-reply after a delay
+  setTimeout(() => {
+    addPanelMessage('Thank you for your message! Our team will get back to you shortly. You can also contact us directly via WhatsApp for faster response.', 'bot');
+  }, 1000);
+}
+
+function sendPanelQuickMessage(message) {
+  addPanelMessage(message, 'user');
+  
+  // Auto-reply based on quick action
+  setTimeout(() => {
+    let reply = '';
+    if (message.includes('Product')) {
+      reply = 'We offer premium Indian spices, textiles, and fashion items. Would you like specific information about any category?';
+    } else if (message.includes('Pricing')) {
+      reply = 'Our pricing varies by product. Please let us know which items you\'re interested in and we\'ll provide detailed pricing information.';
+    } else if (message.includes('Shipping')) {
+      reply = 'We ship throughout Australia. Delivery times are typically 3-7 business days. Would you like more details about shipping costs?';
+    } else {
+      reply = 'Thank you for your inquiry! Our team will get back to you shortly with detailed information.';
+    }
+    addPanelMessage(reply, 'bot');
+  }, 1000);
+}
+
+function addPanelMessage(content, sender) {
+  const messagesContainer = document.getElementById('panelChatMessages');
+  const messageDiv = document.createElement('div');
+  messageDiv.className = `message ${sender}`;
+  messageDiv.innerHTML = `<div class="message-content"><p>${content}</p></div>`;
+  messagesContainer.appendChild(messageDiv);
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+function handlePanelChatKeyPress(event) {
+  if (event.key === 'Enter') {
+    sendPanelMessage();
+  }
+}
+// =================== END PANEL CHAT FUNCTIONALITY ===================
+
+// =================== PREMIUM SEARCH FUNCTIONALITY ===================
+const premiumCollectionsDatabase = [
+  {
+    title: "Premium Silk Collection",
+    category: "silk",
+    description: "Luxurious silk fabrics with rich textures, perfect for high-end fashion and elegant draping"
+  },
+  {
+    title: "Organic Cotton Essentials",
+    category: "cotton", 
+    description: "Sustainable organic cotton fabrics, soft and breathable for comfortable wear"
+  },
+  {
+    title: "Chantilly Lace Elegance",
+    category: "lace",
+    description: "Delicate lace with intricate floral patterns, ideal for bridal wear and luxury garments"
+  },
+  {
+    title: "Georgette Lace Collection",
+    category: "lace",
+    description: "Lightweight georgette lace with fine embroidery details and graceful drape"
+  },
+  {
+    title: "Heritage Silk Weaves",
+    category: "silk",
+    description: "Traditional silk weaving with contemporary appeal, showcasing timeless craftsmanship"
+  },
+  {
+    title: "Premium Cotton Blends",
+    category: "cotton",
+    description: "High-quality cotton blends offering durability and comfort for everyday luxury"
+  },
+  {
+    title: "Venetian Lace Artistry",
+    category: "lace",
+    description: "Handcrafted venetian lace featuring traditional bobbin lace techniques and intricate patterns"
+  },
+  {
+    title: "Handloom Cotton Heritage",
+    category: "fabrics",
+    description: "Authentic handloom cotton with traditional weaving patterns and cultural significance"
+  },
+  {
+    title: "Luxury Fabric Blends",
+    category: "fabrics",
+    description: "Premium fabric combinations offering unique textures and exceptional quality"
+  },
+  {
+    title: "Artisan Silk Collection",
+    category: "fabrics",
+    description: "Specially curated silk fabrics showcasing master artisan techniques and heritage methods"
+  }
+];
+
+function performAdvancedSearch() {
+  console.log('🔍 performAdvancedSearch called');
+  
+  const searchInput = document.getElementById('mainSearchInput');
+  const resultsContainer = document.getElementById('advancedSearchResults');
+  const resultsGrid = document.getElementById('resultsGrid');
+  
+  if (!searchInput) {
+    console.error('❌ Search input not found');
+    return;
+  }
+  
+  if (!resultsContainer || !resultsGrid) {
+    console.error('❌ Results containers not found');
+    return;
+  }
+  
+  const activeChip = document.querySelector('.category-chip.active');
+  const query = searchInput.value.toLowerCase().trim();
+  const activeCategory = activeChip ? activeChip.dataset.category : 'all';
+  
+  console.log(`🔍 Query: "${query}", Category: "${activeCategory}"`);
+  
+  // Show results container
+  resultsContainer.classList.add('show');
+  
+  if (query.length === 0) {
+    resultsGrid.innerHTML = '<div style="text-align: center; color: #7f8c8d; padding: 2rem;">Enter a search term to find products</div>';
+    return;
+  }
+  
+  let results = premiumCollectionsDatabase.filter(item => {
+    const matchesQuery = item.title.toLowerCase().includes(query) || 
+                        item.description.toLowerCase().includes(query) ||
+                        item.category.toLowerCase().includes(query);
+    const matchesCategory = activeCategory === 'all' || item.category === activeCategory;
+    return matchesQuery && matchesCategory;
+  });
+  
+  console.log(`🔍 Found ${results.length} results:`, results);
+  
+  if (results.length === 0) {
+    resultsGrid.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align: center; color: #7f8c8d; padding: 2rem;">
+        <p>No results found for "${query}". Try different keywords or collections.</p>
+      </div>
+    `;
+  } else {
+    resultsGrid.innerHTML = results.map(item => `
+      <div class="result-card">
+        <h3>${item.title}</h3>
+        <p class="result-category">${item.category}</p>
+        <p class="result-description">${item.description}</p>
+      </div>
+    `).join('');
+  }
+}
+
+function displayAdvancedSearchResults(results, query) {
+  const resultsContainer = document.getElementById('advancedSearchResults');
+  const resultsGrid = document.getElementById('resultsGrid');
+  
+  if (results.length === 0) {
+    resultsGrid.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align: center; color: #7f8c8d; padding: 2rem;">
+        <p>No results found for "${query}". Try different keywords or collections.</p>
+      </div>
+    `;
+  } else {
+    resultsGrid.innerHTML = results.map(item => `
+      <div class="result-card">
+        <div class="result-card-category">${item.category}</div>
+        <div class="result-card-title">${highlightAdvancedMatch(item.title, query)}</div>
+        <div class="result-card-description">${highlightAdvancedMatch(item.description, query)}</div>
+      </div>
+    `).join('');
+  }
+  
+  resultsContainer.classList.add('show');
+}
+
+function highlightAdvancedMatch(text, query) {
+  if (!query) return text;
+  const regex = new RegExp(`(${query})`, 'gi');
+  return text.replace(regex, '<span style="background: linear-gradient(135deg, #FF6B6B, #e74c3c); color: white; padding: 3px 6px; border-radius: 6px; font-weight: 600;">$1</span>');
+}
+
+function hideAdvancedSearchResults() {
+  const resultsContainer = document.getElementById('advancedSearchResults');
+  resultsContainer.classList.remove('show');
+}
+
+function setActiveCategoryChip(category) {
+  console.log('🏷️ Setting active category:', category);
+  
+  // Remove active class from all chips
+  document.querySelectorAll('.category-chip').forEach(chip => {
+    chip.classList.remove('active');
+    console.log('Removed active from:', chip.dataset.category);
+  });
+  
+  // Add active class to selected chip
+  const targetChip = document.querySelector(`[data-category="${category}"]`);
+  if (targetChip) {
+    targetChip.classList.add('active');
+    console.log('✅ Set active category to:', category);
+  } else {
+    console.error('❌ Target chip not found for category:', category);
+  }
+  
+  // Trigger search with new filter
+  const query = document.getElementById('mainSearchInput').value.toLowerCase().trim();
+  if (query.length > 0) {
+    performAdvancedSearch();
+  }
+}
+
+// Initialize search functionality
+function initializeSearchFunctionality() {
+  console.log('🚀 Initializing search functionality...');
+  
+  // Add click handlers to category chips
+  const categoryChips = document.querySelectorAll('.category-chip');
+  console.log('🏷️ Found', categoryChips.length, 'category chips');
+  
+  categoryChips.forEach((chip, index) => {
+    console.log(`Setting up chip ${index + 1}:`, chip.dataset.category);
+    chip.addEventListener('click', (e) => {
+      e.preventDefault();
+      console.log('🏷️ Chip clicked:', chip.dataset.category);
+      setActiveCategoryChip(chip.dataset.category);
+    });
+  });
+  
+  // Add search input handlers
+  const searchInput = document.getElementById('mainSearchInput');
+  if (searchInput) {
+    console.log('✅ Adding search input handlers');
+    
+    searchInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        performAdvancedSearch();
+      }
+    });
+    
+    searchInput.addEventListener('input', () => {
+      if (searchInput.value.length > 2) {
+        performAdvancedSearch();
+      } else if (searchInput.value.length === 0) {
+        hideAdvancedSearchResults();
+      }
+    });
+  }
+}
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  // Wait a bit for everything to load
+  setTimeout(initializeSearchFunctionality, 500);
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.premium-search-container')) {
+      hideAdvancedSearchResults();
+    }
+  });
+});
+
+// =================== SEARCH BACKGROUND FUNCTIONALITY ===================
+let searchBackgroundImages = [];
+let currentSearchImageIndex = 0;
+let searchImageInterval = null;
+
+async function initializeSearchBackground() {
+  console.log("Initializing search background...");
+  
+  const backgroundLayer = document.getElementById('searchBackgroundLayer');
+  if (!backgroundLayer) return;
+  
+  // Use the same image discovery function as the dropping cards
+  const images = await discoverDroppingImages();
+  console.log("Found search background images:", images);
+  
+  if (!images.length) {
+    console.warn(`No images found in ${DROPPING_IMAGES_DIR} for search background`);
+    return;
+  }
+  
+  searchBackgroundImages = images;
+  
+  // Start the background image rotation
+  startSearchBackgroundRotation();
+}
+
+function startSearchBackgroundRotation() {
+  if (!searchBackgroundImages.length) return;
+  
+  const backgroundLayer = document.getElementById('searchBackgroundLayer');
+  if (!backgroundLayer) return;
+  
+  // Load all images into the flex container for continuous flow
+  loadAllSearchImages();
+}
+
+function loadAllSearchImages() {
+  const backgroundLayer = document.getElementById('searchBackgroundLayer');
+  if (!backgroundLayer) {
+    console.error('❌ searchBackgroundLayer not found');
+    return;
+  }
+  
+  if (!searchBackgroundImages.length) {
+    console.error('❌ No background images available');
+    return;
+  }
+  
+  // Clear existing content
+  backgroundLayer.innerHTML = '';
+  
+  console.log(`🖼️ Loading all search images. Total images found: ${searchBackgroundImages.length}`);
+  console.log('📋 Image list:', searchBackgroundImages);
+  
+  // Create a continuous strip by doubling images for seamless loop
+  const imagesToLoad = [...searchBackgroundImages, ...searchBackgroundImages];
+  
+  console.log(`📦 Total images to load (with triplication): ${imagesToLoad.length}`);
+  
+  let loadedCount = 0;
+  let failedCount = 0;
+  
+  imagesToLoad.forEach((imageSrc, index) => {
+    const img = document.createElement("img");
+    img.src = imageSrc;
+    img.alt = `Background Image ${index + 1}`;
+    
+    img.onload = () => {
+      loadedCount++;
+      console.log(`✅ Loaded image ${loadedCount}/${imagesToLoad.length}: ${imageSrc}`);
+    };
+    
+    img.onerror = () => {
+      failedCount++;
+      console.error(`❌ Failed to load image ${index + 1}/${imagesToLoad.length}: ${imageSrc}`);
+      // Try to fix the path if it's not working
+      const alternativePath = imageSrc.replace('/Images/droppingImages/', './Images/droppingImages/');
+      console.log(`🔄 Trying alternative path: ${alternativePath}`);
+      img.src = alternativePath;
+    };
+    
+    backgroundLayer.appendChild(img);
+  });
+  
+  // Report loading status after a delay
+  setTimeout(() => {
+    console.log(`📊 Loading complete: ${loadedCount} loaded, ${failedCount} failed out of ${imagesToLoad.length} total`);
+  }, 3000);
+}
+
+
+// Manual trigger function for testing
+window.testImageLoading = async function() {
+  console.log('🧪 Manual test triggered');
+  await initializeSearchBackground();
+};
+
+// Initialize search background when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('🎬 DOM loaded, initializing search background...');
+  // Wait a bit for other initializations to complete
+  setTimeout(() => {
+    initializeSearchBackground();
+  }, 1000);
+  
+  // Also try again after longer delay in case of slow loading
+  setTimeout(() => {
+    console.log('🔄 Secondary initialization attempt...');
+    initializeSearchBackground();
+  }, 3000);
+});
+
+// =================== END SEARCH BACKGROUND FUNCTIONALITY ===================
+
+// =================== SEARCH EXPANSION FUNCTIONALITY ===================
+function expandSearchInterface() {
+  console.log('🚀 expandSearchInterface called');
+  
+  const iconContainer = document.getElementById('searchIconContainer');
+  const expandedInterface = document.getElementById('expandedSearchInterface');
+  
+  if (!iconContainer) {
+    console.error('❌ searchIconContainer not found');
+    return;
+  }
+  
+  if (!expandedInterface) {
+    console.error('❌ expandedSearchInterface not found');
+    return;
+  }
+  
+  console.log('✅ Found search elements, expanding interface');
+  
+  // Hide the search icon
+  iconContainer.style.display = 'none';
+  
+  // Show and animate the expanded interface
+  expandedInterface.style.display = 'block';
+  setTimeout(() => {
+    expandedInterface.classList.add('show');
+  }, 50);
+  
+  // Ensure we have a default active category chip
+  const activeChip = document.querySelector('.category-chip.active');
+  if (!activeChip) {
+    const firstChip = document.querySelector('.category-chip');
+    if (firstChip) {
+      firstChip.classList.add('active');
+      console.log('✅ Set first chip as active:', firstChip.dataset.category);
+    }
+  }
+  
+  // Focus on the search input
+  setTimeout(() => {
+    const searchInput = document.getElementById('mainSearchInput');
+    if (searchInput) {
+      searchInput.focus();
+      console.log('✅ Search input focused');
+    }
+  }, 300);
+}
+
+// =================== END SEARCH EXPANSION FUNCTIONALITY ===================
+
+// =================== END PREMIUM SEARCH FUNCTIONALITY ===================
+
+// =================== END CONTACT PANEL FUNCTIONALITY ===================

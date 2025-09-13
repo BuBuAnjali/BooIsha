@@ -5,17 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="BooIsha - Premium Indian spices, textiles and fashion imported to Australia. Authentic heritage products sourced directly from artisans and farmers."
+      content="BooIsha - Premium textiles and fashion with authentic heritage craftsmanship. Luxury products sourced directly from skilled artisans and craftspeople."
     />
     <meta
       name="keywords"
-      content="Indian spices, textiles, fashion, import, export, Australia, authentic, heritage, BooIsha"
+      content="textiles, fashion, luxury fabrics, lace, silk, cotton, authentic, heritage, BooIsha"
     />
     <meta name="author" content="BooIsha" />
-    <meta property="og:title" content="BooIsha - Authentic Indian Products" />
+    <meta property="og:title" content="BooIsha - Authentic Heritage Products" />
     <meta
       property="og:description"
-      content="Premium spices, textiles and fashion from India to Australia"
+      content="Premium textiles and fashion with heritage craftsmanship worldwide"
     />
     <meta property="og:image" content="/Images/BooIshaLogo.png" />
     <meta property="og:url" content="https://booshiv.com" />
@@ -26,15 +26,201 @@
     <link rel="stylesheet" href="index.css" />
   </head>
   <body>
+    <!-- Contact Panel Overlay -->
+    <div class="contact-panel-overlay" id="contactPanelOverlay"></div>
+    
+    <!-- Sliding Contact Panel -->
+    <div class="contact-panel" id="contactPanel">
+      <div class="contact-panel-header">
+        <h2>Need Help ?</h2>
+        <button class="contact-panel-close" id="contactPanelClose">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="contact-panel-content">
+        <div class="contact-panel-intro">
+          <p>Our Client Advisors are here to assist you with enquiries and provide guidance on our premium products and services.</p>
+        </div>
+        
+        <div class="contact-panel-methods">
+          <div class="contact-method">
+            <div class="contact-method-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+            </div>
+            <div class="contact-method-info">
+              <div class="contact-method-label">Email</div>
+              <div class="contact-method-value">
+                <a href="mailto:info@booshiv.com">info@booshiv.com</a>
+              </div>
+            </div>
+          </div>
+          
+          <div class="contact-method">
+            <div class="contact-method-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+              </svg>
+            </div>
+            <div class="contact-method-info">
+              <div class="contact-method-label">Need Help ?</div>
+              <div class="contact-method-value">
+                <a href="tel:+61478257409">+61 478 257 409</a>
+              </div>
+            </div>
+          </div>
+          
+          <div class="contact-method">
+            <div class="contact-method-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+              </svg>
+            </div>
+            <div class="contact-method-info">
+              <div class="contact-method-label">WhatsApp</div>
+              <div class="contact-method-value">
+                <a href="https://wa.me/61478257409" target="_blank">+61 478 257 409</a>
+              </div>
+            </div>
+          </div>
+          
+          <div class="contact-method">
+            <div class="contact-method-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12,6 12,12 16,14"/>
+              </svg>
+            </div>
+            <div class="contact-method-info">
+              <div class="contact-method-label">Business Hours</div>
+              <div class="contact-method-value">Mon-Fri: 9AM-6PM AEST</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="contact-panel-cta">
+          <button class="contact-panel-button" onclick="toggleContactForm()">Send an Enquiry</button>
+        </div>
+        
+        <div class="contact-panel-form" id="contactPanelForm">
+          <form id="contactPanelFormSubmit" class="elegant-form">
+            <div class="form-group">
+              <label for="panel-name">Full Name</label>
+              <input type="text" id="panel-name" name="name" required />
+            </div>
+            
+            <div class="form-group">
+              <label for="panel-email">Email Address</label>
+              <input type="email" id="panel-email" name="email" required />
+            </div>
+            
+            <div class="form-group">
+              <label for="panel-phone">Phone Number</label>
+              <input type="tel" id="panel-phone" name="phone" placeholder="+61 1234567890" />
+            </div>
+            
+            <div class="form-group">
+              <label for="panel-subject">Subject</label>
+              <input type="text" id="panel-subject" name="subject" placeholder="What can we help you with?" />
+            </div>
+            
+            <div class="form-group">
+              <label for="panel-message">Message</label>
+              <textarea id="panel-message" name="message" rows="4" placeholder="Please describe your enquiry..." required></textarea>
+            </div>
+            
+            <div class="form-actions">
+              <button type="button" class="form-cancel-btn" onclick="toggleContactForm()">Cancel</button>
+              <button type="submit" class="form-submit-btn">Submit Enquiry</button>
+            </div>
+          </form>
+        </div>
+        
+        <!-- Chat Widget in Panel -->
+        <div class="contact-panel-chat" id="contactPanelChat">
+          <div class="panel-chat-header">
+            <h3>Instant Chat Support</h3>
+            <p>Need immediate assistance? Start a conversation with our team</p>
+          </div>
+          
+          <div class="panel-chat-options">
+            <button class="panel-chat-btn whatsapp-chat" onclick="openWhatsApp()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+              </svg>
+              <span>Chat on WhatsApp</span>
+            </button>
+            
+            <button class="panel-chat-btn live-chat" onclick="togglePanelChat()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+              <span>Live Chat</span>
+            </button>
+          </div>
+          
+          <!-- Inline Chat Interface -->
+          <div class="panel-chat-interface" id="panelChatInterface">
+            <div class="panel-chat-header-inline">
+              <div class="chat-status-indicator">
+                <div class="status-dot-inline"></div>
+                <span>Online</span>
+              </div>
+              <button class="panel-chat-close" onclick="togglePanelChat()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            
+            <div class="panel-chat-messages" id="panelChatMessages">
+              <div class="message bot">
+                <div class="message-content">
+                  <p>Hello! 👋 Welcome to BooIsha. How can I assist you today?</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="panel-chat-quick-actions">
+              <button class="quick-action" onclick="sendPanelQuickMessage('Product inquiry')">Product Info</button>
+              <button class="quick-action" onclick="sendPanelQuickMessage('Pricing question')">Pricing</button>
+              <button class="quick-action" onclick="sendPanelQuickMessage('Shipping information')">Shipping</button>
+            </div>
+            
+            <div class="panel-chat-input-area">
+              <div class="panel-chat-input-container">
+                <input 
+                  type="text" 
+                  class="panel-chat-input" 
+                  id="panelChatInput"
+                  placeholder="Type your message..."
+                  onkeypress="handlePanelChatKeyPress(event)"
+                />
+                <button class="panel-chat-send" onclick="sendPanelMessage()">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polyline points="22,2 15,22 11,13 2,9 22,2"></polyline>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 </div>
     <!-- Contact Bar -->
     <div class="contact-bar">
       <div class="contact-bar-content">
-        <div class="contact-left">
-          Contact us <a href="tel:0478257409"> 0478 257 409</a>
-        </div>
         <div class="theme-toggle-container">
-          <button class="arrow-toggle" onclick="toggleThemeMenu()">
+          <button class="arrow-toggle" onclick="toggleThemeMenu()" data-tooltip="Select Theme">
             <svg
               width="20"
               height="20"
@@ -43,7 +229,7 @@
               stroke="currentColor"
               stroke-width="2"
             >
-              <polyline points="6 9 12 15 18 9"></polyline>
+              <polyline points="15 18 9 12 15 6"></polyline>
             </svg>
           </button>
           <div class="theme-menu" id="themeMenu">
@@ -57,6 +243,9 @@
             </button>
           </div>
         </div>
+        <div class="contact-right">
+          <a href="javascript:void(0)" onclick="openContactPanel()">Get in Touch</a>
+        </div>
       </div>
     </div>
 
@@ -64,15 +253,15 @@
     <nav>
      <div class="nav-container">
   <div class="logo-container">
-  <a href="index.html" class="logo-link">
-    <img
-      src="/Images/BooIshaLogo.png"
-      alt="BooIsha Logo"
-      class="logo-img"
-    />
-    <div class="logo">BooIsha</div>
-  </a>
-</div>
+    <a href="index.html" class="logo-link">
+      <img
+        src="/Images/BooIshaLogo.png"
+        alt="BooIsha Logo"
+        class="logo-img"
+      />
+      <div class="logo">BooIsha</div>
+    </a>
+  </div>
         <div class="nav-menu">
           <a href="#story"><span>Our Story</span></a>
           <a href="#mission"><span>Mission</span></a>
@@ -80,21 +269,72 @@
             <a href="#products"><span>Products</span></a>
             <div class="dropdown-content">
               <a href="Fabrics.html">Fabrics</a>
-              <a href="productWPepper.html">Spices</a>
+              <a href="Lace.html">Lace</a>
               <a href="productKRice.html">Garments</a>
             </div>
           </div>
-          <a href="#contact"><span>Contact</span></a>
+          <a href="javascript:void(0)" onclick="openContactPanel()"><span>Contact</span></a>
         </div>
       </div>
     </nav>
     <section class="content-wrapper">
   <div class="dynamic-top-blur"></div>
 
-    <!-- Image Grid -->
+    <!-- Premium Search Interface -->
  <div class="image-grid">
-  <div class="image-placeholder">
-    <span class="coming-soon">Coming Soon</span>
+  <div class="premium-search-container">
+    <div class="search-background-layer" id="searchBackgroundLayer">
+      <!-- Dynamic images will be added here -->
+    </div>
+    <div class="search-overlay">
+      <div class="search-header">
+        <h2>Discover Premium Collections</h2>
+        <p>Explore our curated selection of luxury fabrics, textiles, and heritage pieces</p>
+      </div>
+      
+      <div class="advanced-search-wrapper">
+        <!-- Initial Search Icon -->
+        <div class="search-icon-container" id="searchIconContainer">
+          <span class="search-text">Search</span>
+          <button class="search-icon-btn" onclick="expandSearchInterface()">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="m21 21-4.35-4.35"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Expanded Search Interface -->
+        <div class="expanded-search-interface" id="expandedSearchInterface" style="display: none;">
+          <div class="main-search-container">
+            <input 
+              type="text" 
+              class="main-search-input" 
+              placeholder="Search luxury fabrics, silk, cotton, lace..." 
+              id="mainSearchInput"
+            />
+            <button class="main-search-btn" onclick="performAdvancedSearch()">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.35-4.35"/>
+              </svg>
+            </button>
+          </div>
+          
+          <div class="search-categories">
+            <button class="category-chip active" data-category="all">All Collections</button>
+            <button class="category-chip" data-category="fabrics">Premium Fabrics</button>
+            <button class="category-chip" data-category="lace">Luxury Lace</button>
+            <button class="category-chip" data-category="silk">Silk Collection</button>
+            <button class="category-chip" data-category="cotton">Cotton Range</button>
+          </div>
+          
+          <div class="search-results-container" id="advancedSearchResults">
+            <div class="results-grid" id="resultsGrid"></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 <div class="watermark-container">
@@ -102,6 +342,7 @@
     <img src="/Images/BooIshaLogo.png" alt="BooIsha Watermark" />
   </div>
 </div>
+
     <!-- Our Story Section -->
     <section class="story-section" id="story">
       <div class="container">
@@ -109,24 +350,13 @@
           <div class="story-text">
             <h2>Our Story</h2>
             <p>
-              BooIsha was born from a vision: to weave timeless heritage into
-              the fabric of modern global markets. What began as a belief—that
-              authentic, high-quality creations deserve worldwide
-              recognition—has blossomed into a soulful enterprise rooted in
-              trust, artistry, and cultural reverence.
+              BooIsha ignites from an unstoppable passion: to revolutionize fashion by fusing timeless heritage with bold contemporary vision. What started as fierce determination—that exceptional craftsmanship demands global dominance—has exploded into a powerhouse enterprise driven by relentless innovation, artistic mastery, and unwavering industry leadership.
             </p>
             <p>
-              Guided by a visionary entrepreneur with deep ancestral ties to
-              traditional trade, BooIsha seeks to unveil the untapped brilliance
-              of rare spices, exquisite textiles, and masterful craftsmanship.
-              This journey has grown into a refined import-export venture, with
-              plans to unveil an exclusive house of curated elegance.
+              Led by a visionary fashion entrepreneur with deep-rooted textile expertise, BooIsha aggressively pursues excellence in luxury fabrics and cutting-edge fashion design. Our ambitious expansion into premium fashion houses and exclusive textile collections positions us at the forefront of industry transformation and global market disruption.
             </p>
             <p>
-              But BooIsha is more than commerce. We carry stories. We honour
-              traditions. We celebrate the extraordinary skill of artisans whose
-              work transcends borders—building bridges of beauty, meaning, and
-              lasting connection.
+              BooIsha is pure fashion passion unleashed. We don't just follow trends—we create them. We don't just honor traditions—we reimagine them. We celebrate the extraordinary artistry of fashion creators whose visionary work reshapes industries, establishing new standards of elegance, innovation, and enduring impact.
             </p>
           </div>
           <!-- index.html -->
@@ -140,26 +370,11 @@
       <div class="container">
         <h2 class="section-title">Our Product Range</h2>
         <p class="section-subtitle">
-          Premium quality products sourced directly from India's finest
-          producers
+          Premium quality products sourced directly from renowned
+          heritage producers worldwide
         </p>
 
         <div class="products-grid">
-          <div class="product-card">
-            <div class="product-icon">🌶️</div>
-            <h3>Premium Spices</h3>
-            <p>
-              We source the finest spices directly from farms and spice markets,
-              ensuring authenticity and superior quality for businesses.
-            </p>
-            <ul class="product-features">
-              <li>Direct farm sourcing</li>
-              <li>Bulk quantities for businesses</li>
-              <li>Quality certified products</li>
-              <li>Competitive wholesale pricing</li>
-            </ul>
-          </div>
-
           <div class="product-card">
             <div class="product-icon">🧵</div>
             <h3>Textiles & Fabrics</h3>
@@ -178,6 +393,23 @@
           </div>
 
           <div class="product-card">
+            <div class="product-icon">🕸️</div>
+            <h3>Premium Lace Collection</h3>
+            <p>
+              Delicate and intricate lace fabrics featuring traditional 
+              embroidery techniques combined with contemporary European lace-making 
+              artistry for luxury fashion and home décor.
+            </p>
+            <ul class="product-features">
+              <li>Chantilly & Venetian lace</li>
+              <li>Hand-embroidered details</li>
+              <li>Bridal & evening wear quality</li>
+              <li>Custom pattern development</li>
+            </ul>
+            <a href="Lace.html" class="view-products-btn">View Lace Collection →</a>
+          </div>
+
+          <div class="product-card">
             <div class="product-icon">👗</div>
             <h3>Curated Fashion Atelier</h3>
             <p>
@@ -187,7 +419,7 @@
             </p>
             <ul class="product-features">
               <li>Custom-tailored designs</li>
-              <li>Stitched in India</li>
+              <li>Heritage craftsmanship</li>
               <li>Fusion fashion collections</li>
               <li>Limited edition pieces</li>
             </ul>
@@ -200,7 +432,7 @@
     <section class="mission-section" id="mission">
       <div class="container">
         <div class="mission-content">
-          <h2>Our Mission & Values</h2>
+          <h2>Vision & Mission</h2>
           <p style="font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.95">
             Connecting markets with heritage excellence by sourcing premium
             textiles and spices directly from artisans and farmers, ensuring
@@ -222,7 +454,7 @@
               <p>
                 Every product we source carries the genuine story of its origin.
                 We verify quality, tradition, and craftsmanship to ensure our
-                partners receive only authentic Indian textiles and spices.
+                partners receive only authentic heritage textiles and fabrics.
               </p>
             </div>
             <div class="mission-item">
@@ -240,41 +472,13 @@
     <!-- Markets Section -->
     <section class="markets-section">
       <div class="container">
-        <h2 class="section-title">Where We Operate</h2>
-        <p class="section-subtitle">
-          Fostering cross-border partnerships through quality trade
-        </p>
 
         <div class="markets-grid">
           <div class="market-card">
             <div class="market-flag">🌍</div>
-            <h3>Global Sourcing</h3>
+            <h3>Global Operations & Sourcing</h3>
             <p>
-              We partner with trusted producers, artisans, and suppliers across diverse regions to bring you authentic, premium-quality products. Each item is carefully selected, hand-picked, and quality-checked to ensure it meets the highest standards. Our focus is always on safeguarding the client’s interests, offering only the finest and most reliable selections that align with their needs and priorities.
-            </p>
-            <div class="market-stats">
-              <div class="stat-item">
-                <span>Export Categories</span>
-                <span class="stat-value">3</span>
-              </div>
-              <div class="stat-item">
-                <span>Partner Suppliers</span>
-                <span class="stat-value">Growing</span>
-              </div>
-              <div class="stat-item">
-                <span>Quality Certified</span>
-                <span class="stat-value">100%</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="market-card">
-            <div class="market-flag">🇦🇺</div>
-            <h3>Australia</h3>
-            <p>
-              Soon, exclusive garments crafted from premium fabrics will open
-              the next chapter—where timeless design meets cultural elegance and
-              artisanal finesse.
+              We operate worldwide, partnering with trusted artisans and suppliers across diverse regions to deliver premium fabrics and textiles. Each product is carefully curated and quality-certified to meet the highest standards. Our global reach ensures authentic heritage pieces reach fashion-forward markets, where timeless design meets cultural elegance and artisanal finesse.
             </p>
             <div class="market-stats">
               <div class="stat-item">
@@ -282,12 +486,16 @@
                 <span class="stat-value">B2B</span>
               </div>
               <div class="stat-item">
-                <span>Product Lines</span>
-                <span class="stat-value">Expanding</span>
+                <span>Quality Certified</span>
+                <span class="stat-value">100%</span>
               </div>
               <div class="stat-item">
-                <span>Boutique Launch</span>
-                <span class="stat-value">Coming Soon</span>
+                <span>Active Categories</span>
+                <span class="stat-value">Fabrics & Lace</span>
+              </div>
+              <div class="stat-item">
+                <span>Garment Services</span>
+                <span class="stat-value">Launching Soon</span>
               </div>
             </div>
           </div>
@@ -307,119 +515,12 @@
           <div class="founder-image">
             <span>Coming Soon</span>
           </div>
-          <h3 class="founder-name">Gayathri Balasubramaniyan</h3>
+          <h3 class="founder-name">Gayathri Bala</h3>
           <p class="founder-title">Founder</p>
           <p class="founder-bio">
-            With a passion for global trade and cultural connection, Gayathri
-            weaves deep market insight with a soulful entrepreneurial spirit to
-            shape meaningful business opportunities. Her vision for BooIsha is
-            to become a premier destination for heritage-rich, authentic
-            products—honoring tradition while cultivating lasting relationships
-            that uplift those united by the art of commerce and the beauty of
-            culture.
+            With an unwavering passion for fashion design and an obsession with the artistry of fine fabrics, our founder transforms creative vision into global impact. This deep love for textile craftsmanship drives the mission to curate the world's most exquisite heritage fabrics, connecting discerning designers and fashion enthusiasts with authentic materials that tell stories of tradition. BooIsha emerges as the ultimate destination where fashion dreams meet cultural legacy—empowering creators to design with purpose while preserving the timeless art of textile mastery.
           </p>
         </div>
-      </div>
-    </section>
-    ]
-    <!-- Contact Section -->
-    <section class="contact-section" id="contact">
-      <div class="container">
-        <h2 class="section-title">Get in Touch</h2>
-        <p class="section-subtitle">
-          Ready to explore business opportunities? We'd love to hear from you at
-          <a
-            href="mailto:info@booshiv.com"
-            style="color: #ff6b6b; text-decoration: none"
-            >info@booshiv.com</a
-          >
-        </p>
-
-        <section class="customer-form" id="enquiry-form">
-          <h2>Enquiry Form</h2>
-          <div
-            id="success-message"
-            class="success-message"
-            style="display: none"
-          >
-            <div class="success-content">
-              <h3>Thank You!</h3>
-              <p>
-                Your enquiry has been received. We'll get back to you within 24
-                hours.
-              </p>
-              <div class="success-timer">
-                Form will reappear in <span id="countdown">30</span> seconds
-              </div>
-            </div>
-          </div>
-
-          <form
-            id="enquiry-form-submit"
-            action="/api/submit-form"
-            method="POST"
-          >
-            <input type="text" name="_gotcha" style="display: none" />
-            <div class="form-row">
-              <div class="form-group">
-                <label for="enquiry-firstname">First Name *</label>
-                <input
-                  type="text"
-                  id="enquiry-firstname"
-                  name="firstname"
-                  required
-                />
-              </div>
-              <div class="form-group">
-                <label for="enquiry-lastname">Last Name *</label>
-                <input
-                  type="text"
-                  id="enquiry-lastname"
-                  name="lastname"
-                  required
-                />
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="enquiry-email">Email Address *</label>
-                <input type="email" id="enquiry-email" name="email" required />
-              </div>
-              <div class="form-group">
-                <label for="enquiry-phone">Phone Number *</label>
-                <input
-                  type="tel"
-                  id="enquiry-phone"
-                  name="phone"
-                  placeholder="+61 1234567890"
-                  required
-                />
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="enquiry-subject">Subject</label>
-              <input
-                type="text"
-                id="enquiry-subject"
-                name="subject"
-                placeholder="What can we help you with?"
-              />
-            </div>
-            <div class="form-group">
-              <label for="enquiry-message">Message *</label>
-              <textarea
-                id="enquiry-message"
-                name="message"
-                rows="5"
-                placeholder="Please describe your enquiry..."
-                required
-              ></textarea>
-            </div>
-            <button type="submit" class="submit-enquiry-btn">
-              Submit Enquiry
-            </button>
-          </form>
-        </section>
       </div>
     </section>
 
@@ -428,7 +529,7 @@
       <div class="footer-content">
         <div class="footer-logo">BooIsha</div>
         <p class="footer-text">
-          Bridging India and Australia through authentic trade and commerce
+          Connecting global markets through authentic heritage trade and luxury commerce
         </p>
         <p style="opacity: 0.6; font-size: 0.9rem">
           © 2024 BooIsha. All rights reserved. | ABN: 11 762 603 033
