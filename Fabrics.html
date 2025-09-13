@@ -431,12 +431,208 @@
           <div id="active-search-filters"></div>
         </div>
       </section>
-      <!-- Products Grid -->
-      <section class="products-listing">
+      <!-- Fabric Categories Toggle -->
+      <section class="fabric-view-toggle">
+        <div class="container">
+          <div class="view-toggle-buttons">
+            <button class="toggle-btn active" id="categoryViewBtn" onclick="switchToCategories()">Category View</button>
+            <button class="toggle-btn" id="allFabricsBtn" onclick="switchToAllFabrics()">All Fabrics</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Fabric Categories Grid -->
+      <section class="fabric-categories-section" id="categoriesView">
+        <div class="container">
+          <div class="section-header">
+            <h2>Our Premium Fabric Collections</h2>
+            <p>Discover our curated selection of luxury fabrics, each collection representing the finest quality and craftsmanship from renowned mills worldwide.</p>
+          </div>
+
+          <div class="fabric-categories-grid">
+            <!-- Premium Silk Collection -->
+            <div class="fabric-category-card" onclick="openFabricCategory('silk')">
+              <div class="category-image">
+                <div class="category-overlay">
+                  <h3>Premium Silk Collection</h3>
+                  <p>Luxurious silk varieties from heritage weaves to contemporary finishes</p>
+                  <div class="fabric-count">34 Fabrics</div>
+                  <button class="explore-btn">Explore Collection →</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Organic Cotton Range -->
+            <div class="fabric-category-card" onclick="openFabricCategory('cotton')">
+              <div class="category-image cotton-bg">
+                <div class="category-overlay">
+                  <h3>Organic Cotton Range</h3>
+                  <p>Sustainable and ethically sourced cotton fabrics in premium weights</p>
+                  <div class="fabric-count">63 Fabrics</div>
+                  <button class="explore-btn">Explore Collection →</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Natural Linen & Fibers -->
+            <div class="fabric-category-card" onclick="openFabricCategory('linen')">
+              <div class="category-image linen-bg">
+                <div class="category-overlay">
+                  <h3>Natural Linen & Fibers</h3>
+                  <p>Pure linen and natural fiber blends for refined applications</p>
+                  <div class="fabric-count">26 Fabrics</div>
+                  <button class="explore-btn">Explore Collection →</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Luxury Wool & Cashmere -->
+            <div class="fabric-category-card" onclick="openFabricCategory('wool')">
+              <div class="category-image wool-bg">
+                <div class="category-overlay">
+                  <h3>Luxury Wool & Cashmere</h3>
+                  <p>Premium wool varieties including cashmere, merino, and specialty fibers</p>
+                  <div class="fabric-count">15 Fabrics</div>
+                  <button class="explore-btn">Explore Collection →</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Designer Blends -->
+            <div class="fabric-category-card" onclick="openFabricCategory('blends')">
+              <div class="category-image blend-bg">
+                <div class="category-overlay">
+                  <h3>Designer Blends</h3>
+                  <p>Innovative fabric combinations offering unique properties and aesthetics</p>
+                  <div class="fabric-count">36 Fabrics</div>
+                  <button class="explore-btn">Explore Collection →</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Heritage & Traditional -->
+            <div class="fabric-category-card" onclick="openFabricCategory('heritage')">
+              <div class="category-image heritage-bg">
+                <div class="category-overlay">
+                  <h3>Heritage & Traditional</h3>
+                  <p>Time-honored weaves and traditional techniques from master artisans</p>
+                  <div class="fabric-count">48 Fabrics</div>
+                  <button class="explore-btn">Explore Collection →</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Original Products Grid -->
+      <section class="products-listing" id="allFabricsView" style="display: none;">
         <div class="container">
           <div class="products-grid"></div>
         </div>
       </section>
+
+      <!-- Category Modal -->
+      <div class="fabric-category-modal" id="fabricCategoryModal">
+        <div class="modal-overlay" onclick="closeFabricCategory()"></div>
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 id="modalCategoryTitle">Premium Silk Collection</h2>
+            <button class="modal-close" onclick="closeFabricCategory()">×</button>
+          </div>
+
+          <div class="modal-body">
+            <div class="category-description">
+              <p id="modalCategoryDescription">Discover our exquisite selection of premium silk fabrics...</p>
+            </div>
+
+            <div class="modal-search-bar">
+              <input type="text" id="modalSearchInput" placeholder="Search within this collection..." />
+              <button class="modal-search-btn">🔍</button>
+            </div>
+
+            <div class="modal-filters">
+              <select id="modalSortFilter">
+                <option value="name">Sort by Name</option>
+                <option value="newest">Newest First</option>
+                <option value="price">Price</option>
+              </select>
+            </div>
+
+            <div class="modal-products-grid" id="modalProductsGrid">
+              <!-- Dynamic products will be loaded here -->
+            </div>
+
+            <div class="modal-pagination">
+              <button class="modal-prev-btn" onclick="modalPrevPage()">← Previous</button>
+              <span class="modal-page-info">Page 1 of 3</span>
+              <button class="modal-next-btn" onclick="modalNextPage()">Next →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fabric Enquiry Form Modal -->
+      <div class="fabric-enquiry-modal" id="fabricEnquiryModal">
+        <div class="modal-overlay" onclick="closeFabricEnquiry()"></div>
+        <div class="enquiry-modal-content">
+          <div class="enquiry-modal-header">
+            <h2>Fabric Enquiry</h2>
+            <button class="modal-close" onclick="closeFabricEnquiry()">×</button>
+          </div>
+
+          <div class="enquiry-modal-body">
+            <div class="fabric-enquiry-info">
+              <p>You're enquiring about: <strong id="enquiryFabricName">Mulberry Silk</strong></p>
+              <p>Our team will provide you with detailed information including specifications, availability, and pricing.</p>
+            </div>
+
+            <form id="fabricEnquiryForm" class="elegant-form">
+              <div class="form-group">
+                <label for="enquiry-name">Full Name</label>
+                <input type="text" id="enquiry-name" name="name" required />
+              </div>
+
+              <div class="form-group">
+                <label for="enquiry-email">Email Address</label>
+                <input type="email" id="enquiry-email" name="email" required />
+              </div>
+
+              <div class="form-group">
+                <label for="enquiry-phone">Phone Number</label>
+                <input type="tel" id="enquiry-phone" name="phone" placeholder="+61 1234567890" />
+              </div>
+
+              <div class="form-group">
+                <label for="enquiry-company">Company/Business (Optional)</label>
+                <input type="text" id="enquiry-company" name="company" placeholder="Your business name" />
+              </div>
+
+              <div class="form-group">
+                <label for="enquiry-quantity">Estimated Quantity</label>
+                <select id="enquiry-quantity" name="quantity">
+                  <option value="">Select quantity range</option>
+                  <option value="1-10">1-10 yards</option>
+                  <option value="10-50">10-50 yards</option>
+                  <option value="50-100">50-100 yards</option>
+                  <option value="100+">100+ yards</option>
+                  <option value="bulk">Bulk order (500+ yards)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="enquiry-message">Your Message</label>
+                <textarea id="enquiry-message" name="message" rows="4" placeholder="Please describe your requirements, project details, or any specific questions..." required></textarea>
+              </div>
+
+              <div class="form-actions">
+                <button type="button" class="form-cancel-btn" onclick="closeFabricEnquiry()">Cancel</button>
+                <button type="submit" class="form-submit-btn">Send Enquiry</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
 
       <section class="combined-section">
         <div class="container">
@@ -604,6 +800,256 @@
 
     <!-- Add this script to enhance your existing fabrics.js functionality -->
     <script>
+      // Fabric Category Modal Functionality
+      let currentCategory = '';
+      let currentModalPage = 1;
+      let modalItemsPerPage = 12;
+
+      const categoryData = {
+        silk: {
+          title: 'Premium Silk Collection',
+          description: 'Discover our exquisite selection of premium silk fabrics, featuring luxurious textures from heritage weaves to contemporary finishes. Each piece represents the pinnacle of silk craftsmanship.',
+          fabrics: [
+            { name: 'Mulberry Silk', category: 'silk', image: '/images/silk1.jpg' },
+            { name: 'Tussar Silk', category: 'silk', image: '/images/silk2.jpg' },
+            { name: 'Chanderi Silk', category: 'silk', image: '/images/silk3.jpg' },
+            { name: 'Banarasi Silk', category: 'silk', image: '/images/silk4.jpg' },
+            // Add more silk fabrics here
+          ]
+        },
+        cotton: {
+          title: 'Organic Cotton Range',
+          description: 'Our organic cotton collection features sustainably sourced, ethically produced fabrics in premium weights. Perfect for conscious fashion and luxury applications.',
+          fabrics: [
+            { name: 'Organic Cotton Canvas', category: 'cotton', image: '/images/cotton1.jpg' },
+            { name: 'Khadi Cotton', category: 'cotton', image: '/images/cotton2.jpg' },
+            { name: 'Handloom Cotton', category: 'cotton', image: '/images/cotton3.jpg' },
+            // Add more cotton fabrics here
+          ]
+        },
+        linen: {
+          title: 'Natural Linen & Fibers',
+          description: 'Pure linen and natural fiber blends sourced from premium mills. Our collection offers exceptional drape and durability for refined applications.',
+          fabrics: [
+            { name: 'Pure Belgian Linen', category: 'linen', image: '/images/linen1.jpg' },
+            { name: 'Hemp Fabric', category: 'linen', image: '/images/linen2.jpg' },
+            { name: 'Ramie Blend', category: 'linen', image: '/images/linen3.jpg' },
+            // Add more linen fabrics here
+          ]
+        },
+        wool: {
+          title: 'Luxury Wool & Cashmere',
+          description: 'Premium wool varieties including cashmere, merino, and specialty fibers. Each fabric represents the finest quality available from renowned mills.',
+          fabrics: [
+            { name: 'Cashmere Wool', category: 'wool', image: '/images/wool1.jpg' },
+            { name: 'Merino Wool', category: 'wool', image: '/images/wool2.jpg' },
+            { name: 'Pashmina Wool', category: 'wool', image: '/images/wool3.jpg' },
+            // Add more wool fabrics here
+          ]
+        },
+        blends: {
+          title: 'Designer Blends',
+          description: 'Innovative fabric combinations offering unique properties and aesthetics. Our designer blends push the boundaries of traditional textile design.',
+          fabrics: [
+            { name: 'Cotton-Silk Blend', category: 'blends', image: '/images/blend1.jpg' },
+            { name: 'Modal Blend', category: 'blends', image: '/images/blend2.jpg' },
+            { name: 'Tencel Blend', category: 'blends', image: '/images/blend3.jpg' },
+            // Add more blend fabrics here
+          ]
+        },
+        heritage: {
+          title: 'Heritage & Traditional',
+          description: 'Time-honored weaves and traditional techniques from master artisans. Each piece carries the legacy of generations of textile craftsmanship.',
+          fabrics: [
+            { name: 'Ikat Weave', category: 'heritage', image: '/images/heritage1.jpg' },
+            { name: 'Block Print Cotton', category: 'heritage', image: '/images/heritage2.jpg' },
+            { name: 'Ajrakh Print', category: 'heritage', image: '/images/heritage3.jpg' },
+            // Add more heritage fabrics here
+          ]
+        }
+      };
+
+      function openFabricCategory(category) {
+        currentCategory = category;
+        currentModalPage = 1;
+
+        const modal = document.getElementById('fabricCategoryModal');
+        const title = document.getElementById('modalCategoryTitle');
+        const description = document.getElementById('modalCategoryDescription');
+
+        const data = categoryData[category];
+        if (data) {
+          title.textContent = data.title;
+          description.textContent = data.description;
+
+          loadModalProducts();
+          modal.classList.add('active');
+
+          // Prevent body scroll
+          document.body.style.overflow = 'hidden';
+        }
+      }
+
+      function closeFabricCategory() {
+        const modal = document.getElementById('fabricCategoryModal');
+        modal.classList.remove('active');
+
+        // Re-enable body scroll
+        document.body.style.overflow = '';
+      }
+
+      function loadModalProducts() {
+        const data = categoryData[currentCategory];
+        if (!data) return;
+
+        const productsGrid = document.getElementById('modalProductsGrid');
+        const searchTerm = document.getElementById('modalSearchInput').value.toLowerCase();
+
+        let filteredFabrics = data.fabrics.filter(fabric =>
+          fabric.name.toLowerCase().includes(searchTerm)
+        );
+
+        const totalPages = Math.ceil(filteredFabrics.length / modalItemsPerPage);
+        const startIndex = (currentModalPage - 1) * modalItemsPerPage;
+        const endIndex = startIndex + modalItemsPerPage;
+        const currentFabrics = filteredFabrics.slice(startIndex, endIndex);
+
+        productsGrid.innerHTML = currentFabrics.map(fabric => `
+          <div class="modal-product-card">
+            <div class="modal-product-image" style="background: linear-gradient(135deg, #6d9d8c 0%, #558fcb 100%); height: 200px; border-radius: 10px; margin-bottom: 1rem; position: relative; overflow: hidden;">
+              <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.7)); color: white; padding: 1rem;">
+                <div style="font-size: 0.8rem; opacity: 0.8;">${fabric.category.toUpperCase()}</div>
+              </div>
+            </div>
+            <h4 style="margin: 0 0 0.5rem 0; color: #2c3e50;">${fabric.name}</h4>
+            <p style="color: #6c757d; margin: 0 0 1.5rem 0; font-size: 0.9rem;">Premium quality fabric</p>
+            <div style="display: flex; justify-content: center;">
+              <button class="enquire-btn" onclick="enquireAboutFabric('${fabric.name}')" style="width: 100%; padding: 10px 20px;">Enquire</button>
+            </div>
+          </div>
+        `).join('');
+
+        // Update pagination
+        document.querySelector('.modal-page-info').textContent = `Page ${currentModalPage} of ${totalPages}`;
+
+        // Update button states
+        document.querySelector('.modal-prev-btn').disabled = currentModalPage === 1;
+        document.querySelector('.modal-next-btn').disabled = currentModalPage === totalPages;
+      }
+
+      function modalPrevPage() {
+        if (currentModalPage > 1) {
+          currentModalPage--;
+          loadModalProducts();
+        }
+      }
+
+      function modalNextPage() {
+        const data = categoryData[currentCategory];
+        if (!data) return;
+
+        const totalPages = Math.ceil(data.fabrics.length / modalItemsPerPage);
+        if (currentModalPage < totalPages) {
+          currentModalPage++;
+          loadModalProducts();
+        }
+      }
+
+      function enquireAboutFabric(fabricName) {
+        // Close the category modal first
+        closeFabricCategory();
+
+        // Set the fabric name in the enquiry form
+        document.getElementById('enquiryFabricName').textContent = fabricName;
+
+        // Open the enquiry modal
+        const enquiryModal = document.getElementById('fabricEnquiryModal');
+        enquiryModal.classList.add('active');
+
+        // Prevent body scroll
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeFabricEnquiry() {
+        const enquiryModal = document.getElementById('fabricEnquiryModal');
+        enquiryModal.classList.remove('active');
+
+        // Re-enable body scroll
+        document.body.style.overflow = '';
+
+        // Reset form
+        document.getElementById('fabricEnquiryForm').reset();
+      }
+
+      // Add event listener for modal search
+      document.addEventListener('DOMContentLoaded', function() {
+        const modalSearchInput = document.getElementById('modalSearchInput');
+        const modalSearchBtn = document.querySelector('.modal-search-btn');
+
+        if (modalSearchInput) {
+          modalSearchInput.addEventListener('input', function() {
+            currentModalPage = 1;
+            loadModalProducts();
+          });
+        }
+
+        if (modalSearchBtn) {
+          modalSearchBtn.addEventListener('click', function() {
+            currentModalPage = 1;
+            loadModalProducts();
+          });
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') {
+            closeFabricCategory();
+            closeFabricEnquiry();
+          }
+        });
+
+        // Handle fabric enquiry form submission
+        const fabricEnquiryForm = document.getElementById('fabricEnquiryForm');
+        if (fabricEnquiryForm) {
+          fabricEnquiryForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Get form data
+            const formData = new FormData(this);
+            const fabricName = document.getElementById('enquiryFabricName').textContent;
+
+            // Here you would normally send the data to your backend
+            // For now, we'll show a success message
+            alert(`Thank you for your enquiry about ${fabricName}! We'll contact you within 24 hours.`);
+
+            // Close the modal and reset form
+            closeFabricEnquiry();
+          });
+        }
+      });
+
+      // View Switching Functions
+      function switchToCategories() {
+        document.getElementById('categoriesView').style.display = 'block';
+        document.getElementById('allFabricsView').style.display = 'none';
+
+        document.getElementById('categoryViewBtn').classList.add('active');
+        document.getElementById('allFabricsBtn').classList.remove('active');
+      }
+
+      function switchToAllFabrics() {
+        document.getElementById('categoriesView').style.display = 'none';
+        document.getElementById('allFabricsView').style.display = 'block';
+
+        document.getElementById('categoryViewBtn').classList.remove('active');
+        document.getElementById('allFabricsBtn').classList.add('active');
+
+        // Load the original fabric functionality
+        if (typeof renderCurrentPage === 'function') {
+          renderCurrentPage();
+        }
+      }
+
       // Integration functions to connect with existing code
       function updateExistingResultsCount(count) {
         // Update both old and new result counters
