@@ -591,14 +591,167 @@ document.addEventListener("DOMContentLoaded", () => {
 let chatOpen = false;
 let welcomeMode = true;
 
-function openWhatsApp() {
-  const phoneNumber = "61478257409";
-  const message =
-    "Hello! I'm interested in BooIsha's premium textiles and fabrics. Can you help me with more information?";
-  const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
-    message
-  )}`;
-  window.open(whatsappURL, "_blank");
+async function openWhatsApp() {
+  try {
+    // Get user's location and country code
+    const userLocation = await getUserLocation();
+    const userCountryCode = userLocation.countryCode;
+    const userCountry = userLocation.country;
+
+    // Default BooIsha number
+    const phoneNumber = "61478257409";
+
+    // Create personalized message with location info
+    const message = `Hello! I'm interested in BooIsha's premium textiles and fabrics. I'm contacting you from ${userCountry} (${userCountryCode}). Can you help me with more information?`;
+
+    // Show user their detected location and give them option to use local format
+    showWhatsAppModal(phoneNumber, message, userCountryCode, userCountry);
+
+  } catch (error) {
+    console.log('Location detection failed, using default WhatsApp link');
+    // Fallback to original functionality
+    const phoneNumber = "61478257409";
+    const message = "Hello! I'm interested in BooIsha's premium textiles and fabrics. Can you help me with more information?";
+    const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappURL, "_blank");
+  }
+}
+
+async function getUserLocation() {
+  // Try to get country from IP geolocation API
+  try {
+    const response = await fetch('https://ipapi.co/json/');
+    const data = await response.json();
+
+    return {
+      country: data.country_name,
+      countryCode: data.country_calling_code,
+      regionCode: data.country_code
+    };
+  } catch (error) {
+    console.log('IP geolocation failed, trying alternative method');
+
+    // Fallback: try different API
+    try {
+      const response = await fetch('https://api.country.is/');
+      const data = await response.json();
+
+      // Get country code from country name lookup
+      const countryCode = getCountryCallingCode(data.country);
+
+      return {
+        country: getCountryName(data.country),
+        countryCode: countryCode,
+        regionCode: data.country
+      };
+    } catch (fallbackError) {
+      throw new Error('All location detection methods failed');
+    }
+  }
+}
+
+function getCountryCallingCode(countryCode) {
+  const countryCodes = {
+    'US': '+1', 'CA': '+1', 'GB': '+44', 'AU': '+61', 'DE': '+49', 'FR': '+33',
+    'IT': '+39', 'ES': '+34', 'NL': '+31', 'BE': '+32', 'CH': '+41', 'AT': '+43',
+    'SE': '+46', 'NO': '+47', 'DK': '+45', 'FI': '+358', 'IE': '+353', 'PT': '+351',
+    'GR': '+30', 'JP': '+81', 'KR': '+82', 'CN': '+86', 'IN': '+91', 'SG': '+65',
+    'MY': '+60', 'TH': '+66', 'ID': '+62', 'PH': '+63', 'VN': '+84', 'TW': '+886',
+    'HK': '+852', 'MO': '+853', 'NZ': '+64', 'ZA': '+27', 'EG': '+20', 'SA': '+966',
+    'AE': '+971', 'TR': '+90', 'RU': '+7', 'UA': '+380', 'PL': '+48', 'CZ': '+420',
+    'SK': '+421', 'HU': '+36', 'RO': '+40', 'BG': '+359', 'HR': '+385', 'SI': '+386',
+    'LT': '+370', 'LV': '+371', 'EE': '+372', 'IS': '+354', 'MT': '+356', 'CY': '+357',
+    'LU': '+352', 'MX': '+52', 'BR': '+55', 'AR': '+54', 'CL': '+56', 'CO': '+57',
+    'PE': '+51', 'VE': '+58', 'UY': '+598', 'PY': '+595', 'BO': '+591', 'EC': '+593',
+    'GY': '+592', 'SR': '+597', 'GF': '+594'
+  };
+
+  return countryCodes[countryCode] || '+1';
+}
+
+function getCountryName(countryCode) {
+  const countryNames = {
+    'US': 'United States', 'CA': 'Canada', 'GB': 'United Kingdom', 'AU': 'Australia',
+    'DE': 'Germany', 'FR': 'France', 'IT': 'Italy', 'ES': 'Spain', 'NL': 'Netherlands',
+    'BE': 'Belgium', 'CH': 'Switzerland', 'AT': 'Austria', 'SE': 'Sweden', 'NO': 'Norway',
+    'DK': 'Denmark', 'FI': 'Finland', 'IE': 'Ireland', 'PT': 'Portugal', 'GR': 'Greece',
+    'JP': 'Japan', 'KR': 'South Korea', 'CN': 'China', 'IN': 'India', 'SG': 'Singapore',
+    'MY': 'Malaysia', 'TH': 'Thailand', 'ID': 'Indonesia', 'PH': 'Philippines',
+    'VN': 'Vietnam', 'TW': 'Taiwan', 'HK': 'Hong Kong', 'NZ': 'New Zealand',
+    'ZA': 'South Africa', 'MX': 'Mexico', 'BR': 'Brazil', 'AR': 'Argentina'
+  };
+
+  return countryNames[countryCode] || countryCode;
+}
+
+function showWhatsAppModal(phoneNumber, message, userCountryCode, userCountry) {
+  // Create modal HTML
+  const modalHTML = `
+    <div class="whatsapp-modal-overlay" id="whatsappModal">
+      <div class="whatsapp-modal">
+        <div class="whatsapp-modal-header">
+          <h3>WhatsApp Contact</h3>
+          <button class="modal-close" id="modalCloseBtn">×</button>
+        </div>
+        <div class="whatsapp-modal-content">
+          <p><strong>We detected you're in:</strong> ${userCountry} (${userCountryCode})</p>
+          <p>You can contact us on WhatsApp using:</p>
+
+          <div class="whatsapp-options">
+            <button class="whatsapp-option primary" id="whatsappBtn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.488"/>
+              </svg>
+              Chat Now (+61 478 257 409)
+            </button>
+          </div>
+
+          <div class="local-suggestion">
+            <p><small>💡 <strong>Tip:</strong> When calling from ${userCountry}, you would dial: <strong>${userCountryCode === '+61' ? '0478 257 409' : '011 61 478 257 409'}</strong></small></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Add modal to page
+  document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+  // Add event listeners
+  const whatsappBtn = document.getElementById('whatsappBtn');
+  const closeBtn = document.getElementById('modalCloseBtn');
+  const overlay = document.getElementById('whatsappModal');
+
+  if (whatsappBtn) {
+    whatsappBtn.addEventListener('click', function() {
+      console.log('WhatsApp button clicked');
+      const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+      console.log('Opening WhatsApp URL:', whatsappURL);
+      window.open(whatsappURL, "_blank");
+      closeWhatsAppModal();
+    });
+  }
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeWhatsAppModal);
+  }
+
+  // Close on overlay click
+  if (overlay) {
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) {
+        closeWhatsAppModal();
+      }
+    });
+  }
+}
+
+
+function closeWhatsAppModal() {
+  const modal = document.getElementById('whatsappModal');
+  if (modal) {
+    modal.remove();
+  }
 }
 
 function toggleChat(event) {
@@ -1362,3 +1515,94 @@ function expandSearchInterface() {
 // =================== END PREMIUM SEARCH FUNCTIONALITY ===================
 
 // =================== END CONTACT PANEL FUNCTIONALITY ===================
+
+// =================== STORY VIDEO HEIGHT MATCHING FUNCTIONALITY ===================
+
+function matchStoryVideoHeight() {
+  const storyText = document.querySelector('.story-text');
+  const storyVideo = document.querySelector('.story-video');
+
+  if (!storyText || !storyVideo) return;
+
+  // Only apply on larger screens where they're side by side
+  const mediaQuery = window.matchMedia('(min-width: 769px)');
+
+  function updateVideoHeight() {
+    if (mediaQuery.matches) {
+      // Get the title and paragraphs
+      const title = storyText.querySelector('h2');
+      const paragraphs = storyText.querySelectorAll('p');
+
+      if (paragraphs.length > 0 && title) {
+        // Calculate total height of all paragraphs only
+        let totalParagraphHeight = 0;
+        paragraphs.forEach(p => {
+          totalParagraphHeight += p.offsetHeight;
+        });
+
+        // Get the title height to use as top margin
+        const titleHeight = title.offsetHeight;
+
+        // Set the video container to match paragraph height and align with paragraphs
+        storyVideo.style.height = `${totalParagraphHeight}px`;
+        storyVideo.style.marginTop = `${titleHeight}px`;
+
+        console.log(`Story video height: ${totalParagraphHeight}px, top margin: ${titleHeight}px`);
+      }
+    } else {
+      // Reset to default for smaller screens
+      storyVideo.style.height = '';
+      storyVideo.style.marginTop = '';
+    }
+  }
+
+  // Initial update
+  updateVideoHeight();
+
+  // Update on resize
+  mediaQuery.addListener(updateVideoHeight);
+  window.addEventListener('resize', updateVideoHeight);
+
+  // Update after fonts and images load
+  window.addEventListener('load', updateVideoHeight);
+}
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', matchStoryVideoHeight);
+
+// Also run after a short delay to ensure all content is loaded
+setTimeout(matchStoryVideoHeight, 1000);
+
+// =================== END STORY VIDEO HEIGHT MATCHING FUNCTIONALITY ===================
+
+// =================== WATERMARK LOGO SCROLL FUNCTIONALITY ===================
+function initWatermarkScroll() {
+  const watermark = document.getElementById('watermarkLogo');
+  const storySection = document.querySelector('.story-section');
+
+  if (!watermark || !storySection) {
+    console.warn('Watermark or story section not found');
+    return;
+  }
+
+  function handleScroll() {
+    const storyRect = storySection.getBoundingClientRect();
+    const storyBottom = storyRect.bottom;
+
+    // Show watermark when story section has scrolled past the viewport
+    if (storyBottom <= 0) {
+      watermark.classList.add('visible');
+    } else {
+      watermark.classList.remove('visible');
+    }
+  }
+
+  // Listen for scroll events
+  window.addEventListener('scroll', handleScroll);
+
+  // Initial check
+  handleScroll();
+}
+
+// Initialize watermark scroll functionality
+document.addEventListener('DOMContentLoaded', initWatermarkScroll);

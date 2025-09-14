@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-  "build": "node scripts/build-media-manifest.mjs && echo \"Build complete\""
+  "build": "node scripts/build-media-manifests.mjs && echo \"Build complete\""
 },
   "keywords": [],
   "author": "",

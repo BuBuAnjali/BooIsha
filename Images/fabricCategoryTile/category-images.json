@@ -1,0 +1,42 @@
+{
+  "categoryFolders": {
+    "Blends": [
+      "blend fabric.jpg",
+      "blend fabric(1).jpg",
+      "blend fabric(2).jpg",
+      "blend fabric(3).jpg"
+    ],
+    "Wool": [
+      "wool.jpg"
+    ],
+    "cashmere": [
+      "cashmere fabric.jpg",
+      "cashmere fabric(1).jpg",
+      "cashmere fabric(2).jpg",
+      "highly realistic luxury wool and cashmere fabric in image.jpg",
+      "highly realistic luxury wool and cashmere fabric in image(1).jpg",
+      "highly realistic luxury wool and cashmere fabric in image(2).jpg",
+      "Luxury Wool and cashmere fabric.jpg",
+      "Luxury Wool and cashmere fabric(1).jpg",
+      "Luxury Wool and cashmere fabric(2).jpg",
+      "Luxury Wool and cashmere fabric(3).jpg"
+    ],
+    "cotton": [
+      "cotton fabric.jpg",
+      "cotton fabric(1).jpg",
+      "cotton.jpg"
+    ],
+    "jean": [
+      "jeans fabric.jpg",
+      "jeans fabric(1).jpg"
+    ],
+    "silk": [
+      "silk fabric.jpg",
+      "silk fabric(1).jpg",
+      "silk fabric(2).jpg",
+      "silk fabric(3).jpg"
+    ]
+  },
+  "totalCategories": 6,
+  "totalImages": 24
+}

@@ -9,9 +9,9 @@
 
 .hamburger span {
   display: block;
-  height: 3px;
+  height: 1px;
   width: 100%;
-  background: #333;
+  background: #1d72a0;
   border-radius: 2px;
   transition: all 0.3s ease;
 }
@@ -39,16 +39,16 @@
 }
 
 .menu-toggle {
-  position: absolute;
-  left: 10%;
-  top: 25%;
-  transform: translateY(-50%);
+  position: fixed;
+  left: 15px;
+  top: 20px;
+  transform: none;
   padding: 10px;
   cursor: pointer;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
   transition: all 0.3s ease;
   z-index: 1002;
-  background: white;
+  background: linear-gradient(transparent, rgba(151, 217, 232, 0.8));
   border-radius: 8px;
 }
 
@@ -134,6 +134,42 @@
   opacity: 1;
 }
 
+/* ===== SIDE MENU FILTER ===== */
+.side-menu-filter {
+  padding: 15px 20px;
+  border-bottom: 2px solid #e0e0e0;
+  background: #f8f9fa;
+}
+
+.side-menu-filter label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.side-filter-select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.side-filter-select:hover {
+  border-color: #4f8293;
+}
+
+.side-filter-select:focus {
+  outline: none;
+  border-color: #4f8293;
+  box-shadow: 0 0 0 2px rgba(79, 130, 147, 0.1);
+}
+
 /* ===== FABRIC CATEGORIES ===== */
 .fabric-category {
   border-bottom: 1px solid #eee;
@@ -198,7 +234,7 @@
 }
 
 .fabric-count {
-  background: linear-gradient(135deg, #7bbed0 0%, #4b78a2 100%);
+  background: linear-gradient(transparent, rgba(151, 217, 232, 0.8));
   color: white;
   padding: 2px 8px;
   border-radius: 12px;
@@ -229,7 +265,7 @@
   content: '';
   position: absolute;
   bottom: -2px;
-  left: 50%;
+  left: 40%;
   width: 0;
   height: 1.5px;
   background: rgb(0, 195, 255);
@@ -242,8 +278,44 @@
 }
 
 .breadcrumb a:hover::before {
+  width: 85%;
+}
+
+
+.nav-menu a span::before {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 0;
+  height: 2.5px;
+  background: rgb(0, 195, 255);
+  transition: width 0.7s ease;
+  transform: translateX(-50%);
+}
+
+.nav-menu a:hover {
+  color: #508ea1;
+  text-shadow: white;
+  background: transparent;
+}
+
+.nav-menu a:hover span::before {
   width: 100%;
 }
+
+.nav-menu a:not(:last-child):not(.nav-dropdown a)::after {
+  content: "/";
+  margin: 0 0.5rem;
+  text-decoration: none;
+  display: inline-block;
+  pointer-events: none;
+}
+
+
+
+
+
 
 /* ===== HERO SECTION ===== */
 .textiles-hero {
@@ -363,7 +435,7 @@
   justify-content: center;
   margin-bottom: 40px;
   margin-left: 0;
-  padding: 0 20px;
+  padding: 0 70px 0 20px; /* Added left padding to avoid hamburger overlap */
 }
 
 .search-input-wrapper {
@@ -399,7 +471,7 @@
   transform: translateY(-50%);
   background: linear-gradient(135deg, #6d9d8c 0%, #558fcb 100%);
   border: none;
-  padding: 6px 10px;
+  padding: 8px;
   border-radius: 50px;
   cursor: pointer;
   color: white;
@@ -407,6 +479,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  min-width: 32px;
+  min-height: 32px;
 }
 
 .search-button:hover {
@@ -729,35 +803,37 @@
   justify-content: center;
 }
 
-.category-image::before {
+/* .category-image::before {
   content: "Coming Soon";
   position: absolute;
-  top: 15px;
-  left: 15px;
-  background: rgba(0, 0, 0, 0.3);
-  color: rgba(255, 255, 255, 0.8);
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 500;
+  top: 12px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.7);
+  color: rgba(255, 255, 255, 0.95);
+  padding: 6px 12px;
+  border-radius: 15px;
+  font-size: 0.75rem;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  z-index: 2;
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
-  opacity: 0.7;
-}
+  z-index: 3;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  opacity: 0.9;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+} */
 
 .category-overlay {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(transparent, rgba(151, 217, 232, 0.8));
-  color: rgb(24, 22, 22);
+  background: none;
+  color: white;
   padding: 2rem 2rem 2rem;
   transform: translateY(20px);
   transition: all 0.4s ease;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 .fabric-category-card:hover .category-overlay {
@@ -768,11 +844,11 @@
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
-  background: (transparent, rgba(151, 217, 232, 0.8));
-  color: #000000;
+  background: none;
+  color: white;
   padding: 8px 16px;
   border-radius: 8px;
-  text-shadow: none;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 .category-overlay p {
@@ -791,7 +867,7 @@
 }
 
 .explore-btn {
-  background: linear-gradient(135deg, #6d9d8c 0%, #558fcb 100%);
+  background: linear-gradient(transparent, rgba(76, 111, 119, 0.8));
   color: white;
   border: none;
   padding: 12px 24px;
@@ -1145,332 +1221,6 @@
 }
 
 /* ===== RESPONSIVE DESIGN ===== */
-
-/* Large Desktop (1200px+) */
-@media (min-width: 1200px) {
-  .fabric-categories-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2.5rem;
-  }
-
-  .fabric-category-card {
-    height: 280px;
-  }
-}
-
-/* Desktop (1024px - 1199px) */
-@media (max-width: 1199px) and (min-width: 1024px) {
-  .fabric-categories-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
-  }
-
-  .fabric-category-card {
-    height: 260px;
-  }
-}
-
-/* Tablet (769px - 1023px) */
-@media (max-width: 1023px) and (min-width: 769px) {
-  .fabric-categories-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-  }
-
-  .fabric-category-card {
-    height: 240px;
-  }
-
-  .section-header h2 {
-    font-size: 2.2rem;
-  }
-
-  .view-toggle-buttons {
-    gap: 0.8rem;
-  }
-
-  .toggle-btn {
-    padding: 10px 20px;
-    font-size: 0.9rem;
-  }
-
-  .search-row {
-    margin-left: 20px;
-  }
-
-  .search-input-wrapper {
-    width: 500px;
-  }
-
-  .combined-content {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-  }
-
-  .footer-content {
-    text-align: left;
-    padding-left: 0;
-    margin-top: 2rem;
-    padding-top: 2rem;
-    border-top: 1px solid #dee2e6;
-  }
-
-  .cta-content h2 {
-    font-size: 1.8rem;
-  }
-
-  .cta-buttons {
-    justify-content: flex-start;
-  }
-}
-
-/* Mobile Large (481px - 768px) */
-@media (max-width: 768px) {
-  .fabric-categories-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-
-  .fabric-category-card {
-    height: 220px;
-  }
-
-  .section-header h2 {
-    font-size: 2rem;
-  }
-
-  .section-header p {
-    font-size: 1rem;
-  }
-
-  .modal-content {
-    width: 95%;
-    margin: 1rem;
-  }
-
-  .modal-header {
-    padding: 1.5rem;
-  }
-
-  .modal-body {
-    padding: 1.5rem;
-  }
-
-  .modal-products-grid {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1rem;
-  }
-
-  .view-toggle-buttons {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .toggle-btn {
-    width: 100%;
-    max-width: 300px;
-  }
-
-  .side-menu {
-    width: 300px;
-    left: -300px;
-  }
-
-  .search-row {
-    margin-left: 0;
-    margin-bottom: 20px;
-  }
-
-  .search-input-wrapper {
-    width: 100%;
-  }
-
-  .filter-bar-content {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-    margin-left: 0;
-  }
-
-  .filter-group {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 5px;
-  }
-
-  .filter-select {
-    width: 100%;
-  }
-
-  .results-count {
-    margin-left: 0;
-    text-align: center;
-    margin-top: 10px;
-  }
-
-  .textiles-hero {
-    padding: 60px 20px 40px;
-    min-height: 350px;
-  }
-
-  .textiles-hero h1 {
-    font-size: 1.8rem;
-  }
-
-  .textiles-hero p {
-    font-size: 1rem;
-  }
-
-  .products-listing .products-grid {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 15px;
-  }
-
-  .product-footer {
-    flex-direction: column;
-    gap: 15px;
-    align-items: stretch;
-  }
-
-  .enquire-btn {
-    width: 100%;
-    padding: 10px;
-    font-size: 0.9rem;
-  }
-}
-
-/* Mobile Medium (400px - 480px) */
-@media (max-width: 480px) {
-  .fabric-category-card {
-    height: 200px;
-  }
-
-  .section-header h2 {
-    font-size: 1.8rem;
-  }
-
-  .section-header p {
-    font-size: 0.9rem;
-  }
-
-  .modal-products-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .category-overlay {
-    padding: 1.5rem 1rem 1rem;
-  }
-
-  .category-overlay h3 {
-    font-size: 1.3rem;
-    padding: 6px 12px;
-  }
-
-  .explore-btn {
-    padding: 10px 20px;
-    font-size: 0.85rem;
-  }
-
-  .breadcrumb {
-    margin-left: 0;
-    justify-content: center;
-  }
-
-  .textiles-hero {
-    padding: 40px 15px 30px;
-    min-height: 300px;
-  }
-
-  .products-listing .products-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .search-button {
-    right: 5px;
-    padding: 5px 8px;
-  }
-
-  .combined-content {
-    gap: 2rem;
-  }
-
-  .cta-buttons {
-    flex-direction: column;
-    gap: 0.8rem;
-  }
-
-  .cta-btn {
-    width: 100%;
-    text-align: center;
-    padding: 12px 20px;
-  }
-}
-
-/* Mobile Small (320px - 399px) */
-@media (max-width: 399px) {
-  .fabric-category-card {
-    height: 180px;
-  }
-
-  .section-header h2 {
-    font-size: 1.6rem;
-  }
-
-  .category-overlay h3 {
-    font-size: 1.2rem;
-  }
-
-  .category-overlay p {
-    font-size: 0.9rem;
-  }
-
-  .fabric-count {
-    font-size: 0.8rem;
-  }
-
-  .modal-header {
-    padding: 1rem;
-  }
-
-  .modal-body {
-    padding: 1rem;
-  }
-}
-
-/* Mobile Extra Small (240px - 319px) */
-@media (max-width: 319px) {
-  .fabric-categories-section {
-    padding: 2rem 0;
-  }
-
-  .fabric-category-card {
-    height: 160px;
-  }
-
-  .section-header h2 {
-    font-size: 1.4rem;
-  }
-
-  .section-header p {
-    font-size: 0.8rem;
-  }
-
-  .category-overlay {
-    padding: 1rem 0.5rem 0.5rem;
-  }
-
-  .category-overlay h3 {
-    font-size: 1.1rem;
-    padding: 4px 8px;
-  }
-
-  .explore-btn {
-    padding: 8px 16px;
-    font-size: 0.8rem;
-  }
-}
 
 /* ===== COMBINED SECTION ===== */
 .combined-section {
@@ -1934,16 +1684,214 @@ body.dark-theme .popular-search-tag:hover {
   color: white;
 }
 
-/* ===== RESPONSIVE DESIGN - CONSOLIDATED ===== */
+/* ===== AMAZON-STYLE MOBILE LAYOUT ===== */
 
-/* Large Desktop (1200px+) - Already defined above */
+/* Hide bottom search on larger screens */
+@media (min-width: 751px) {
+  .bottom-search-row {
+    display: none !important;
+  }
+}
 
-/* Desktop (1024px - 1199px) - Already defined above */
+/* Mobile-first: Sticky bottom filter bar for small screens (250px - 750px) */
+@media (max-width: 750px) {
+  /* Hamburger menu repositioning for mobile */
+  .menu-toggle {
+    position: fixed;
+    left: 10px;
+    top: 15px;
+    z-index: 1003;
+    padding: 8px;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    background: white;
+  }
 
-/* Tablet (769px - 1023px) - Consolidated with above and enhanced */
-@media (max-width: 1023px) {
+  /* Move filter section to bottom as sticky */
+  .filter-section {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: white;
+    border-top: 2px solid #e0e0e0;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+    padding: 15px 10px 10px;
+    margin: 0;
+  }
+
+  /* Adjust main content to account for sticky bottom filter */
+  .main-content {
+    margin-bottom: 120px; /* Space for sticky bottom filter */
+  }
+
+  /* Compact filter layout */
   .search-row {
-    margin-left: 20px;
+    display: none; /* Hide search from top, will be in bottom sticky */
+  }
+
+  /* Compact bottom filter bar */
+  .filter-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* Search in bottom sticky bar */
+  .bottom-search-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+  }
+
+  .bottom-search-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .bottom-search-input {
+    width: 100%;
+    padding: 10px 35px 10px 12px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    outline: none;
+    background: #f8f9fa;
+  }
+
+  .bottom-search-button {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: linear-gradient(135deg, #6d9d8c 0%, #558fcb 100%);
+    border: none;
+    padding: 4px 8px;
+    border-radius: 15px;
+    cursor: pointer;
+    color: white;
+  }
+
+  /* Compact filter controls */
+  .filter-bar-content {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 0 5px;
+  }
+
+  .filter-group {
+    flex-shrink: 0;
+    min-width: max-content;
+  }
+
+  .filter-group label {
+    display: none; /* Hide labels on mobile */
+  }
+
+  .filter-select {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+    border-radius: 15px;
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+  }
+
+  .clear-all-filters {
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    border-radius: 15px;
+    flex-shrink: 0;
+  }
+
+  .results-count {
+    display: none; /* Hide on mobile to save space */
+  }
+
+  /* Side menu adjustments */
+  .side-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    max-height: 100vh;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 1001;
+  }
+
+  .side-menu.active {
+    transform: translateX(0);
+  }
+
+  /* Ensure content doesn't scroll behind sticky bottom bar */
+  body {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+
+  /* Prevent horizontal overflow */
+  .container {
+    overflow-x: hidden;
+  }
+}
+
+/* ===== CONSOLIDATED RESPONSIVE DESIGN ===== */
+
+/* Large Desktop (1200px+) */
+@media (min-width: 1200px) {
+  .fabric-categories-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+  }
+
+  .fabric-category-card {
+    height: 280px;
+  }
+}
+
+/* Desktop (1024px - 1199px) */
+@media (max-width: 1199px) and (min-width: 1024px) {
+  .fabric-categories-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+
+  .fabric-category-card {
+    height: 260px;
+  }
+}
+
+/* Tablet (769px - 1023px) */
+@media (max-width: 1023px) and (min-width: 769px) {
+  .fabric-categories-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .fabric-category-card {
+    height: 240px;
+  }
+
+  .section-header h2 {
+    font-size: 2.2rem;
+  }
+
+  .view-toggle-buttons {
+    gap: 0.8rem;
+  }
+
+  .toggle-btn {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+
+  .search-row {
+    padding: 0 70px 0 40px; /* Adjusted for hamburger menu */
   }
 
   .search-input-wrapper {
@@ -1972,7 +1920,7 @@ body.dark-theme .popular-search-tag:hover {
   }
 }
 
-/* Center breadcrumb on smaller tablets */
+/* Center breadcrumb on smaller tablets and mobile */
 @media (max-width: 800px) {
   .breadcrumb {
     margin-left: 0;
@@ -1982,15 +1930,60 @@ body.dark-theme .popular-search-tag:hover {
   }
 }
 
-/* Mobile Large (481px - 768px) - Enhanced from previous definitions */
+/* Mobile Large (481px - 768px) */
 @media (max-width: 768px) {
+  .fabric-categories-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .fabric-category-card {
+    height: 220px;
+  }
+
+  .section-header h2 {
+    font-size: 2rem;
+  }
+
+  .section-header p {
+    font-size: 1rem;
+  }
+
+  .modal-content {
+    width: 95%;
+    margin: 1rem;
+  }
+
+  .modal-header {
+    padding: 1.5rem;
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+  }
+
+  .modal-products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+
+  .view-toggle-buttons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .toggle-btn {
+    width: 100%;
+    max-width: 300px;
+  }
+
   .side-menu {
     width: 300px;
     left: -300px;
   }
 
   .search-row {
-    margin-left: 0;
+    padding: 0 70px 0 20px; /* Maintain hamburger spacing */
     margin-bottom: 20px;
   }
 
@@ -2118,8 +2111,39 @@ body.dark-theme .popular-search-tag:hover {
   }
 }
 
-/* Mobile Medium (400px - 480px) - Enhanced from previous definitions */
+/* Mobile Medium (320px - 480px) */
 @media (max-width: 480px) {
+  .fabric-category-card {
+    height: 200px;
+  }
+
+  .section-header h2 {
+    font-size: 1.8rem;
+  }
+
+  .section-header p {
+    font-size: 0.9rem;
+  }
+
+  .modal-products-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .category-overlay {
+    padding: 1.5rem 1rem 1rem;
+  }
+
+  .category-overlay h3 {
+    font-size: 1.3rem;
+    padding: 6px 12px;
+  }
+
+  .explore-btn {
+    padding: 10px 20px;
+    font-size: 0.85rem;
+  }
+
   .side-menu {
     width: 280px;
     left: -280px;
@@ -2152,8 +2176,7 @@ body.dark-theme .popular-search-tag:hover {
   }
 
   .search-row {
-    margin-left: 0;
-    padding: 0 12px;
+    padding: 0 70px 0 15px; /* Adjusted for fixed hamburger */
   }
 
   .search-input-wrapper {
@@ -2253,7 +2276,7 @@ body.dark-theme .popular-search-tag:hover {
   .breadcrumb {
     font-size: 0.75rem;
     gap: 4px;
-    justify-content: flex-start;
+    justify-content: center;
   }
 
   .no-results-title {
@@ -2269,21 +2292,56 @@ body.dark-theme .popular-search-tag:hover {
     font-size: 11px;
     padding: 4px 8px;
   }
+
+  .combined-content {
+    gap: 2rem;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .cta-btn {
+    width: 100%;
+    text-align: center;
+    padding: 12px 20px;
+  }
 }
 
-/* Mobile Small (320px - 399px) - Enhanced from previous definitions */
-@media (max-width: 320px) {
+/* Mobile Small (250px - 399px) */
+@media (max-width: 399px) {
+  .fabric-category-card {
+    height: 180px;
+  }
+
+  .section-header h2 {
+    font-size: 1.6rem;
+  }
+
+  .category-overlay h3 {
+    font-size: 1.2rem;
+  }
+
+  .category-overlay p {
+    font-size: 0.9rem;
+  }
+
+  .fabric-count {
+    font-size: 0.8rem;
+  }
+
+  .modal-header {
+    padding: 1rem;
+  }
+
+  .modal-body {
+    padding: 1rem;
+  }
+
   .side-menu {
     width: 260px;
     left: -260px;
-  }
-
-  .textiles-hero h1 {
-    font-size: 1.3rem;
-  }
-
-  .textiles-hero p {
-    font-size: 0.85rem;
   }
 
   .menu-header {
@@ -2323,79 +2381,362 @@ body.dark-theme .popular-search-tag:hover {
   }
 }
 
-/* ===== HAMBURGER & SEARCH BAR POSITIONING FOR SMALL SCREENS (250px - 800px) ===== */
-@media (max-width: 800px) and (min-width: 250px) {
-  /* Adjust hamburger menu position for better alignment with search bar */
-  .menu-toggle {
-    left: 5%;
-    top: 20%;
-    padding: 8px;
-  }
+/* Specific breakpoint adjustments */
 
-  /* Reduce search bar width to make room for hamburger */
+/* 950px - 1050px */
+@media (max-width: 1050px) and (min-width: 950px) {
   .search-input-wrapper {
-    width: calc(100% - 100px);
-    max-width: 450px;
-    margin-right: 20px;
-  }
-
-  /* Adjust search row spacing */
-  .search-row {
-    padding: 0 15px;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 15px;
+    width: 550px;
   }
 }
 
-/* Further adjustments for very small screens (250px - 480px) */
-@media (max-width: 480px) and (min-width: 250px) {
+/* 850px - 950px */
+@media (max-width: 950px) and (min-width: 850px) {
+  .search-input-wrapper {
+    width: 500px;
+  }
+}
+
+/* 750px - 850px */
+@media (max-width: 850px) and (min-width: 750px) {
+  .search-input-wrapper {
+    width: 450px;
+  }
+}
+
+/* 560px - 750px */
+@media (max-width: 750px) and (min-width: 560px) {
+  .bottom-search-input {
+    padding: 12px 40px 12px 15px;
+    font-size: 15px;
+  }
+
+  .main-content {
+    margin-bottom: 140px;
+  }
+}
+
+/* 550px - 560px */
+@media (max-width: 560px) and (min-width: 550px) {
+  .bottom-search-input {
+    padding: 11px 38px 11px 14px;
+    font-size: 14px;
+  }
+
+  .filter-select {
+    padding: 7px 12px;
+    font-size: 0.85rem;
+  }
+}
+
+/* 450px - 550px */
+@media (max-width: 550px) and (min-width: 450px) {
+  .bottom-search-input {
+    padding: 10px 35px 10px 12px;
+    font-size: 14px;
+  }
+
+  .filter-bar-content {
+    gap: 8px;
+  }
+}
+
+/* 350px - 450px */
+@media (max-width: 450px) and (min-width: 350px) {
+  .bottom-search-input {
+    padding: 9px 32px 9px 11px;
+    font-size: 13px;
+  }
+
+  .filter-select {
+    padding: 5px 8px;
+    font-size: 0.75rem;
+  }
+
   .menu-toggle {
-    left: 3%;
-    top: 15%;
+    left: 8px;
+    top: 12px;
     padding: 6px;
   }
-
-  .search-input-wrapper {
-    width: calc(100% - 80px);
-    max-width: 350px;
-  }
-
-  .search-row {
-    padding: 0 10px;
-    gap: 10px;
-  }
-
-  .hamburger {
-    width: 20px;
-    height: 15px;
-  }
 }
 
-/* Ultra small screens (250px - 350px) */
-@media (max-width: 350px) and (min-width: 250px) {
+/* 250px - 350px */
+@media (max-width: 350px) and (min-width: 240px) {
+
+  .marquee-section {
+    height:25px;
+  }
+
+  .marquee-content {
+    font-size: 0.55rem;
+  }
+  .bottom-search-input {
+    padding: 8px 30px 8px 10px;
+    font-size: 12px;
+  }
+
+  .bottom-search-button {
+    right: 3px
+  }
+
+  .filter-section {
+    padding: 12px 8px 8px;
+  }
+
+  .filter-bar-content {
+    gap: 6px;
+    padding: 0 2px;
+  }
+
+  .filter-select {
+    padding: 4px 6px;
+    font-size: 0.7rem;
+  }
+
+  .clear-all-filters {
+    padding: 4px 8px;
+    font-size: 0.65rem;
+  }
+
   .menu-toggle {
-    left: 2%;
-    top: 12%;
+    left: 15px;
+    top: 35px;
     padding: 5px;
   }
 
-  .search-input-wrapper {
-    width: calc(100% - 70px);
-    max-width: 280px;
+  .hamburger {
+  width: 12px;
+  height: 9px;
+}
+
+  .main-content {
+    margin-bottom: 110px;
+  }
+}
+
+/* Extra Small Screens (below 250px) */
+@media (max-width: 249px) {
+  /* Contact bar stays sticky at top */
+  .contact-bar {
+    position: sticky !important;
+    top: 0 !important;
+    margin: 0 !important;
+    padding: 4px 0 !important;
+    border: none !important;
+    height: 20px !important; /* Set a specific height */
+    z-index: 1002 !important;
   }
 
-  .search-row {
-    padding: 0 8px;
-    gap: 8px;
+  /* Navigation sticks right below contact bar */
+  nav {
+    position: sticky !important;
+    top: 20px !important; /* Stick right below contact bar height */
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    z-index: 1001 !important;
+  }
+
+  /* Remove any gap between them */
+  .contact-bar + nav {
+    margin-top: -1px !important; /* Pull nav up slightly to eliminate gap */
+  }
+
+  /* Force remove any body margins that might cause gaps */
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Remove any potential container margins */
+  .container {
+    margin: 0 auto !important;
+    padding: 0 10px !important;
+  }
+
+  .nav-container {
+    padding: 8px 10px;
+    margin-top: -2px !important; /* Pull nav closer to contact bar */
+  }
+
+  /* Additional gap elimination */
+  .contact-bar-content {
+    margin: 0 !important;
+    padding: 4px 10px !important;
+  }
+
+  /* Force adjacency */
+  nav {
+    transform: translateY(-1px) !important; /* Move nav up slightly */
+  }
+
+  /* Remove any default margins from navigation elements */
+  .logo-container,
+  .breadcrumb {
+    margin: 0 !important;
+  }
+
+  /* Compact the logo area */
+  .logo-link {
+    gap: 4px !important;
+  }
+
+  /* Hamburger positioning for very small screens */
+  .menu-toggle {
+    left: 5px;
+    top: 8px;
+    padding: 4px;
   }
 
   .hamburger {
-    width: 18px;
-    height: 13px;
+    width: 10px;
+    height: 8px;
   }
 
-  .hamburger span {
-    height: 2px;
+  /* Hero section adjustments */
+  .textiles-hero {
+    padding: 30px 10px 20px;
+    min-height: 250px;
+  }
+
+  .textiles-hero h1 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .textiles-hero p {
+    font-size: 0.8rem;
+  }
+
+  /* Bottom filter adjustments */
+  .bottom-search-input {
+    padding: 6px 25px 6px 8px;
+    font-size: 10px;
+  }
+
+  .bottom-search-button {
+    right: 2px;
+    padding: 3px 6px;
+  }
+
+  .filter-section {
+    padding: 8px 5px 5px;
+  }
+
+  .filter-select {
+    padding: 3px 5px;
+    font-size: 0.65rem;
+  }
+
+  .clear-all-filters {
+    padding: 3px 6px;
+    font-size: 0.6rem;
+  }
+
+  .main-content {
+    margin-bottom: 100px;
+  }
+
+  /* Marquee section */
+  .marquee-section {
+    height: 20px;
+    padding: 4px 0;
+  }
+
+  .marquee-content {
+    font-size: 0.5rem;
+  }
+
+  /* Breadcrumb adjustments */
+  .breadcrumb {
+    font-size: 0.7rem;
+    gap: 2px;
+  }
+
+  /* Logo adjustments */
+  .logo {
+    font-size: 1.2rem;
+  }
+
+  .logo-img {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+/* Mobile Extra Small (250px - 319px) */
+@media (max-width: 319px) and (min-width: 250px) {
+  .fabric-categories-section {
+    padding: 2rem 0;
+  }
+
+  .fabric-category-card {
+    height: 160px;
+  }
+
+  .section-header h2 {
+    font-size: 1.4rem;
+  }
+
+  .section-header p {
+    font-size: 0.8rem;
+  }
+
+  .category-overlay {
+    padding: 1rem 0.5rem 0.5rem;
+  }
+
+  .category-overlay h3 {
+    font-size: 1.1rem;
+    padding: 4px 8px;
+  }
+
+  .explore-btn {
+    padding: 8px 16px;
+    font-size: 0.8rem;
+  }
+
+  .textiles-hero h1 {
+    font-size: 1.3rem;
+  }
+
+  .textiles-hero p {
+    font-size: 0.85rem;
+  }
+
+  .bottom-search-input {
+    padding: 7px 28px 7px 9px;
+    font-size: 11px;
+  }
+
+  .filter-section {
+    padding: 10px 5px 6px;
+  }
+
+  /* Maintain sticky behavior while fixing gap for 250-319px screens */
+  .contact-bar {
+    position: sticky !important;
+    top: 0 !important;
+    margin: 0 !important;
+    padding: 6px 0 !important;
+    height: 24px !important; /* Set specific height */
+    z-index: 1002 !important;
+  }
+
+  nav {
+    position: sticky !important;
+    top: 24px !important; /* Stick right below contact bar */
+    margin: 0 !important;
+    z-index: 1001 !important;
+  }
+
+  /* Remove gap between contact bar and nav */
+  .contact-bar + nav {
+    margin-top: -1px !important;
+  }
+
+  .nav-container {
+    margin-top: 0 !important;
+    padding-top: 0.5rem !important;
   }
 }
