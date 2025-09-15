@@ -1028,8 +1028,8 @@ function initializeHeroBackgroundCycling() {
   // Set initial background
   updateHeroBackground();
 
-  // Change background every 3 seconds
-  setInterval(updateHeroBackground, 3000);
+  // Change background every 5 seconds
+  setInterval(updateHeroBackground, 5000);
 }
 
 // Initialize when page loads
