@@ -742,19 +742,12 @@ section[id]::before {
   opacity: 0;
   transform: translateY(20px);
   transition: all 0.5s ease;
-  width: 100%;
-  min-height: 400px;
-  padding: 2rem;
-  box-sizing: border-box;
 }
 
 .expanded-search-interface.show {
   opacity: 1;
   transform: translateY(0);
   display: block !important;
-  visibility: visible;
-  position: relative;
-  z-index: 1000;
 }
 
 .main-search-container {
@@ -856,15 +849,11 @@ section[id]::before {
   overflow: hidden;
   transition: all 0.4s ease;
   opacity: 0;
-  margin-top: 2rem;
 }
 
 .search-results-container.show {
-  max-height: 600px;
+  max-height: 300px;
   opacity: 1;
-  visibility: visible;
-  z-index: 1000;
-  overflow-y: auto;
 }
 
 .results-grid {
@@ -3350,7 +3339,7 @@ body.dark-theme .panel-chat-input {
 
   .nav-menu a:not(:last-child):not(.nav-dropdown a)::after {
     content: "•";
-    margin: 0 0.2rem;
+    margin: 0 0.3rem;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
@@ -3360,10 +3349,29 @@ body.dark-theme .panel-chat-input {
     opacity: 0.6;
     vertical-align: middle;
     line-height: 1;
+    position: relative;
+    top: -1px;
   }
 
   .nav-dropdown::after {
     display: none;
+  }
+
+  /* Theme arrow faces down and menu appears below for all screens under 800px */
+  .arrow-toggle svg {
+    transform: rotate(90deg);
+  }
+
+  .theme-menu {
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+    top: 100%;
+    right: auto;
+    margin-top: 5px;
+  }
+
+  .theme-menu.show {
+    transform: translateX(-50%) translateY(0);
   }
 
   /* Fixed dropdown behavior for mobile */
@@ -3494,7 +3502,7 @@ body.dark-theme .panel-chat-input {
 
   .nav-menu a:not(:last-child):not(.nav-dropdown a)::after {
     content: "•";
-    margin: 0 0.2rem;
+    margin: 0 0.35rem;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
@@ -3504,6 +3512,8 @@ body.dark-theme .panel-chat-input {
     opacity: 0.6;
     vertical-align: middle;
     line-height: 1;
+    position: relative;
+    top: -1px;
   }
 
   .logo-link {
@@ -4150,7 +4160,7 @@ body.dark-theme .panel-chat-input {
   }
 
   .chat-toggle:hover {
-    transform: scale(0.1);
+    transform: scale(1.1);
   }
 
   /* Hide avatar since we're using SVG icon */
@@ -4302,7 +4312,7 @@ body.dark-theme .panel-chat-input {
   .nav-menu a { padding: 4px 6px; }
   .nav-menu a:not(:last-child):not(.nav-dropdown a)::after {
     content: "•";
-    margin: 0 0.15rem;
+    margin: 0 0.25rem;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
@@ -4312,6 +4322,8 @@ body.dark-theme .panel-chat-input {
     opacity: 0.5;
     vertical-align: middle;
     line-height: 1;
+    position: relative;
+    top: -1px;
   }
   .nav-dropdown::after { display: none; }
   .dropdown-content { display: none; height: auto; overflow: visible; }
@@ -4413,6 +4425,39 @@ body.dark-theme .panel-chat-input {
 
   .theme-toggle-container .arrow-toggle {
     padding: 2px;
+  }
+
+  /* Make arrow face down and position menu below */
+  .arrow-toggle svg {
+    transform: rotate(90deg);
+  }
+
+  /* Position theme menu below the arrow */
+  .theme-menu {
+    min-width: 60px;
+    min-height: 60px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+    top: 100%;
+    right: auto;
+    margin-top: 5px;
+  }
+
+  .theme-menu.show {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .theme-btn {
+    padding: 8px 10px;
+    min-height: 40px;
+    min-width: 50px;
+  }
+
+  .theme-icon-light,
+  .theme-icon-dark {
+    width: 20px !important;
+    height: 20px !important;
+    background-size: contain !important;
   }
 
   /* Main content adjustments - prioritizing 239px values for image grid */

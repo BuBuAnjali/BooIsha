@@ -20,7 +20,11 @@
         <!-- Category Filter at top of side menu -->
         <div class="side-menu-filter">
           <label for="side-category-filter">Filter Categories:</label>
-          <select id="side-category-filter" class="side-filter-select" onchange="filterSideMenuByCategory()">
+          <select
+            id="side-category-filter"
+            class="side-filter-select"
+            onchange="filterSideMenuByCategory()"
+          >
             <option value="">All Categories</option>
             <option value="Silk">Silk Fabrics</option>
             <option value="Cotton">Cotton Fabrics</option>
@@ -307,7 +311,7 @@
         <div class="logo-container">
           <a href="index.html" class="logo-link">
             <img
-              src="/Images/BooIshaLogo.png"
+              src="/Images/BooIsha.png"
               alt="BooIsha Logo"
               class="logo-img"
             />
@@ -360,17 +364,15 @@
       <!-- Update your existing filter section to include sort options -->
       <section class="filter-section">
         <div class="container">
-          <!-- Keep your existing menu toggle -->
-          <div class="menu-toggle" onclick="toggleSideMenu()">
-            <div class="hamburger">
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-          </div>
-
           <!-- Search Row -->
           <div class="search-row">
+            <div class="menu-toggle desktop-menu-toggle" onclick="toggleSideMenu()">
+              <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
             <div class="search-input-wrapper">
               <input
                 type="text"
@@ -380,70 +382,138 @@
                 onkeypress="if(event.key==='Enter') handleSearch()"
               />
               <button class="search-button" onclick="handleSearch()">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-                  <circle cx="11" cy="11" r="8"/>
-                  <path d="m21 21-4.35-4.35"/>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="white"
+                  stroke-width="2"
+                >
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.35-4.35" />
                 </svg>
               </button>
               <div id="search-suggestions"></div>
             </div>
+            <button
+              class="search-reset-external"
+              onclick="resetSearch()"
+              title="Reset search"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+                <path d="M21 3v5h-5" />
+                <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+                <path d="M3 21v-5h5" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Bottom Search Row (visible on small screens) -->
+          <div class="bottom-search-row">
+            <div class="menu-toggle" onclick="toggleSideMenu()">
+              <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+            <div class="bottom-search-wrapper">
+              <input
+                type="text"
+                class="bottom-search-input"
+                id="bottom-search-input"
+                placeholder="Search fabrics..."
+                autocomplete="off"
+                onkeypress="if(event.key==='Enter') handleBottomSearch()"
+              />
+              <button
+                class="bottom-search-button"
+                onclick="handleBottomSearch()"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.35-4.35" />
+                </svg>
+              </button>
+            </div>
+            <button
+              class="bottom-search-reset-external"
+              onclick="resetSearch()"
+              title="Reset search"
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+                <path d="M21 3v5h-5" />
+                <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+                <path d="M3 21v-5h5" />
+              </svg>
+            </button>
           </div>
 
           <!-- Filter Row -->
           <div class="filter-bar">
             <div class="filter-bar-content">
-              <div class="filter-group">
-                <label>Category:</label>
-                <select
-                  class="filter-select search-filter-select"
-                  onchange="handleCategoryFilter()"
-                >
-                  <option>All Categories</option>
-                  <option>Silk</option>
-                  <option>Cotton</option>
-                  <option>Linen</option>
-                  <option>Wool</option>
-                  <option>Cashmere</option>
-                  <option>Blended Fabrics</option>
-                  <option>Specialty</option>
-                  <option value="100% Silk">100% Silk</option>
-                  <option value="100% Cotton">100% Cotton</option>
-                  <option value="100% Linen">100% Linen</option>
-                  <option value="Organic">Organic</option>
-                  <option value="Handloom">Handloom</option>
-                  <option value="Blend">Blended</option>
-                </select>
-              </div>
+              <select
+                id="fabric-category-filter"
+                class="filter-select search-filter-select"
+                onchange="handleCategoryFilter()"
+              >
+                <option>All Categories</option>
+                <option>Silk</option>
+                <option>Cotton</option>
+                <option>Linen</option>
+                <option>Wool</option>
+                <option>Cashmere</option>
+                <option>Blended Fabrics</option>
+                <option>Specialty</option>
+                <option value="100% Silk">100% Silk</option>
+                <option value="100% Cotton">100% Cotton</option>
+                <option value="100% Linen">100% Linen</option>
+                <option value="Organic">Organic</option>
+                <option value="Handloom">Handloom</option>
+                <option value="Blend">Blended</option>
+              </select>
 
-              <div class="filter-group">
-                <label>Sort by:</label>
-                <select
-                  class="filter-select search-filter-select"
-                  onchange="sortSearchResults(this.value)"
-                >
-                  <option value="relevance">Relevance</option>
-                  <option value="name-asc">Name A-Z</option>
-                  <option value="name-desc">Name Z-A</option>
-                  <option value="newest">Newest First</option>
-                  <option value="category">Category</option>
-                </select>
-              </div>
+              <select
+                class="filter-select search-filter-select"
+                onchange="sortSearchResults(this.value)"
+              >
+                <option value="relevance">Relevance</option>
+                <option value="name-asc">Name A-Z</option>
+                <option value="name-desc">Name Z-A</option>
+                <option value="newest">Newest First</option>
+                <option value="category">Category</option>
+              </select>
 
-              <div class="filter-group">
-                <button
-                  class="clear-all-filters"
-                  onclick="clearAllSearchFilters()"
-                >
-                  Clear All
-                </button>
-              </div>
-
-              <!-- Single results count -->
-              <div class="results-count">
-                <span id="unified-results-display"
-                  >Showing 12 of 192 products</span
-                >
-              </div>
+              <button
+                class="clear-all-filters"
+                onclick="clearAllSearchFilters()"
+              >
+                Clear All
+              </button>
             </div>
           </div>
 
@@ -456,8 +526,26 @@
       <section class="fabric-view-toggle">
         <div class="container">
           <div class="view-toggle-buttons">
-            <button class="toggle-btn active" id="categoryViewBtn" onclick="switchToCategories()">Category View</button>
-            <button class="toggle-btn" id="allFabricsBtn" onclick="switchToAllFabrics()">All Fabrics</button>
+            <button
+              class="toggle-btn active"
+              id="categoryViewBtn"
+              onclick="switchToCategories()"
+            >
+              Category View
+            </button>
+            <button
+              class="toggle-btn"
+              id="allFabricsBtn"
+              onclick="switchToAllFabrics()"
+            >
+              All Fabrics
+            </button>
+            <!-- Results count moved here -->
+            <div class="results-count">
+              <span id="unified-results-display"
+                >Showing 12 of 192 products</span
+              >
+            </div>
           </div>
         </div>
       </section>
@@ -467,16 +555,26 @@
         <div class="container">
           <div class="section-header">
             <h2>Our Premium Fabric Collections</h2>
-            <p>Discover our curated selection of luxury fabrics, each collection representing the finest quality and craftsmanship from renowned mills worldwide.</p>
+            <p>
+              Discover our curated selection of luxury fabrics, each collection
+              representing the finest quality and craftsmanship from renowned
+              mills worldwide.
+            </p>
           </div>
 
           <div class="fabric-categories-grid">
             <!-- Premium Silk Collection -->
-            <div class="fabric-category-card" onclick="openFabricCategory('silk')">
+            <div
+              class="fabric-category-card"
+              onclick="openFabricCategory('silk')"
+            >
               <div class="category-image">
                 <div class="category-overlay">
                   <h3>Premium Silk Collection</h3>
-                  <p>Luxurious silk varieties from heritage weaves to contemporary finishes</p>
+                  <p>
+                    Luxurious silk varieties from heritage weaves to
+                    contemporary finishes
+                  </p>
                   <div class="fabric-count">34 Fabrics</div>
                   <button class="explore-btn">Explore Collection →</button>
                 </div>
@@ -484,11 +582,17 @@
             </div>
 
             <!-- Organic Cotton Range -->
-            <div class="fabric-category-card" onclick="openFabricCategory('cotton')">
+            <div
+              class="fabric-category-card"
+              onclick="openFabricCategory('cotton')"
+            >
               <div class="category-image cotton-bg">
                 <div class="category-overlay">
                   <h3>Organic Cotton Range</h3>
-                  <p>Sustainable and ethically sourced cotton fabrics in premium weights</p>
+                  <p>
+                    Sustainable and ethically sourced cotton fabrics in premium
+                    weights
+                  </p>
                   <div class="fabric-count">63 Fabrics</div>
                   <button class="explore-btn">Explore Collection →</button>
                 </div>
@@ -496,11 +600,16 @@
             </div>
 
             <!-- Natural Linen & Fibers -->
-            <div class="fabric-category-card" onclick="openFabricCategory('linen')">
+            <div
+              class="fabric-category-card"
+              onclick="openFabricCategory('linen')"
+            >
               <div class="category-image linen-bg">
                 <div class="category-overlay">
                   <h3>Natural Linen & Fibers</h3>
-                  <p>Pure linen and natural fiber blends for refined applications</p>
+                  <p>
+                    Pure linen and natural fiber blends for refined applications
+                  </p>
                   <div class="fabric-count">26 Fabrics</div>
                   <button class="explore-btn">Explore Collection →</button>
                 </div>
@@ -508,11 +617,17 @@
             </div>
 
             <!-- Luxury Wool -->
-            <div class="fabric-category-card" onclick="openFabricCategory('wool')">
+            <div
+              class="fabric-category-card"
+              onclick="openFabricCategory('wool')"
+            >
               <div class="category-image wool-bg">
                 <div class="category-overlay">
                   <h3>Luxury Wool Collection</h3>
-                  <p>Premium wool varieties including merino and specialty wool fibers</p>
+                  <p>
+                    Premium wool varieties including merino and specialty wool
+                    fibers
+                  </p>
                   <div class="fabric-count">8 Fabrics</div>
                   <button class="explore-btn">Explore Collection →</button>
                 </div>
@@ -520,11 +635,17 @@
             </div>
 
             <!-- Premium Cashmere -->
-            <div class="fabric-category-card" onclick="openFabricCategory('cashmere')">
+            <div
+              class="fabric-category-card"
+              onclick="openFabricCategory('cashmere')"
+            >
               <div class="category-image cashmere-bg">
                 <div class="category-overlay">
                   <h3>Premium Cashmere Collection</h3>
-                  <p>Exquisite cashmere fabrics for the most luxurious applications</p>
+                  <p>
+                    Exquisite cashmere fabrics for the most luxurious
+                    applications
+                  </p>
                   <div class="fabric-count">7 Fabrics</div>
                   <button class="explore-btn">Explore Collection →</button>
                 </div>
@@ -532,11 +653,17 @@
             </div>
 
             <!-- Designer Blends -->
-            <div class="fabric-category-card" onclick="openFabricCategory('blends')">
+            <div
+              class="fabric-category-card"
+              onclick="openFabricCategory('blends')"
+            >
               <div class="category-image blend-bg">
                 <div class="category-overlay">
                   <h3>Designer Blends</h3>
-                  <p>Innovative fabric combinations offering unique properties and aesthetics</p>
+                  <p>
+                    Innovative fabric combinations offering unique properties
+                    and aesthetics
+                  </p>
                   <div class="fabric-count">36 Fabrics</div>
                   <button class="explore-btn">Explore Collection →</button>
                 </div>
@@ -544,11 +671,17 @@
             </div>
 
             <!-- Heritage & Traditional -->
-            <div class="fabric-category-card" onclick="openFabricCategory('heritage')">
+            <div
+              class="fabric-category-card"
+              onclick="openFabricCategory('heritage')"
+            >
               <div class="category-image heritage-bg">
                 <div class="category-overlay">
                   <h3>Heritage & Traditional</h3>
-                  <p>Time-honored weaves and traditional techniques from master artisans</p>
+                  <p>
+                    Time-honored weaves and traditional techniques from master
+                    artisans
+                  </p>
                   <div class="fabric-count">48 Fabrics</div>
                   <button class="explore-btn">Explore Collection →</button>
                 </div>
@@ -559,7 +692,11 @@
       </section>
 
       <!-- Products Grid -->
-      <section class="products-listing" id="allFabricsView" style="display: none;">
+      <section
+        class="products-listing"
+        id="allFabricsView"
+        style="display: none"
+      >
         <div class="container">
           <div class="products-grid"></div>
         </div>
@@ -603,16 +740,24 @@
         <div class="modal-content">
           <div class="modal-header">
             <h2 id="modalCategoryTitle">Premium Silk Collection</h2>
-            <button class="modal-close" onclick="closeFabricCategory()">×</button>
+            <button class="modal-close" onclick="closeFabricCategory()">
+              ×
+            </button>
           </div>
 
           <div class="modal-body">
             <div class="category-description">
-              <p id="modalCategoryDescription">Discover our exquisite selection of premium silk fabrics...</p>
+              <p id="modalCategoryDescription">
+                Discover our exquisite selection of premium silk fabrics...
+              </p>
             </div>
 
             <div class="modal-search-bar">
-              <input type="text" id="modalSearchInput" placeholder="Search within this collection..." />
+              <input
+                type="text"
+                id="modalSearchInput"
+                placeholder="Search within this collection..."
+              />
               <button class="modal-search-btn">🔍</button>
             </div>
 
@@ -629,9 +774,13 @@
             </div>
 
             <div class="modal-pagination">
-              <button class="modal-prev-btn" onclick="modalPrevPage()">← Previous</button>
+              <button class="modal-prev-btn" onclick="modalPrevPage()">
+                ← Previous
+              </button>
               <span class="modal-page-info">Page 1 of 3</span>
-              <button class="modal-next-btn" onclick="modalNextPage()">Next →</button>
+              <button class="modal-next-btn" onclick="modalNextPage()">
+                Next →
+              </button>
             </div>
           </div>
         </div>
@@ -643,13 +792,21 @@
         <div class="enquiry-modal-content">
           <div class="enquiry-modal-header">
             <h2>Fabric Enquiry</h2>
-            <button class="modal-close" onclick="closeFabricEnquiry()">×</button>
+            <button class="modal-close" onclick="closeFabricEnquiry()">
+              ×
+            </button>
           </div>
 
           <div class="enquiry-modal-body">
             <div class="fabric-enquiry-info">
-              <p>You're enquiring about: <strong id="enquiryFabricName">Mulberry Silk</strong></p>
-              <p>Our team will provide you with detailed information including specifications, availability, and pricing.</p>
+              <p>
+                You're enquiring about:
+                <strong id="enquiryFabricName">Mulberry Silk</strong>
+              </p>
+              <p>
+                Our team will provide you with detailed information including
+                specifications, availability, and pricing.
+              </p>
             </div>
 
             <form id="fabricEnquiryForm" class="elegant-form">
@@ -665,12 +822,22 @@
 
               <div class="form-group">
                 <label for="enquiry-phone">Phone Number</label>
-                <input type="tel" id="enquiry-phone" name="phone" placeholder="+61 1234567890" />
+                <input
+                  type="tel"
+                  id="enquiry-phone"
+                  name="phone"
+                  placeholder="+61 1234567890"
+                />
               </div>
 
               <div class="form-group">
                 <label for="enquiry-company">Company/Business (Optional)</label>
-                <input type="text" id="enquiry-company" name="company" placeholder="Your business name" />
+                <input
+                  type="text"
+                  id="enquiry-company"
+                  name="company"
+                  placeholder="Your business name"
+                />
               </div>
 
               <div class="form-group">
@@ -687,12 +854,26 @@
 
               <div class="form-group">
                 <label for="enquiry-message">Your Message</label>
-                <textarea id="enquiry-message" name="message" rows="4" placeholder="Please describe your requirements, project details, or any specific questions..." required></textarea>
+                <textarea
+                  id="enquiry-message"
+                  name="message"
+                  rows="4"
+                  placeholder="Please describe your requirements, project details, or any specific questions..."
+                  required
+                ></textarea>
               </div>
 
               <div class="form-actions">
-                <button type="button" class="form-cancel-btn" onclick="closeFabricEnquiry()">Cancel</button>
-                <button type="submit" class="form-submit-btn">Send Enquiry</button>
+                <button
+                  type="button"
+                  class="form-cancel-btn"
+                  onclick="closeFabricEnquiry()"
+                >
+                  Cancel
+                </button>
+                <button type="submit" class="form-submit-btn">
+                  Send Enquiry
+                </button>
               </div>
             </form>
           </div>
@@ -702,7 +883,7 @@
     <div class="chat-widget">
       <button class="chat-toggle" onclick="toggleChat()">
         <div class="chat-avatar">
-          <img src="/Images/BooIshaLogo.png" alt="BooIsha Logo" />
+          <img src="/Images/BooIsha.png" alt="BooIsha Logo" />
         </div>
         <div class="chat-toggle-content">
           <div class="chat-toggle-title">BooIsha Assistant</div>
@@ -718,13 +899,49 @@
         <!-- Welcome Screen - NAB Style -->
         <div class="welcome-screen">
           <div class="welcome-header">
+            <!-- Navigation buttons for small screens -->
+            <div class="chat-nav-buttons">
+              <button
+                class="nav-back-btn"
+                onclick="toggleChat()"
+                title="Back to previous page"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="m15 18-6-6 6-6" />
+                </svg>
+              </button>
+              <button
+                class="nav-home-btn"
+                onclick="window.location.href='index.html'"
+                title="Go to home page"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                  <polyline points="9,22 9,12 15,12 15,22" />
+                </svg>
+              </button>
+            </div>
             <h3>BooIsha Messaging</h3>
             <button class="welcome-close" onclick="toggleChat()">×</button>
           </div>
 
           <div class="welcome-content">
             <div class="welcome-illustration">
-              <img src="/Images/BooIshaLogo.png" alt="BooIsha Assistant" />
+              <img src="/Images/BooIsha.png" alt="BooIsha Assistant" />
             </div>
 
             <h2 class="welcome-title">Message us</h2>
@@ -748,6 +965,42 @@
         <!-- Chat Interface -->
         <div class="chat-interface">
           <div class="chat-header">
+            <!-- Navigation buttons for small screens -->
+            <div class="chat-nav-buttons">
+              <button
+                class="nav-back-btn"
+                onclick="toggleChat()"
+                title="Back to previous page"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="m15 18-6-6 6-6" />
+                </svg>
+              </button>
+              <button
+                class="nav-home-btn"
+                onclick="window.location.href='index.html'"
+                title="Go to home page"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                  <polyline points="9,22 9,12 15,12 15,22" />
+                </svg>
+              </button>
+            </div>
             <div>
               <h3>BooIsha Support</h3>
               <div class="chat-status">
@@ -843,7 +1096,6 @@
         if (searchCount) searchCount.textContent = count;
       }
 
-
       // Quick search function for popular terms
       function quickSearch(term) {
         document.getElementById("fabric-search-input").value = term;
@@ -896,42 +1148,42 @@
   `;
       }
 
-
       // Side menu category filtering function
       function filterSideMenuByCategory() {
-        const filterSelect = document.getElementById('side-category-filter');
+        const filterSelect = document.getElementById("side-category-filter");
         const selectedCategory = filterSelect.value;
-        const allCategories = document.querySelectorAll('.fabric-category');
+        const allCategories = document.querySelectorAll(".fabric-category");
 
         // Filter side menu categories
-        allCategories.forEach(category => {
-          const categoryHeader = category.querySelector('.category-header h3');
+        allCategories.forEach((category) => {
+          const categoryHeader = category.querySelector(".category-header h3");
           const categoryName = categoryHeader.textContent;
 
           if (!selectedCategory || categoryName.includes(selectedCategory)) {
-            category.style.display = 'block';
+            category.style.display = "block";
           } else {
-            category.style.display = 'none';
+            category.style.display = "none";
           }
         });
 
         // Also sync with main filter if category is selected
         if (selectedCategory) {
-          const mainFilterSelect = document.querySelector('.filter-select');
+          const mainFilterSelect = document.querySelector(".filter-select");
           if (mainFilterSelect) {
             // Map side menu values to main filter values
             const categoryMapping = {
-              'Silk': 'Silk',
-              'Cotton': 'Cotton',
-              'Linen': 'Linen',
-              'Wool': 'Wool',
-              'Blended': 'Blended Fabrics',
-              'Specialty': 'Specialty'
+              Silk: "Silk",
+              Cotton: "Cotton",
+              Linen: "Linen",
+              Wool: "Wool",
+              Blended: "Blended Fabrics",
+              Specialty: "Specialty",
             };
 
-            mainFilterSelect.value = categoryMapping[selectedCategory] || selectedCategory;
+            mainFilterSelect.value =
+              categoryMapping[selectedCategory] || selectedCategory;
             // Trigger the main filter function
-            if (typeof filterProductsByCategory === 'function') {
+            if (typeof filterProductsByCategory === "function") {
               filterProductsByCategory();
             }
           }
@@ -940,57 +1192,65 @@
 
       // Universal search and filter handlers
       function handleSearch() {
-        const categoriesView = document.getElementById('categoriesView');
-        const allFabricsView = document.getElementById('allFabricsView');
+        const categoriesView = document.getElementById("categoriesView");
+        const allFabricsView = document.getElementById("allFabricsView");
 
-        if (categoriesView.style.display !== 'none') {
+        if (categoriesView.style.display !== "none") {
           // In category view - search category tiles
           searchCategoryTiles();
-        } else if (allFabricsView.style.display !== 'none') {
+        } else if (allFabricsView.style.display !== "none") {
           // In all fabrics view - use original search
-          if (typeof performFabricSearch === 'function') {
+          if (typeof performFabricSearch === "function") {
             performFabricSearch();
           }
         }
       }
 
       function handleCategoryFilter() {
-        const categoriesView = document.getElementById('categoriesView');
-        const allFabricsView = document.getElementById('allFabricsView');
+        const categoriesView = document.getElementById("categoriesView");
+        const allFabricsView = document.getElementById("allFabricsView");
 
-        if (categoriesView.style.display !== 'none') {
+        if (categoriesView.style.display !== "none") {
           // In category view - filter category tiles
           filterCategoryTiles();
-        } else if (allFabricsView.style.display !== 'none') {
+        } else if (allFabricsView.style.display !== "none") {
           // In all fabrics view - use original filter
-          if (typeof filterProductsByCategory === 'function') {
+          if (typeof filterProductsByCategory === "function") {
             filterProductsByCategory();
           }
         }
       }
 
       // Category tiles search and filter functions
-      function searchCategoryTiles(query = '') {
-        const searchInput = document.getElementById('fabric-search-input');
+      function searchCategoryTiles(query = "") {
+        const searchInput = document.getElementById("fabric-search-input");
         const searchQuery = query || searchInput.value.toLowerCase().trim();
-        const categoryCards = document.querySelectorAll('.fabric-category-card');
+        const categoryCards = document.querySelectorAll(
+          ".fabric-category-card"
+        );
         let visibleCount = 0;
         const totalCount = categoryCards.length;
 
-        categoryCards.forEach(card => {
-          const title = card.querySelector('h3').textContent.toLowerCase();
-          const description = card.querySelector('p').textContent.toLowerCase();
+        categoryCards.forEach((card) => {
+          const title = card.querySelector("h3").textContent.toLowerCase();
+          const description = card.querySelector("p").textContent.toLowerCase();
 
-          if (!searchQuery || title.includes(searchQuery) || description.includes(searchQuery)) {
-            card.style.display = 'block';
+          if (
+            !searchQuery ||
+            title.includes(searchQuery) ||
+            description.includes(searchQuery)
+          ) {
+            card.style.display = "block";
             visibleCount++;
           } else {
-            card.style.display = 'none';
+            card.style.display = "none";
           }
         });
 
         // Update the results count
-        const resultsDisplay = document.getElementById('unified-results-display');
+        const resultsDisplay = document.getElementById(
+          "unified-results-display"
+        );
         if (resultsDisplay) {
           resultsDisplay.textContent = `Showing ${visibleCount} of ${totalCount} fabric categories`;
         }
@@ -998,60 +1258,69 @@
 
       function filterCategoryTiles() {
         // Only run if we're in category view
-        const categoriesView = document.getElementById('categoriesView');
-        if (!categoriesView || categoriesView.style.display === 'none') {
+        const categoriesView = document.getElementById("categoriesView");
+        if (!categoriesView || categoriesView.style.display === "none") {
           return;
         }
 
-        const filterSelect = document.querySelector('.filter-select');
+        const filterSelect = document.querySelector(".filter-select");
         if (!filterSelect) return;
 
         const selectedCategory = filterSelect.value;
-        const categoryCards = document.querySelectorAll('.fabric-category-card');
+        const categoryCards = document.querySelectorAll(
+          ".fabric-category-card"
+        );
         let visibleCount = 0;
         const totalCount = categoryCards.length;
 
         // Simplified category mapping based on actual titles
         const categoryMap = {
-          'Silk': ['silk'],
-          '100% Silk': ['silk'],
-          'Cotton': ['cotton'],
-          '100% Cotton': ['cotton'],
-          'Linen': ['linen', 'fiber'],
-          '100% Linen': ['linen', 'fiber'],
-          'Wool': ['wool'],
-          'Cashmere': ['cashmere'],
-          'Blended Fabrics': ['blend', 'designer'],
-          'Blend': ['blend', 'designer'],
-          'Specialty': ['heritage', 'traditional'],
-          'Organic': ['organic'],
-          'Handloom': ['heritage', 'traditional']
+          Silk: ["silk"],
+          "100% Silk": ["silk"],
+          Cotton: ["cotton"],
+          "100% Cotton": ["cotton"],
+          Linen: ["linen", "fiber"],
+          "100% Linen": ["linen", "fiber"],
+          Wool: ["wool"],
+          Cashmere: ["cashmere"],
+          "Blended Fabrics": ["blend", "designer"],
+          Blend: ["blend", "designer"],
+          Specialty: ["heritage", "traditional"],
+          Organic: ["organic"],
+          Handloom: ["heritage", "traditional"],
         };
 
-        categoryCards.forEach(card => {
-          const h3Element = card.querySelector('h3');
+        categoryCards.forEach((card) => {
+          const h3Element = card.querySelector("h3");
           if (!h3Element) return;
 
           const title = h3Element.textContent.toLowerCase();
           let shouldShow = false;
 
-          if (selectedCategory === 'All Categories' || selectedCategory === '') {
+          if (
+            selectedCategory === "All Categories" ||
+            selectedCategory === ""
+          ) {
             shouldShow = true;
           } else {
-            const keywords = categoryMap[selectedCategory] || [selectedCategory.toLowerCase()];
-            shouldShow = keywords.some(keyword => title.includes(keyword));
+            const keywords = categoryMap[selectedCategory] || [
+              selectedCategory.toLowerCase(),
+            ];
+            shouldShow = keywords.some((keyword) => title.includes(keyword));
           }
 
           if (shouldShow) {
-            card.style.display = 'block';
+            card.style.display = "block";
             visibleCount++;
           } else {
-            card.style.display = 'none';
+            card.style.display = "none";
           }
         });
 
         // Update the results count only for category view
-        const resultsDisplay = document.getElementById('unified-results-display');
+        const resultsDisplay = document.getElementById(
+          "unified-results-display"
+        );
         if (resultsDisplay) {
           resultsDisplay.textContent = `Showing ${visibleCount} of ${totalCount} fabric categories`;
         }
@@ -1059,111 +1328,127 @@
 
       // View Switching Functions
       function switchToCategories() {
-        document.getElementById('categoriesView').style.display = 'block';
-        document.getElementById('allFabricsView').style.display = 'none';
+        document.getElementById("categoriesView").style.display = "block";
+        document.getElementById("allFabricsView").style.display = "none";
 
-        document.getElementById('categoryViewBtn').classList.add('active');
-        document.getElementById('allFabricsBtn').classList.remove('active');
+        document.getElementById("categoryViewBtn").classList.add("active");
+        document.getElementById("allFabricsBtn").classList.remove("active");
+
+        // Remove pagination - categories don't need pagination
+        const existingPagination = document.querySelector(".pagination");
+        if (existingPagination) {
+          existingPagination.remove();
+        }
 
         // Update count display for category view
-        const categoryCards = document.querySelectorAll('.fabric-category-card');
-        const resultsDisplay = document.getElementById('unified-results-display');
+        const categoryCards = document.querySelectorAll(
+          ".fabric-category-card"
+        );
+        const resultsDisplay = document.getElementById(
+          "unified-results-display"
+        );
         if (resultsDisplay && categoryCards.length > 0) {
           resultsDisplay.textContent = `Showing ${categoryCards.length} of ${categoryCards.length} fabric categories`;
         }
       }
 
       function switchToAllFabrics() {
-        document.getElementById('categoriesView').style.display = 'none';
-        document.getElementById('allFabricsView').style.display = 'block';
+        document.getElementById("categoriesView").style.display = "none";
+        document.getElementById("allFabricsView").style.display = "block";
 
-        document.getElementById('categoryViewBtn').classList.remove('active');
-        document.getElementById('allFabricsBtn').classList.add('active');
+        document.getElementById("categoryViewBtn").classList.remove("active");
+        document.getElementById("allFabricsBtn").classList.add("active");
 
         // Load the fabric products when switching to all fabrics view
-        if (typeof renderCurrentPage === 'function') {
+        if (typeof renderCurrentPage === "function") {
           renderCurrentPage();
         }
       }
 
       // Clear All Filters Function
       function clearAllSearchFilters() {
-        console.log('Clear All button clicked - starting reset');
+        console.log("Clear All button clicked - starting reset");
 
         // 1. FORCE clear search input
-        const searchInput = document.getElementById('fabric-search-input');
-        console.log('Search input found:', searchInput);
+        const searchInput = document.getElementById("fabric-search-input");
+        console.log("Search input found:", searchInput);
         if (searchInput) {
-          searchInput.value = '';
-          searchInput.innerHTML = '';
-          console.log('Search input cleared, value now:', searchInput.value);
+          searchInput.value = "";
+          searchInput.innerHTML = "";
+          console.log("Search input cleared, value now:", searchInput.value);
         }
 
         // 2. FORCE reset all dropdowns
-        const allSelects = document.querySelectorAll('select');
-        console.log('Found selects:', allSelects.length);
+        const allSelects = document.querySelectorAll("select");
+        console.log("Found selects:", allSelects.length);
         allSelects.forEach((select, index) => {
           console.log(`Resetting select ${index}:`, select.className);
           select.selectedIndex = 0;
-          select.value = select.options[0] ? select.options[0].value : '';
+          select.value = select.options[0] ? select.options[0].value : "";
         });
 
         // 3. Show all category tiles
-        const categoryCards = document.querySelectorAll('.fabric-category-card');
-        console.log('Found category cards:', categoryCards.length);
-        categoryCards.forEach(card => {
-          card.style.display = 'block';
+        const categoryCards = document.querySelectorAll(
+          ".fabric-category-card"
+        );
+        console.log("Found category cards:", categoryCards.length);
+        categoryCards.forEach((card) => {
+          card.style.display = "block";
         });
 
         // 4. Show all fabric products (call external function)
-        console.log('Calling external functions...');
-        if (typeof window.activeSearchFilters !== 'undefined') {
+        console.log("Calling external functions...");
+        if (typeof window.activeSearchFilters !== "undefined") {
           window.activeSearchFilters = {};
-          console.log('Reset activeSearchFilters');
+          console.log("Reset activeSearchFilters");
         }
 
         // Call ALL possible external reset functions
         try {
-          if (typeof window.clearAllSearchFilters === 'function') {
+          if (typeof window.clearAllSearchFilters === "function") {
             window.clearAllSearchFilters();
-            console.log('Called window.clearAllSearchFilters');
+            console.log("Called window.clearAllSearchFilters");
           }
         } catch (e) {
-          console.log('Error calling external clearAllSearchFilters:', e);
+          console.log("Error calling external clearAllSearchFilters:", e);
         }
 
         try {
-          if (typeof window.renderCurrentPage === 'function') {
+          if (typeof window.renderCurrentPage === "function") {
             window.renderCurrentPage();
-            console.log('Called renderCurrentPage');
+            console.log("Called renderCurrentPage");
           }
         } catch (e) {
-          console.log('Error calling renderCurrentPage:', e);
+          console.log("Error calling renderCurrentPage:", e);
         }
 
         // 5. Force update results display
-        const resultsDisplay = document.getElementById('unified-results-display');
-        console.log('Results display found:', resultsDisplay);
+        const resultsDisplay = document.getElementById(
+          "unified-results-display"
+        );
+        console.log("Results display found:", resultsDisplay);
         if (resultsDisplay) {
-          const categoriesView = document.getElementById('categoriesView');
-          if (categoriesView && categoriesView.style.display !== 'none') {
+          const categoriesView = document.getElementById("categoriesView");
+          if (categoriesView && categoriesView.style.display !== "none") {
             // Category view
             resultsDisplay.textContent = `Showing ${categoryCards.length} of ${categoryCards.length} fabric categories`;
-            console.log('Updated category view count');
+            console.log("Updated category view count");
           } else {
             // Fabric view - force reset to all products
-            resultsDisplay.textContent = 'Showing 12 of 192 products';
-            console.log('Updated fabric view count');
+            resultsDisplay.textContent = "Showing 12 of 192 products";
+            console.log("Updated fabric view count");
           }
         }
 
-        console.log('Clear All function completed');
+        console.log("Clear All function completed");
       }
 
       // Load category folders from JSON manifest
       async function loadCategoryFolders() {
         try {
-          const res = await fetch("/Images/fabricCategoryTile/category-images.json");
+          const res = await fetch(
+            "/Images/fabricCategoryTile/category-images.json"
+          );
           if (!res.ok) throw new Error("Cannot fetch category-images.json");
           const data = await res.json();
           return data.categoryFolders || {};
@@ -1176,24 +1461,39 @@
       // Apply background images to category tiles from matching folders
       async function applyCategoryBackgrounds() {
         const categoryFolders = await loadCategoryFolders();
-        const categoryCards = document.querySelectorAll('.fabric-category-card');
+        const categoryCards = document.querySelectorAll(
+          ".fabric-category-card"
+        );
 
-        categoryCards.forEach(card => {
-          const h3Element = card.querySelector('h3');
+        categoryCards.forEach((card) => {
+          const h3Element = card.querySelector("h3");
           if (!h3Element) return;
 
           const categoryTitle = h3Element.textContent.toLowerCase();
 
           // Extract key words from title for matching
           const keywords = [];
-          if (categoryTitle.includes('silk')) keywords.push('silk');
-          if (categoryTitle.includes('cotton')) keywords.push('cotton');
-          if (categoryTitle.includes('linen') || categoryTitle.includes('fiber')) keywords.push('linen');
-          if (categoryTitle.includes('wool')) keywords.push('wool');
-          if (categoryTitle.includes('cashmere')) keywords.push('cashmere');
-          if (categoryTitle.includes('blend') || categoryTitle.includes('designer')) keywords.push('blend', 'blends');
-          if (categoryTitle.includes('heritage') || categoryTitle.includes('traditional')) keywords.push('heritage', 'traditional');
-          if (categoryTitle.includes('jean') || categoryTitle.includes('denim')) keywords.push('jean', 'denim');
+          if (categoryTitle.includes("silk")) keywords.push("silk");
+          if (categoryTitle.includes("cotton")) keywords.push("cotton");
+          if (
+            categoryTitle.includes("linen") ||
+            categoryTitle.includes("fiber")
+          )
+            keywords.push("linen");
+          if (categoryTitle.includes("wool")) keywords.push("wool");
+          if (categoryTitle.includes("cashmere")) keywords.push("cashmere");
+          if (
+            categoryTitle.includes("blend") ||
+            categoryTitle.includes("designer")
+          )
+            keywords.push("blend", "blends");
+          if (
+            categoryTitle.includes("heritage") ||
+            categoryTitle.includes("traditional")
+          )
+            keywords.push("heritage", "traditional");
+          if (categoryTitle.includes("jean") || categoryTitle.includes("denim"))
+            keywords.push("jean", "denim");
 
           // Find matching folder based on keywords
           let matchingFolder = null;
@@ -1203,8 +1503,10 @@
             const folderNameLower = folderName.toLowerCase();
 
             // Check if any keyword matches the folder name
-            const folderMatches = keywords.some(keyword =>
-              folderNameLower.includes(keyword) || keyword.includes(folderNameLower)
+            const folderMatches = keywords.some(
+              (keyword) =>
+                folderNameLower.includes(keyword) ||
+                keyword.includes(folderNameLower)
             );
 
             if (folderMatches && images.length > 0) {
@@ -1217,56 +1519,77 @@
 
           // Apply background image if found
           if (matchingImage) {
-            const categoryImage = card.querySelector('.category-image');
+            const categoryImage = card.querySelector(".category-image");
             if (categoryImage) {
               categoryImage.style.backgroundImage = `url('${matchingImage}')`;
-              categoryImage.style.backgroundSize = 'cover';
-              categoryImage.style.backgroundPosition = 'center';
-              categoryImage.style.backgroundRepeat = 'no-repeat';
-              console.log(`Applied image ${matchingImage} to category: ${categoryTitle}`);
+              categoryImage.style.backgroundSize = "cover";
+              categoryImage.style.backgroundPosition = "center";
+              categoryImage.style.backgroundRepeat = "no-repeat";
+              console.log(
+                `Applied image ${matchingImage} to category: ${categoryTitle}`
+              );
             }
           } else {
-            console.log(`No matching folder found for category: ${categoryTitle}`, 'Available folders:', Object.keys(categoryFolders));
+            console.log(
+              `No matching folder found for category: ${categoryTitle}`,
+              "Available folders:",
+              Object.keys(categoryFolders)
+            );
           }
         });
       }
 
       // Function to handle URL parameters and apply filters
       function handleUrlParameters() {
+        console.log("🚀 handleUrlParameters function called!");
         const urlParams = new URLSearchParams(window.location.search);
-        const searchQuery = urlParams.get('search');
-        const categoryFilter = urlParams.get('category');
+        const searchQuery = urlParams.get("search");
+        const categoryFilter = urlParams.get("category");
 
-        console.log('🔍 URL Parameters - Search:', searchQuery, 'Category:', categoryFilter);
+        console.log(
+          "🔍 URL Parameters - Search:",
+          searchQuery,
+          "Category:",
+          categoryFilter
+        );
 
         // If there's a search query, apply it to the search input
         if (searchQuery) {
-          const searchInput = document.getElementById('fabric-search-input');
+          const searchInput = document.getElementById("fabric-search-input");
           if (searchInput) {
             searchInput.value = searchQuery;
-            console.log('✅ Applied search query:', searchQuery);
+            console.log("✅ Applied search query:", searchQuery);
           }
         }
 
         // If there's a category filter, apply it
         if (categoryFilter) {
-          console.log('✅ Applying category filter:', categoryFilter);
+          console.log("✅ Applying category filter:", categoryFilter);
 
           // Map URL category to dropdown value
           const categoryMapping = {
-            'fabrics': 'Premium Fabrics',
-            'lace': 'Lace',
-            'silk': 'Silk',
-            'cotton': 'Cotton'
+            linen: "Linen",
+            lace: "Lace",
+            silk: "Silk",
+            cotton: "Cotton",
           };
 
           const dropdownValue = categoryMapping[categoryFilter];
           if (dropdownValue) {
             // Set the category dropdown
-            const categoryDropdown = document.getElementById('fabric-category-filter');
+            const categoryDropdown = document.getElementById(
+              "fabric-category-filter"
+            );
             if (categoryDropdown) {
               categoryDropdown.value = dropdownValue;
-              console.log('✅ Set category dropdown to:', dropdownValue);
+              console.log("✅ Set category dropdown to:", dropdownValue);
+
+              // Force the filter to apply with longer delay to override other initializations
+              setTimeout(() => {
+                if (typeof window.filterProductsByCategory === "function") {
+                  window.filterProductsByCategory(dropdownValue);
+                }
+              }, 1000);
             }
 
             // If category is selected, switch to All Fabrics view to show filtered results
@@ -1276,36 +1599,72 @@
 
         // Apply the filters
         if (searchQuery || categoryFilter) {
+          // Switch to All Fabrics view first for search results
+          switchToAllFabrics();
+
           // Give a short delay to ensure everything is loaded
           setTimeout(() => {
-            console.log('🔍 Triggering search with parameters');
+            console.log("🔍 Triggering search with parameters");
 
-            // Check which view we're in and apply appropriate filtering
-            const categoriesView = document.getElementById('categoriesView');
-            const allFabricsView = document.getElementById('allFabricsView');
-
-            if (categoriesView && categoriesView.style.display !== 'none') {
-              // In category view - filter categories
-              if (typeof filterCategories === 'function') {
-                filterCategories();
-              }
-            } else if (allFabricsView && allFabricsView.style.display !== 'none') {
-              // In all fabrics view - filter fabrics
-              if (typeof performSearch === 'function') {
-                performSearch();
-              }
+            // Always use handleSearch for search queries from index page
+            if (typeof handleSearch === "function") {
+              handleSearch();
             }
           }, 500);
+        } else {
+          // No URL parameters - ensure we show category view by default
+          console.log(
+            "🏠 No URL parameters - showing category view by default"
+          );
+          switchToCategories();
+        }
+      }
+
+      // Function to handle category card clicks
+      function openFabricCategory(category) {
+        // Switch to All Fabrics view
+        switchToAllFabrics();
+
+        // Map category to dropdown value
+        const categoryMapping = {
+          silk: "Silk",
+          cotton: "Cotton",
+          linen: "Linen",
+          wool: "Wool",
+          cashmere: "Cashmere",
+          blends: "Blended Fabrics",
+          heritage: "Specialty",
+        };
+
+        const dropdownValue = categoryMapping[category];
+        if (
+          dropdownValue &&
+          typeof window.filterProductsByCategory === "function"
+        ) {
+          // Set dropdown and filter
+          const categoryDropdown = document.getElementById(
+            "fabric-category-filter"
+          );
+          if (categoryDropdown) {
+            categoryDropdown.value = dropdownValue;
+          }
+
+          // Apply filter
+          setTimeout(() => {
+            window.filterProductsByCategory(dropdownValue);
+          }, 100);
         }
       }
 
       // Wait for all scripts to load before initializing
-      window.addEventListener('load', function () {
+      window.addEventListener("load", function () {
+        console.log("💡 Page load event triggered");
         // Initialize the view - start with categories view
         switchToCategories();
         // Apply category background images
         applyCategoryBackgrounds();
         // Handle URL parameters from index page search
+        console.log("💡 About to call handleUrlParameters...");
         handleUrlParameters();
       });
     </script>

@@ -7,7 +7,7 @@ function toggleThemeMenu() {
   const arrow = document.querySelector(".arrow-toggle");
   menu.classList.toggle("show");
   arrow.classList.toggle("active");
-  
+
   // Hide tooltip when clicked
   arrow.classList.add("tooltip-clicked");
 }
@@ -122,17 +122,19 @@ const VIDEO_RE = /\.(mp4|webm|ogg|mov)$/i;
 const IMAGE_RE = /\.(png|jpe?g|gif|webp|avif|svg)$/i;
 
 async function discoverDroppingImages() {
-  console.log('🔍 discoverDroppingImages called');
-  console.log('📁 Manifest URL:', DROPPING_MANIFEST_URL);
-  
+  console.log("🔍 discoverDroppingImages called");
+  console.log("📁 Manifest URL:", DROPPING_MANIFEST_URL);
+
   // 1) Prefer manifest.json (array of strings). Items may be relative or absolute.
   try {
     const manifest = await fetchJSON(DROPPING_MANIFEST_URL);
-    console.log('📄 Loaded manifest:', manifest);
-    
+    console.log("📄 Loaded manifest:", manifest);
+
     if (Array.isArray(manifest) && manifest.length) {
       const normalized = manifest.map((item) => {
-        const fullPath = item.startsWith("/") ? item : DROPPING_IMAGES_DIR + item;
+        const fullPath = item.startsWith("/")
+          ? item
+          : DROPPING_IMAGES_DIR + item;
         console.log(`📎 Normalizing: ${item} → ${fullPath}`);
         return fullPath;
       });
@@ -141,11 +143,11 @@ async function discoverDroppingImages() {
       if (list.length) return list;
     }
   } catch (error) {
-    console.error('❌ Failed to load manifest:', error);
+    console.error("❌ Failed to load manifest:", error);
   }
 
   // 2) Fallback to directory listing parsing
-  console.log('🔄 Falling back to directory listing...');
+  console.log("🔄 Falling back to directory listing...");
   try {
     const fromIndex = await fetchDirectoryIndex(DROPPING_IMAGES_DIR);
     if (fromIndex.length) {
@@ -154,11 +156,11 @@ async function discoverDroppingImages() {
       return list;
     }
   } catch (error) {
-    console.error('❌ Failed to load from directory:', error);
+    console.error("❌ Failed to load from directory:", error);
   }
 
   // 3) Nothing found
-  console.warn('⚠️ No images found in any method');
+  console.warn("⚠️ No images found in any method");
   return [];
 }
 
@@ -606,13 +608,15 @@ async function openWhatsApp() {
 
     // Show user their detected location and give them option to use local format
     showWhatsAppModal(phoneNumber, message, userCountryCode, userCountry);
-
   } catch (error) {
-    console.log('Location detection failed, using default WhatsApp link');
+    console.log("Location detection failed, using default WhatsApp link");
     // Fallback to original functionality
     const phoneNumber = "61478257409";
-    const message = "Hello! I'm interested in BooIsha's premium textiles and fabrics. Can you help me with more information?";
-    const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    const message =
+      "Hello! I'm interested in BooIsha's premium textiles and fabrics. Can you help me with more information?";
+    const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+      message
+    )}`;
     window.open(whatsappURL, "_blank");
   }
 }
@@ -620,20 +624,20 @@ async function openWhatsApp() {
 async function getUserLocation() {
   // Try to get country from IP geolocation API
   try {
-    const response = await fetch('https://ipapi.co/json/');
+    const response = await fetch("https://ipapi.co/json/");
     const data = await response.json();
 
     return {
       country: data.country_name,
       countryCode: data.country_calling_code,
-      regionCode: data.country_code
+      regionCode: data.country_code,
     };
   } catch (error) {
-    console.log('IP geolocation failed, trying alternative method');
+    console.log("IP geolocation failed, trying alternative method");
 
     // Fallback: try different API
     try {
-      const response = await fetch('https://api.country.is/');
+      const response = await fetch("https://api.country.is/");
       const data = await response.json();
 
       // Get country code from country name lookup
@@ -642,43 +646,128 @@ async function getUserLocation() {
       return {
         country: getCountryName(data.country),
         countryCode: countryCode,
-        regionCode: data.country
+        regionCode: data.country,
       };
     } catch (fallbackError) {
-      throw new Error('All location detection methods failed');
+      throw new Error("All location detection methods failed");
     }
   }
 }
 
 function getCountryCallingCode(countryCode) {
   const countryCodes = {
-    'US': '+1', 'CA': '+1', 'GB': '+44', 'AU': '+61', 'DE': '+49', 'FR': '+33',
-    'IT': '+39', 'ES': '+34', 'NL': '+31', 'BE': '+32', 'CH': '+41', 'AT': '+43',
-    'SE': '+46', 'NO': '+47', 'DK': '+45', 'FI': '+358', 'IE': '+353', 'PT': '+351',
-    'GR': '+30', 'JP': '+81', 'KR': '+82', 'CN': '+86', 'IN': '+91', 'SG': '+65',
-    'MY': '+60', 'TH': '+66', 'ID': '+62', 'PH': '+63', 'VN': '+84', 'TW': '+886',
-    'HK': '+852', 'MO': '+853', 'NZ': '+64', 'ZA': '+27', 'EG': '+20', 'SA': '+966',
-    'AE': '+971', 'TR': '+90', 'RU': '+7', 'UA': '+380', 'PL': '+48', 'CZ': '+420',
-    'SK': '+421', 'HU': '+36', 'RO': '+40', 'BG': '+359', 'HR': '+385', 'SI': '+386',
-    'LT': '+370', 'LV': '+371', 'EE': '+372', 'IS': '+354', 'MT': '+356', 'CY': '+357',
-    'LU': '+352', 'MX': '+52', 'BR': '+55', 'AR': '+54', 'CL': '+56', 'CO': '+57',
-    'PE': '+51', 'VE': '+58', 'UY': '+598', 'PY': '+595', 'BO': '+591', 'EC': '+593',
-    'GY': '+592', 'SR': '+597', 'GF': '+594'
+    US: "+1",
+    CA: "+1",
+    GB: "+44",
+    AU: "+61",
+    DE: "+49",
+    FR: "+33",
+    IT: "+39",
+    ES: "+34",
+    NL: "+31",
+    BE: "+32",
+    CH: "+41",
+    AT: "+43",
+    SE: "+46",
+    NO: "+47",
+    DK: "+45",
+    FI: "+358",
+    IE: "+353",
+    PT: "+351",
+    GR: "+30",
+    JP: "+81",
+    KR: "+82",
+    CN: "+86",
+    IN: "+91",
+    SG: "+65",
+    MY: "+60",
+    TH: "+66",
+    ID: "+62",
+    PH: "+63",
+    VN: "+84",
+    TW: "+886",
+    HK: "+852",
+    MO: "+853",
+    NZ: "+64",
+    ZA: "+27",
+    EG: "+20",
+    SA: "+966",
+    AE: "+971",
+    TR: "+90",
+    RU: "+7",
+    UA: "+380",
+    PL: "+48",
+    CZ: "+420",
+    SK: "+421",
+    HU: "+36",
+    RO: "+40",
+    BG: "+359",
+    HR: "+385",
+    SI: "+386",
+    LT: "+370",
+    LV: "+371",
+    EE: "+372",
+    IS: "+354",
+    MT: "+356",
+    CY: "+357",
+    LU: "+352",
+    MX: "+52",
+    BR: "+55",
+    AR: "+54",
+    CL: "+56",
+    CO: "+57",
+    PE: "+51",
+    VE: "+58",
+    UY: "+598",
+    PY: "+595",
+    BO: "+591",
+    EC: "+593",
+    GY: "+592",
+    SR: "+597",
+    GF: "+594",
   };
 
-  return countryCodes[countryCode] || '+1';
+  return countryCodes[countryCode] || "+1";
 }
 
 function getCountryName(countryCode) {
   const countryNames = {
-    'US': 'United States', 'CA': 'Canada', 'GB': 'United Kingdom', 'AU': 'Australia',
-    'DE': 'Germany', 'FR': 'France', 'IT': 'Italy', 'ES': 'Spain', 'NL': 'Netherlands',
-    'BE': 'Belgium', 'CH': 'Switzerland', 'AT': 'Austria', 'SE': 'Sweden', 'NO': 'Norway',
-    'DK': 'Denmark', 'FI': 'Finland', 'IE': 'Ireland', 'PT': 'Portugal', 'GR': 'Greece',
-    'JP': 'Japan', 'KR': 'South Korea', 'CN': 'China', 'IN': 'India', 'SG': 'Singapore',
-    'MY': 'Malaysia', 'TH': 'Thailand', 'ID': 'Indonesia', 'PH': 'Philippines',
-    'VN': 'Vietnam', 'TW': 'Taiwan', 'HK': 'Hong Kong', 'NZ': 'New Zealand',
-    'ZA': 'South Africa', 'MX': 'Mexico', 'BR': 'Brazil', 'AR': 'Argentina'
+    US: "United States",
+    CA: "Canada",
+    GB: "United Kingdom",
+    AU: "Australia",
+    DE: "Germany",
+    FR: "France",
+    IT: "Italy",
+    ES: "Spain",
+    NL: "Netherlands",
+    BE: "Belgium",
+    CH: "Switzerland",
+    AT: "Austria",
+    SE: "Sweden",
+    NO: "Norway",
+    DK: "Denmark",
+    FI: "Finland",
+    IE: "Ireland",
+    PT: "Portugal",
+    GR: "Greece",
+    JP: "Japan",
+    KR: "South Korea",
+    CN: "China",
+    IN: "India",
+    SG: "Singapore",
+    MY: "Malaysia",
+    TH: "Thailand",
+    ID: "Indonesia",
+    PH: "Philippines",
+    VN: "Vietnam",
+    TW: "Taiwan",
+    HK: "Hong Kong",
+    NZ: "New Zealand",
+    ZA: "South Africa",
+    MX: "Mexico",
+    BR: "Brazil",
+    AR: "Argentina",
   };
 
   return countryNames[countryCode] || countryCode;
@@ -707,7 +796,9 @@ function showWhatsAppModal(phoneNumber, message, userCountryCode, userCountry) {
           </div>
 
           <div class="local-suggestion">
-            <p><small>💡 <strong>Tip:</strong> When calling from ${userCountry}, you would dial: <strong>${userCountryCode === '+61' ? '0478 257 409' : '011 61 478 257 409'}</strong></small></p>
+            <p><small>💡 <strong>Tip:</strong> When calling from ${userCountry}, you would dial: <strong>${
+    userCountryCode === "+61" ? "0478 257 409" : "011 61 478 257 409"
+  }</strong></small></p>
           </div>
         </div>
       </div>
@@ -715,30 +806,32 @@ function showWhatsAppModal(phoneNumber, message, userCountryCode, userCountry) {
   `;
 
   // Add modal to page
-  document.body.insertAdjacentHTML('beforeend', modalHTML);
+  document.body.insertAdjacentHTML("beforeend", modalHTML);
 
   // Add event listeners
-  const whatsappBtn = document.getElementById('whatsappBtn');
-  const closeBtn = document.getElementById('modalCloseBtn');
-  const overlay = document.getElementById('whatsappModal');
+  const whatsappBtn = document.getElementById("whatsappBtn");
+  const closeBtn = document.getElementById("modalCloseBtn");
+  const overlay = document.getElementById("whatsappModal");
 
   if (whatsappBtn) {
-    whatsappBtn.addEventListener('click', function() {
-      console.log('WhatsApp button clicked');
-      const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-      console.log('Opening WhatsApp URL:', whatsappURL);
+    whatsappBtn.addEventListener("click", function () {
+      console.log("WhatsApp button clicked");
+      const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+        message
+      )}`;
+      console.log("Opening WhatsApp URL:", whatsappURL);
       window.open(whatsappURL, "_blank");
       closeWhatsAppModal();
     });
   }
 
   if (closeBtn) {
-    closeBtn.addEventListener('click', closeWhatsAppModal);
+    closeBtn.addEventListener("click", closeWhatsAppModal);
   }
 
   // Close on overlay click
   if (overlay) {
-    overlay.addEventListener('click', function(e) {
+    overlay.addEventListener("click", function (e) {
       if (e.target === overlay) {
         closeWhatsAppModal();
       }
@@ -746,9 +839,8 @@ function showWhatsAppModal(phoneNumber, message, userCountryCode, userCountry) {
   }
 }
 
-
 function closeWhatsAppModal() {
-  const modal = document.getElementById('whatsappModal');
+  const modal = document.getElementById("whatsappModal");
   if (modal) {
     modal.remove();
   }
@@ -897,66 +989,68 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // =================== CONTACT PANEL FUNCTIONALITY ===================
 function openContactPanel() {
-  const panel = document.getElementById('contactPanel');
-  const overlay = document.getElementById('contactPanelOverlay');
-  
+  const panel = document.getElementById("contactPanel");
+  const overlay = document.getElementById("contactPanelOverlay");
+
   if (panel && overlay) {
-    panel.classList.add('active');
-    overlay.classList.add('active');
-    document.body.style.overflow = 'hidden'; // Prevent background scrolling
-    document.body.classList.add('contact-panel-open'); // Hide main chat widget
+    panel.classList.add("active");
+    overlay.classList.add("active");
+    document.body.style.overflow = "hidden"; // Prevent background scrolling
+    document.body.classList.add("contact-panel-open"); // Hide main chat widget
   }
 }
 
 function closeContactPanel() {
-  const panel = document.getElementById('contactPanel');
-  const overlay = document.getElementById('contactPanelOverlay');
-  const form = document.getElementById('contactPanelForm');
-  const chatInterface = document.getElementById('panelChatInterface');
-  
+  const panel = document.getElementById("contactPanel");
+  const overlay = document.getElementById("contactPanelOverlay");
+  const form = document.getElementById("contactPanelForm");
+  const chatInterface = document.getElementById("panelChatInterface");
+
   if (panel && overlay) {
-    panel.classList.remove('active');
-    overlay.classList.remove('active');
-    document.body.style.overflow = ''; // Restore background scrolling
-    document.body.classList.remove('contact-panel-open'); // Show main chat widget
-    
+    panel.classList.remove("active");
+    overlay.classList.remove("active");
+    document.body.style.overflow = ""; // Restore background scrolling
+    document.body.classList.remove("contact-panel-open"); // Show main chat widget
+
     // Close form if it's open
-    if (form && form.classList.contains('active')) {
-      form.classList.remove('active');
+    if (form && form.classList.contains("active")) {
+      form.classList.remove("active");
     }
-    
+
     // Close inline chat if it's open
-    if (chatInterface && chatInterface.classList.contains('active')) {
-      chatInterface.classList.remove('active');
+    if (chatInterface && chatInterface.classList.contains("active")) {
+      chatInterface.classList.remove("active");
     }
   }
 }
 
 function toggleContactForm() {
-  const form = document.getElementById('contactPanelForm');
-  const panel = document.getElementById('contactPanel');
-  
+  const form = document.getElementById("contactPanelForm");
+  const panel = document.getElementById("contactPanel");
+
   if (form) {
-    form.classList.toggle('active');
-    
+    form.classList.toggle("active");
+
     // If opening the form, ensure it's fully visible
-    if (form.classList.contains('active')) {
+    if (form.classList.contains("active")) {
       // Wait for the form animation to start
       setTimeout(() => {
         // Scroll the panel to show the form
         const formRect = form.getBoundingClientRect();
         const panelRect = panel.getBoundingClientRect();
-        
+
         // If form extends beyond panel bottom, scroll panel to show form
         if (formRect.bottom > panelRect.bottom - 20) {
           panel.scrollTo({
             top: panel.scrollTop + (formRect.bottom - panelRect.bottom + 40),
-            behavior: 'smooth'
+            behavior: "smooth",
           });
         }
-        
+
         // Focus on first input for better UX
-        const firstInput = form.querySelector('input[type="text"], input[type="email"]');
+        const firstInput = form.querySelector(
+          'input[type="text"], input[type="email"]'
+        );
         if (firstInput) {
           firstInput.focus();
         }
@@ -966,77 +1060,80 @@ function toggleContactForm() {
 }
 
 // Initialize contact panel event listeners
-document.addEventListener('DOMContentLoaded', () => {
-  const contactTrigger = document.querySelector('.contact-left a');
-  const closeButton = document.getElementById('contactPanelClose');
-  const overlay = document.getElementById('contactPanelOverlay');
-  
+document.addEventListener("DOMContentLoaded", () => {
+  const contactTrigger = document.querySelector(".contact-left a");
+  const closeButton = document.getElementById("contactPanelClose");
+  const overlay = document.getElementById("contactPanelOverlay");
+
   // Open panel when clicking "Contact us" in top bar
   if (contactTrigger) {
-    contactTrigger.addEventListener('click', (e) => {
+    contactTrigger.addEventListener("click", (e) => {
       e.preventDefault();
       openContactPanel();
     });
   }
-  
+
   // Close panel when clicking close button
   if (closeButton) {
-    closeButton.addEventListener('click', closeContactPanel);
+    closeButton.addEventListener("click", closeContactPanel);
   }
-  
+
   // Close panel when clicking overlay
   if (overlay) {
-    overlay.addEventListener('click', closeContactPanel);
+    overlay.addEventListener("click", closeContactPanel);
   }
-  
+
   // Close panel when pressing Escape key
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
       closeContactPanel();
     }
   });
-  
+
   // Handle panel form submission
-  const panelForm = document.getElementById('contactPanelFormSubmit');
+  const panelForm = document.getElementById("contactPanelFormSubmit");
   if (panelForm) {
-    panelForm.addEventListener('submit', async (e) => {
+    panelForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      
-      const submitBtn = panelForm.querySelector('.form-submit-btn');
+
+      const submitBtn = panelForm.querySelector(".form-submit-btn");
       const originalText = submitBtn.textContent;
-      
+
       // Show loading state
       submitBtn.disabled = true;
-      submitBtn.textContent = 'Submitting...';
-      
+      submitBtn.textContent = "Submitting...";
+
       try {
         const formData = new FormData(panelForm);
-        const response = await fetch('/api/submit-form', {
-          method: 'POST',
-          body: formData
+        const response = await fetch("/api/submit-form", {
+          method: "POST",
+          body: formData,
         });
-        
+
         if (response.ok) {
           // Success - show brief message and close panel
-          submitBtn.textContent = 'Sent!';
-          submitBtn.style.background = 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)';
-          
+          submitBtn.textContent = "Sent!";
+          submitBtn.style.background =
+            "linear-gradient(135deg, #4CAF50 0%, #45a049 100%)";
+
           setTimeout(() => {
             panelForm.reset();
             closeContactPanel();
-            
+
             // Reset button
             submitBtn.disabled = false;
             submitBtn.textContent = originalText;
-            submitBtn.style.background = '';
+            submitBtn.style.background = "";
           }, 1500);
         } else {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
       } catch (error) {
-        console.error('Form submission error:', error);
-        alert('Sorry, there was an error submitting your form. Please try again or email us directly.');
-        
+        console.error("Form submission error:", error);
+        alert(
+          "Sorry, there was an error submitting your form. Please try again or email us directly."
+        );
+
         // Reset button
         submitBtn.disabled = false;
         submitBtn.textContent = originalText;
@@ -1047,28 +1144,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // =================== PANEL CHAT FUNCTIONALITY ===================
 function togglePanelChat() {
-  const chatInterface = document.getElementById('panelChatInterface');
-  const panel = document.getElementById('contactPanel');
-  
+  const chatInterface = document.getElementById("panelChatInterface");
+  const panel = document.getElementById("contactPanel");
+
   if (chatInterface) {
-    chatInterface.classList.toggle('active');
-    
+    chatInterface.classList.toggle("active");
+
     // If opening the chat, ensure it's visible and focus input
-    if (chatInterface.classList.contains('active')) {
+    if (chatInterface.classList.contains("active")) {
       setTimeout(() => {
         // Scroll to show the chat interface
         const chatRect = chatInterface.getBoundingClientRect();
         const panelRect = panel.getBoundingClientRect();
-        
+
         if (chatRect.bottom > panelRect.bottom - 20) {
           panel.scrollTo({
             top: panel.scrollTop + (chatRect.bottom - panelRect.bottom + 40),
-            behavior: 'smooth'
+            behavior: "smooth",
           });
         }
-        
+
         // Focus on input
-        const input = document.getElementById('panelChatInput');
+        const input = document.getElementById("panelChatInput");
         if (input) {
           input.focus();
         }
@@ -1078,42 +1175,49 @@ function togglePanelChat() {
 }
 
 function sendPanelMessage() {
-  const input = document.getElementById('panelChatInput');
+  const input = document.getElementById("panelChatInput");
   const message = input.value.trim();
-  
-  if (message === '') return;
-  
-  addPanelMessage(message, 'user');
-  input.value = '';
-  
+
+  if (message === "") return;
+
+  addPanelMessage(message, "user");
+  input.value = "";
+
   // Auto-reply after a delay
   setTimeout(() => {
-    addPanelMessage('Thank you for your message! Our team will get back to you shortly. You can also contact us directly via WhatsApp for faster response.', 'bot');
+    addPanelMessage(
+      "Thank you for your message! Our team will get back to you shortly. You can also contact us directly via WhatsApp for faster response.",
+      "bot"
+    );
   }, 1000);
 }
 
 function sendPanelQuickMessage(message) {
-  addPanelMessage(message, 'user');
-  
+  addPanelMessage(message, "user");
+
   // Auto-reply based on quick action
   setTimeout(() => {
-    let reply = '';
-    if (message.includes('Product')) {
-      reply = 'We offer premium Indian spices, textiles, and fashion items. Would you like specific information about any category?';
-    } else if (message.includes('Pricing')) {
-      reply = 'Our pricing varies by product. Please let us know which items you\'re interested in and we\'ll provide detailed pricing information.';
-    } else if (message.includes('Shipping')) {
-      reply = 'We ship throughout Australia. Delivery times are typically 3-7 business days. Would you like more details about shipping costs?';
+    let reply = "";
+    if (message.includes("Product")) {
+      reply =
+        "We offer premium Indian spices, textiles, and fashion items. Would you like specific information about any category?";
+    } else if (message.includes("Pricing")) {
+      reply =
+        "Our pricing varies by product. Please let us know which items you're interested in and we'll provide detailed pricing information.";
+    } else if (message.includes("Shipping")) {
+      reply =
+        "We ship throughout Australia. Delivery times are typically 3-7 business days. Would you like more details about shipping costs?";
     } else {
-      reply = 'Thank you for your inquiry! Our team will get back to you shortly with detailed information.';
+      reply =
+        "Thank you for your inquiry! Our team will get back to you shortly with detailed information.";
     }
-    addPanelMessage(reply, 'bot');
+    addPanelMessage(reply, "bot");
   }, 1000);
 }
 
 function addPanelMessage(content, sender) {
-  const messagesContainer = document.getElementById('panelChatMessages');
-  const messageDiv = document.createElement('div');
+  const messagesContainer = document.getElementById("panelChatMessages");
+  const messageDiv = document.createElement("div");
   messageDiv.className = `message ${sender}`;
   messageDiv.innerHTML = `<div class="message-content"><p>${content}</p></div>`;
   messagesContainer.appendChild(messageDiv);
@@ -1121,7 +1225,7 @@ function addPanelMessage(content, sender) {
 }
 
 function handlePanelChatKeyPress(event) {
-  if (event.key === 'Enter') {
+  if (event.key === "Enter") {
     sendPanelMessage();
   }
 }
@@ -1132,62 +1236,70 @@ const premiumCollectionsDatabase = [
   {
     title: "Premium Silk Collection",
     category: "silk",
-    description: "Luxurious silk fabrics with rich textures, perfect for high-end fashion and elegant draping"
+    description:
+      "Luxurious silk fabrics with rich textures, perfect for high-end fashion and elegant draping",
   },
   {
     title: "Organic Cotton Essentials",
-    category: "cotton", 
-    description: "Sustainable organic cotton fabrics, soft and breathable for comfortable wear"
+    category: "cotton",
+    description:
+      "Sustainable organic cotton fabrics, soft and breathable for comfortable wear",
   },
   {
     title: "Chantilly Lace Elegance",
     category: "lace",
-    description: "Delicate lace with intricate floral patterns, ideal for bridal wear and luxury garments"
+    description:
+      "Delicate lace with intricate floral patterns, ideal for bridal wear and luxury garments",
   },
   {
     title: "Georgette Lace Collection",
     category: "lace",
-    description: "Lightweight georgette lace with fine embroidery details and graceful drape"
+    description:
+      "Lightweight georgette lace with fine embroidery details and graceful drape",
   },
   {
     title: "Heritage Silk Weaves",
     category: "silk",
-    description: "Traditional silk weaving with contemporary appeal, showcasing timeless craftsmanship"
+    description:
+      "Traditional silk weaving with contemporary appeal, showcasing timeless craftsmanship",
   },
   {
     title: "Premium Cotton Blends",
     category: "cotton",
-    description: "High-quality cotton blends offering durability and comfort for everyday luxury"
+    description:
+      "High-quality cotton blends offering durability and comfort for everyday luxury",
   },
   {
     title: "Venetian Lace Artistry",
     category: "lace",
-    description: "Handcrafted venetian lace featuring traditional bobbin lace techniques and intricate patterns"
+    description:
+      "Handcrafted venetian lace featuring traditional bobbin lace techniques and intricate patterns",
   },
   {
     title: "Handloom Cotton Heritage",
     category: "fabrics",
-    description: "Authentic handloom cotton with traditional weaving patterns and cultural significance"
+    description:
+      "Authentic handloom cotton with traditional weaving patterns and cultural significance",
   },
   {
     title: "Luxury Fabric Blends",
     category: "fabrics",
-    description: "Premium fabric combinations offering unique textures and exceptional quality"
+    description:
+      "Premium fabric combinations offering unique textures and exceptional quality",
   },
   {
     title: "Artisan Silk Collection",
     category: "fabrics",
-    description: "Specially curated silk fabrics showcasing master artisan techniques and heritage methods"
-  }
+    description:
+      "Specially curated silk fabrics showcasing master artisan techniques and heritage methods",
+  },
 ];
 
 function performAdvancedSearch() {
-  console.log('🔍 performAdvancedSearch called');
-
-  const searchInput = document.getElementById('mainSearchInput');
+  const searchInput = document.getElementById("mainSearchInput");
 
   if (!searchInput) {
-    console.error('❌ Search input not found');
+    console.error("❌ Search input not found");
     return;
   }
 
@@ -1195,34 +1307,46 @@ function performAdvancedSearch() {
 
   // Only redirect if there's a search query typed in
   if (query.length > 0) {
-    const activeChip = document.querySelector('.category-chip.active');
-    const activeCategory = activeChip ? activeChip.dataset.category : 'all';
+    const activeChip = document.querySelector(".category-chip.active");
+    const activeCategory = activeChip ? activeChip.dataset.category : "all";
 
     console.log(`🔍 Query: "${query}", Category: "${activeCategory}"`);
 
-    // Redirect to fabrics page with search parameters
-    let fabricsUrl = 'Fabrics.html';
+    // Check if query contains lace-related terms
+    const laceTerms = ['lace', 'chantilly', 'venetian', 'guipure', 'alençon', 'alencon', 'crochet', 'embroidered', 'eyelet', 'cutwork', 'battenberg'];
+    const isLaceQuery = laceTerms.some(term => query.includes(term));
+
+    // Determine target page based on query content or active category
+    let targetUrl;
     const params = new URLSearchParams();
 
-    params.append('search', query);
-
-    if (activeCategory && activeCategory !== 'all') {
-      params.append('category', activeCategory);
+    if (isLaceQuery || activeCategory === "lace") {
+      targetUrl = "Lace.html";
+      console.log(`🔍 Detected lace query, redirecting to Lace.html`);
+    } else {
+      targetUrl = "Fabrics.html";
+      console.log(`🔍 Regular query, redirecting to Fabrics.html`);
     }
 
-    fabricsUrl += '?' + params.toString();
+    params.append("search", query);
 
-    console.log(`🔍 Redirecting to: ${fabricsUrl}`);
-    window.location.href = fabricsUrl;
+    if (activeCategory && activeCategory !== "all") {
+      params.append("category", activeCategory);
+    }
+
+    targetUrl += "?" + params.toString();
+
+    console.log(`🔍 Redirecting to: ${targetUrl}`);
+    window.location.href = targetUrl;
   } else {
-    console.log('🔍 No search query - not redirecting');
+    console.log("🔍 No search query - not redirecting");
   }
 }
 
 function displayAdvancedSearchResults(results, query) {
-  const resultsContainer = document.getElementById('advancedSearchResults');
-  const resultsGrid = document.getElementById('resultsGrid');
-  
+  const resultsContainer = document.getElementById("advancedSearchResults");
+  const resultsGrid = document.getElementById("resultsGrid");
+
   if (results.length === 0) {
     resultsGrid.innerHTML = `
       <div style="grid-column: 1 / -1; text-align: center; color: #7f8c8d; padding: 2rem;">
@@ -1230,132 +1354,136 @@ function displayAdvancedSearchResults(results, query) {
       </div>
     `;
   } else {
-    resultsGrid.innerHTML = results.map(item => `
+    resultsGrid.innerHTML = results
+      .map(
+        (item) => `
       <div class="result-card">
         <div class="result-card-category">${item.category}</div>
-        <div class="result-card-title">${highlightAdvancedMatch(item.title, query)}</div>
-        <div class="result-card-description">${highlightAdvancedMatch(item.description, query)}</div>
+        <div class="result-card-title">${highlightAdvancedMatch(
+          item.title,
+          query
+        )}</div>
+        <div class="result-card-description">${highlightAdvancedMatch(
+          item.description,
+          query
+        )}</div>
       </div>
-    `).join('');
+    `
+      )
+      .join("");
   }
-  
-  resultsContainer.classList.add('show');
+
+  resultsContainer.classList.add("show");
 }
 
 function highlightAdvancedMatch(text, query) {
   if (!query) return text;
-  const regex = new RegExp(`(${query})`, 'gi');
-  return text.replace(regex, '<span style="background: linear-gradient(135deg, #FF6B6B, #e74c3c); color: white; padding: 3px 6px; border-radius: 6px; font-weight: 600;">$1</span>');
+  const regex = new RegExp(`(${query})`, "gi");
+  return text.replace(
+    regex,
+    '<span style="background: linear-gradient(135deg, #FF6B6B, #e74c3c); color: white; padding: 3px 6px; border-radius: 6px; font-weight: 600;">$1</span>'
+  );
 }
 
 function hideAdvancedSearchResults() {
-  const resultsContainer = document.getElementById('advancedSearchResults');
-  resultsContainer.classList.remove('show');
+  const resultsContainer = document.getElementById("advancedSearchResults");
+  resultsContainer.classList.remove("show");
 }
 
 function setActiveCategoryChip(category) {
-  console.log('🏷️ Setting active category:', category);
+  console.log("🏷️ Setting active category:", category);
 
-  // If category is 'all', just set it active but don't redirect
-  if (category === 'all') {
-    // Remove active class from all chips
-    document.querySelectorAll('.category-chip').forEach(chip => {
-      chip.classList.remove('active');
-    });
-
-    // Add active class to selected chip
-    const targetChip = document.querySelector(`[data-category="${category}"]`);
-    if (targetChip) {
-      targetChip.classList.add('active');
-      console.log('✅ Set active category to:', category);
-    }
+  // If category is 'all', redirect to fabrics page without category filter
+  if (category === "all") {
+    console.log(`🏷️ Redirecting to fabrics page with all products`);
+    window.location.href = "Fabrics.html";
     return;
   }
 
-  // For specific categories, redirect to fabrics page
-  console.log(`🏷️ Redirecting to fabrics page with category: ${category}`);
+  // For specific categories, redirect to appropriate page
+  console.log(`🏷️ Redirecting with category: ${category}`);
 
-  let fabricsUrl = 'Fabrics.html';
+  let targetUrl;
   const params = new URLSearchParams();
 
-  // Map category names to fabric page filters
+  // Map category names to their respective pages
   const categoryMapping = {
-    'fabrics': 'fabrics',
-    'lace': 'lace',
-    'silk': 'silk',
-    'cotton': 'cotton'
+    linen: { page: "Fabrics.html", param: "linen" },
+    lace: { page: "Lace.html", param: "lace" },
+    silk: { page: "Fabrics.html", param: "silk" },
+    cotton: { page: "Fabrics.html", param: "cotton" },
   };
 
   if (categoryMapping[category]) {
-    params.append('category', categoryMapping[category]);
-    fabricsUrl += '?' + params.toString();
+    targetUrl = categoryMapping[category].page;
+    params.append("category", categoryMapping[category].param);
+    targetUrl += "?" + params.toString();
+  } else {
+    targetUrl = "Fabrics.html";
   }
 
-  console.log(`🏷️ Redirecting to: ${fabricsUrl}`);
-  window.location.href = fabricsUrl;
+  console.log(`🏷️ Redirecting to: ${targetUrl}`);
+  window.location.href = targetUrl;
 }
 
 // Initialize search functionality
 function initializeSearchFunctionality() {
-  console.log('🚀 Initializing search functionality...');
-  
+  console.log("🚀 Initializing search functionality...");
+
   // Add click handlers to category chips
-  const categoryChips = document.querySelectorAll('.category-chip');
-  console.log('🏷️ Found', categoryChips.length, 'category chips');
-  
+  const categoryChips = document.querySelectorAll(".category-chip");
+  console.log("🏷️ Found", categoryChips.length, "category chips");
+
   categoryChips.forEach((chip, index) => {
     console.log(`Setting up chip ${index + 1}:`, chip.dataset.category);
-    chip.addEventListener('click', (e) => {
+    chip.addEventListener("click", (e) => {
       e.preventDefault();
-      console.log('🏷️ Chip clicked:', chip.dataset.category);
+      console.log("🏷️ Chip clicked:", chip.dataset.category);
       setActiveCategoryChip(chip.dataset.category);
     });
   });
-  
+
   // Add search input handlers
-  const searchInput = document.getElementById('mainSearchInput');
+  const searchInput = document.getElementById("mainSearchInput");
   if (searchInput) {
-    console.log('✅ Adding search input handlers');
-    
-    searchInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
+    console.log("✅ Adding search input handlers");
+
+    searchInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
         e.preventDefault();
         performAdvancedSearch();
       }
     });
-    
-    searchInput.addEventListener('input', () => {
-      if (searchInput.value.length > 2) {
-        performAdvancedSearch();
-      } else if (searchInput.value.length === 0) {
-        hideAdvancedSearchResults();
-      }
-    });
+
+    // Removed auto-redirect on typing - user should press Enter or click search button
+    console.log(
+      "✅ Search input ready - press Enter or click search button to search"
+    );
   }
 }
 
 // Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   // Wait a bit for everything to load
   setTimeout(initializeSearchFunctionality, 500);
 
   // Add backup event listener for search button
   setTimeout(() => {
-    const searchBtn = document.querySelector('.search-icon-btn');
+    const searchBtn = document.querySelector(".search-icon-btn");
     if (searchBtn) {
-      console.log('✅ Adding backup event listener to search button');
-      searchBtn.addEventListener('click', function(e) {
+      console.log("✅ Adding backup event listener to search button");
+      searchBtn.addEventListener("click", function (e) {
         e.preventDefault();
-        console.log('🔍 Backup search button clicked');
+        console.log("🔍 Backup search button clicked");
         expandSearchInterface();
       });
     } else {
-      console.error('❌ Search button not found for backup listener');
+      console.error("❌ Search button not found for backup listener");
     }
   }, 1000);
 
-  document.addEventListener('click', (e) => {
-    if (!e.target.closest('.premium-search-container')) {
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".premium-search-container")) {
       hideAdvancedSearchResults();
     }
   });
@@ -1368,107 +1496,123 @@ let searchImageInterval = null;
 
 async function initializeSearchBackground() {
   console.log("Initializing search background...");
-  
-  const backgroundLayer = document.getElementById('searchBackgroundLayer');
+
+  const backgroundLayer = document.getElementById("searchBackgroundLayer");
   if (!backgroundLayer) return;
-  
+
   // Use the same image discovery function as the dropping cards
   const images = await discoverDroppingImages();
   console.log("Found search background images:", images);
-  
+
   if (!images.length) {
-    console.warn(`No images found in ${DROPPING_IMAGES_DIR} for search background`);
+    console.warn(
+      `No images found in ${DROPPING_IMAGES_DIR} for search background`
+    );
     return;
   }
-  
+
   searchBackgroundImages = images;
-  
+
   // Start the background image rotation
   startSearchBackgroundRotation();
 }
 
 function startSearchBackgroundRotation() {
   if (!searchBackgroundImages.length) return;
-  
-  const backgroundLayer = document.getElementById('searchBackgroundLayer');
+
+  const backgroundLayer = document.getElementById("searchBackgroundLayer");
   if (!backgroundLayer) return;
-  
+
   // Load all images into the flex container for continuous flow
   loadAllSearchImages();
 }
 
 function loadAllSearchImages() {
-  const backgroundLayer = document.getElementById('searchBackgroundLayer');
+  const backgroundLayer = document.getElementById("searchBackgroundLayer");
   if (!backgroundLayer) {
-    console.error('❌ searchBackgroundLayer not found');
+    console.error("❌ searchBackgroundLayer not found");
     return;
   }
-  
+
   if (!searchBackgroundImages.length) {
-    console.error('❌ No background images available');
+    console.error("❌ No background images available");
     return;
   }
-  
+
   // Clear existing content
-  backgroundLayer.innerHTML = '';
-  
-  console.log(`🖼️ Loading all search images. Total images found: ${searchBackgroundImages.length}`);
-  console.log('📋 Image list:', searchBackgroundImages);
-  
+  backgroundLayer.innerHTML = "";
+
+  console.log(
+    `🖼️ Loading all search images. Total images found: ${searchBackgroundImages.length}`
+  );
+  console.log("📋 Image list:", searchBackgroundImages);
+
   // Create a continuous strip by doubling images for seamless loop
   const imagesToLoad = [...searchBackgroundImages, ...searchBackgroundImages];
-  
-  console.log(`📦 Total images to load (with triplication): ${imagesToLoad.length}`);
-  
+
+  console.log(
+    `📦 Total images to load (with triplication): ${imagesToLoad.length}`
+  );
+
   let loadedCount = 0;
   let failedCount = 0;
-  
+
   imagesToLoad.forEach((imageSrc, index) => {
     const img = document.createElement("img");
     img.src = imageSrc;
     img.alt = `Background Image ${index + 1}`;
-    
+
     img.onload = () => {
       loadedCount++;
-      console.log(`✅ Loaded image ${loadedCount}/${imagesToLoad.length}: ${imageSrc}`);
+      console.log(
+        `✅ Loaded image ${loadedCount}/${imagesToLoad.length}: ${imageSrc}`
+      );
     };
-    
+
     img.onerror = () => {
       failedCount++;
-      console.error(`❌ Failed to load image ${index + 1}/${imagesToLoad.length}: ${imageSrc}`);
+      console.error(
+        `❌ Failed to load image ${index + 1}/${
+          imagesToLoad.length
+        }: ${imageSrc}`
+      );
       // Try to fix the path if it's not working
-      const alternativePath = imageSrc.replace('/Images/droppingImages/', './Images/droppingImages/');
+      const alternativePath = imageSrc.replace(
+        "/Images/droppingImages/",
+        "./Images/droppingImages/"
+      );
       console.log(`🔄 Trying alternative path: ${alternativePath}`);
       img.src = alternativePath;
     };
-    
+
     backgroundLayer.appendChild(img);
   });
-  
+
   // Report loading status after a delay
   setTimeout(() => {
-    console.log(`📊 Loading complete: ${loadedCount} loaded, ${failedCount} failed out of ${imagesToLoad.length} total`);
+    console.log(
+      `📊 Loading complete: ${loadedCount} loaded, ${failedCount} failed out of ${imagesToLoad.length} total`
+    );
   }, 3000);
 }
 
-
 // Manual trigger function for testing
-window.testImageLoading = async function() {
-  console.log('🧪 Manual test triggered');
+window.testImageLoading = async function () {
+  console.log("🧪 Manual test triggered");
   await initializeSearchBackground();
 };
 
 // Initialize search background when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('🎬 DOM loaded, initializing search background...');
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("🎬 DOM loaded, initializing search background...");
   // Wait a bit for other initializations to complete
   setTimeout(() => {
     initializeSearchBackground();
   }, 1000);
-  
+
   // Also try again after longer delay in case of slow loading
   setTimeout(() => {
-    console.log('🔄 Secondary initialization attempt...');
+    console.log("🔄 Secondary initialization attempt...");
     initializeSearchBackground();
   }, 3000);
 });
@@ -1477,31 +1621,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // =================== SEARCH EXPANSION FUNCTIONALITY ===================
 function expandSearchInterface() {
-  console.log('🚀 expandSearchInterface called');
+  console.log("🚀 expandSearchInterface called");
 
-  const iconContainer = document.getElementById('searchIconContainer');
-  const expandedInterface = document.getElementById('expandedSearchInterface');
+  const iconContainer = document.getElementById("searchIconContainer");
+  const expandedInterface = document.getElementById("expandedSearchInterface");
 
-  console.log('iconContainer:', iconContainer);
-  console.log('expandedInterface:', expandedInterface);
+  console.log("iconContainer:", iconContainer);
+  console.log("expandedInterface:", expandedInterface);
 
   if (!iconContainer) {
-    console.error('❌ searchIconContainer not found');
-    alert('Error: Search icon container not found');
+    console.error("❌ searchIconContainer not found");
+    alert("Error: Search icon container not found");
     return;
   }
 
   if (!expandedInterface) {
-    console.error('❌ expandedSearchInterface not found');
-    alert('Error: Expanded interface not found');
+    console.error("❌ expandedSearchInterface not found");
+    alert("Error: Expanded interface not found");
     return;
   }
 
-  console.log('✅ Found search elements, expanding interface');
+  console.log("✅ Found search elements, expanding interface");
 
   // Hide the search icon
-  iconContainer.style.display = 'none';
-  console.log('✅ Hidden search icon container');
+  iconContainer.style.display = "none";
+  console.log("✅ Hidden search icon container");
 
   // Force show the expanded interface with important styles and scrollbar
   expandedInterface.style.cssText = `
@@ -1524,27 +1668,27 @@ function expandSearchInterface() {
   `;
 
   setTimeout(() => {
-    expandedInterface.classList.add('show');
-    console.log('✅ Added show class to expanded interface');
-    console.log('Expanded interface styles:', expandedInterface.style.cssText);
+    expandedInterface.classList.add("show");
+    console.log("✅ Added show class to expanded interface");
+    console.log("Expanded interface styles:", expandedInterface.style.cssText);
   }, 50);
-  
+
   // Ensure we have a default active category chip
-  const activeChip = document.querySelector('.category-chip.active');
+  const activeChip = document.querySelector(".category-chip.active");
   if (!activeChip) {
-    const firstChip = document.querySelector('.category-chip');
+    const firstChip = document.querySelector(".category-chip");
     if (firstChip) {
-      firstChip.classList.add('active');
-      console.log('✅ Set first chip as active:', firstChip.dataset.category);
+      firstChip.classList.add("active");
+      console.log("✅ Set first chip as active:", firstChip.dataset.category);
     }
   }
-  
+
   // Focus on the search input
   setTimeout(() => {
-    const searchInput = document.getElementById('mainSearchInput');
+    const searchInput = document.getElementById("mainSearchInput");
     if (searchInput) {
       searchInput.focus();
-      console.log('✅ Search input focused');
+      console.log("✅ Search input focused");
     }
   }, 300);
 }
@@ -1558,24 +1702,24 @@ function expandSearchInterface() {
 // =================== STORY VIDEO HEIGHT MATCHING FUNCTIONALITY ===================
 
 function matchStoryVideoHeight() {
-  const storyText = document.querySelector('.story-text');
-  const storyVideo = document.querySelector('.story-video');
+  const storyText = document.querySelector(".story-text");
+  const storyVideo = document.querySelector(".story-video");
 
   if (!storyText || !storyVideo) return;
 
   // Only apply on larger screens where they're side by side
-  const mediaQuery = window.matchMedia('(min-width: 769px)');
+  const mediaQuery = window.matchMedia("(min-width: 769px)");
 
   function updateVideoHeight() {
     if (mediaQuery.matches) {
       // Get the title and paragraphs
-      const title = storyText.querySelector('h2');
-      const paragraphs = storyText.querySelectorAll('p');
+      const title = storyText.querySelector("h2");
+      const paragraphs = storyText.querySelectorAll("p");
 
       if (paragraphs.length > 0 && title) {
         // Calculate total height of all paragraphs only
         let totalParagraphHeight = 0;
-        paragraphs.forEach(p => {
+        paragraphs.forEach((p) => {
           totalParagraphHeight += p.offsetHeight;
         });
 
@@ -1586,12 +1730,14 @@ function matchStoryVideoHeight() {
         storyVideo.style.height = `${totalParagraphHeight}px`;
         storyVideo.style.marginTop = `${titleHeight}px`;
 
-        console.log(`Story video height: ${totalParagraphHeight}px, top margin: ${titleHeight}px`);
+        console.log(
+          `Story video height: ${totalParagraphHeight}px, top margin: ${titleHeight}px`
+        );
       }
     } else {
       // Reset to default for smaller screens
-      storyVideo.style.height = '';
-      storyVideo.style.marginTop = '';
+      storyVideo.style.height = "";
+      storyVideo.style.marginTop = "";
     }
   }
 
@@ -1600,14 +1746,14 @@ function matchStoryVideoHeight() {
 
   // Update on resize
   mediaQuery.addListener(updateVideoHeight);
-  window.addEventListener('resize', updateVideoHeight);
+  window.addEventListener("resize", updateVideoHeight);
 
   // Update after fonts and images load
-  window.addEventListener('load', updateVideoHeight);
+  window.addEventListener("load", updateVideoHeight);
 }
 
 // Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', matchStoryVideoHeight);
+document.addEventListener("DOMContentLoaded", matchStoryVideoHeight);
 
 // Also run after a short delay to ensure all content is loaded
 setTimeout(matchStoryVideoHeight, 1000);
@@ -1616,11 +1762,11 @@ setTimeout(matchStoryVideoHeight, 1000);
 
 // =================== WATERMARK LOGO SCROLL FUNCTIONALITY ===================
 function initWatermarkScroll() {
-  const watermark = document.getElementById('watermarkLogo');
-  const storySection = document.querySelector('.story-section');
+  const watermark = document.getElementById("watermarkLogo");
+  const storySection = document.querySelector(".story-section");
 
   if (!watermark || !storySection) {
-    console.warn('Watermark or story section not found');
+    console.warn("Watermark or story section not found");
     return;
   }
 
@@ -1630,18 +1776,18 @@ function initWatermarkScroll() {
 
     // Show watermark when story section has scrolled past the viewport
     if (storyBottom <= 0) {
-      watermark.classList.add('visible');
+      watermark.classList.add("visible");
     } else {
-      watermark.classList.remove('visible');
+      watermark.classList.remove("visible");
     }
   }
 
   // Listen for scroll events
-  window.addEventListener('scroll', handleScroll);
+  window.addEventListener("scroll", handleScroll);
 
   // Initial check
   handleScroll();
 }
 
 // Initialize watermark scroll functionality
-document.addEventListener('DOMContentLoaded', initWatermarkScroll);
+document.addEventListener("DOMContentLoaded", initWatermarkScroll);

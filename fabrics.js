@@ -1632,12 +1632,18 @@ const itemsPerPage = 12;
 
 //Render pages
 function renderCurrentPage() {
+  console.log('🎨 renderCurrentPage called');
   const productsGrid = document.querySelector(".products-grid");
-  if (!productsGrid) return;
+  if (!productsGrid) {
+    console.log('🎨 No products-grid found!');
+    return;
+  }
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, filteredProducts.length);
   const pageProducts = filteredProducts.slice(startIndex, endIndex);
+
+  console.log('🎨 Rendering products:', pageProducts.slice(0, 3).map(p => p.name));
 
   const productsHTML = pageProducts
     .map((product, index) => generateProductCard(product, startIndex + index))
@@ -1651,16 +1657,23 @@ function renderCurrentPage() {
 
 // Filter function
 function filterProductsByCategory(category = null) {
-  const categorySelect = document.querySelector(".filter-select");
+  console.log('🚀 filterProductsByCategory function called!');
+  console.log('🚀 Called with category parameter:', category);
+  console.trace('🚀 Stack trace for filterProductsByCategory call');
+  const categorySelect = document.getElementById("fabric-category-filter") || document.querySelector(".filter-select");
   const sortSelect = document.querySelectorAll(".filter-select")[1];
 
   const selectedCategory =
     category || (categorySelect ? categorySelect.value : "All Categories");
   const sortBy = sortSelect ? sortSelect.value : "Featured";
 
+  console.log('🔍 Filtering with category:', selectedCategory);
+  console.log('🔍 Total products before filter:', fabricProducts.length);
+
   // Filter products in data array, not DOM
   if (selectedCategory === "All Categories") {
     filteredProducts = [...fabricProducts];
+    console.log('🔍 Set filteredProducts to ALL products');
   } else {
     filteredProducts = fabricProducts.filter((product) => {
       const matchesCategory =
@@ -1668,7 +1681,11 @@ function filterProductsByCategory(category = null) {
         product.name.toLowerCase().includes(selectedCategory.toLowerCase());
       return matchesCategory;
     });
+    console.log('🔍 Set filteredProducts to FILTERED products');
   }
+
+  console.log('🔍 Filtered products count:', filteredProducts.length);
+  console.log('🔍 First few filtered products:', filteredProducts.slice(0, 3).map(p => p.name));
 
   // Sort filtered products
   if (sortBy !== "Featured") {
@@ -1677,12 +1694,35 @@ function filterProductsByCategory(category = null) {
 
   // Reset to page 1 and render
   currentPage = 1;
-  renderCurrentPage();
+  console.log('🔧 About to call renderCurrentPage...');
+  console.log('🔧 renderCurrentPage exists:', typeof renderCurrentPage);
+
+  if (typeof renderCurrentPage === 'function') {
+    try {
+      renderCurrentPage();
+      console.log('🔧 renderCurrentPage completed successfully');
+    } catch (error) {
+      console.error('🔧 Error in renderCurrentPage:', error);
+    }
+  } else {
+    console.error('🔧 renderCurrentPage function not found!');
+  }
 
   // Update UI
   updateResultsCount(filteredProducts.length);
-  updatePagination(Math.ceil(filteredProducts.length / itemsPerPage));
-  updatePaginationButtons();
+
+  // Smart pagination - only show if we have more items than can fit on one page
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  if (filteredProducts.length > itemsPerPage) {
+    updatePagination(totalPages);
+    updatePaginationButtons();
+  } else {
+    // Remove pagination if all items fit on one page
+    const existingPagination = document.querySelector(".pagination");
+    if (existingPagination) {
+      existingPagination.remove();
+    }
+  }
 }
 
 function sortFilteredProducts(sortBy) {
@@ -1893,18 +1933,41 @@ function attachEnquireListeners() {
 
 // Side Menu Functions
 function toggleSideMenu() {
-  const menuToggle = document.querySelector(".menu-toggle");
   const menuOverlay = document.querySelector(".menu-overlay");
   const sideMenu = document.querySelector(".side-menu");
 
-  if (!menuToggle || !menuOverlay || !sideMenu) return;
+  if (!menuOverlay || !sideMenu) return;
 
-  const rect = menuToggle.getBoundingClientRect();
-  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  // Check if we're on mobile screen (where hamburger is at bottom)
+  const isMobile = window.innerWidth <= 750;
 
-  sideMenu.style.position = "absolute";
-  sideMenu.style.top = rect.bottom + scrollTop + 10 + "px";
-  sideMenu.style.left = rect.left + "px";
+  // Find the appropriate menu toggle based on screen size
+  const menuToggle = isMobile
+    ? document.querySelector(".bottom-search-row .menu-toggle")
+    : document.querySelector(".desktop-menu-toggle");
+
+  if (!menuToggle) return;
+
+  if (isMobile) {
+    // For mobile, use CSS positioning (bottom-up animation)
+    sideMenu.style.position = "";
+    sideMenu.style.top = "";
+    sideMenu.style.left = "";
+    sideMenu.style.bottom = "";
+    sideMenu.style.right = "";
+  } else {
+    // For desktop, use absolute positioning next to hamburger
+    const rect = menuToggle.getBoundingClientRect();
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    sideMenu.style.position = "absolute";
+    sideMenu.style.top = rect.bottom + scrollTop + 10 + "px";
+    sideMenu.style.left = rect.left + "px";
+    sideMenu.style.bottom = "";
+    sideMenu.style.right = "";
+    sideMenu.style.transform = "";
+    sideMenu.style.borderRadius = "";
+  }
 
   menuToggle.classList.toggle("active");
   menuOverlay.classList.toggle("active");
@@ -1912,16 +1975,20 @@ function toggleSideMenu() {
 }
 
 function closeSideMenu() {
-  const menuToggle = document.querySelector(".menu-toggle");
   const menuOverlay = document.querySelector(".menu-overlay");
   const sideMenu = document.querySelector(".side-menu");
 
-  sideMenu.classList.add("closing");
-  menuToggle.classList.remove("active");
-  menuOverlay.classList.remove("active");
+  const isMobile = window.innerWidth <= 750;
+  const menuToggle = isMobile
+    ? document.querySelector(".bottom-search-row .menu-toggle")
+    : document.querySelector(".desktop-menu-toggle");
+
+  if (sideMenu) sideMenu.classList.add("closing");
+  if (menuToggle) menuToggle.classList.remove("active");
+  if (menuOverlay) menuOverlay.classList.remove("active");
 
   setTimeout(() => {
-    sideMenu.classList.remove("active", "closing");
+    if (sideMenu) sideMenu.classList.remove("active", "closing");
   }, 250);
 }
 
@@ -1987,7 +2054,14 @@ function updateResultsCount(count) {
 
   if (unifiedDisplay) {
     const searchInput = document.getElementById("fabric-search-input");
-    const hasSearch = searchInput && searchInput.value.trim();
+    const bottomSearchInput = document.getElementById("bottom-search-input");
+    const hasSearch = (searchInput && searchInput.value.trim()) ||
+                     (bottomSearchInput && bottomSearchInput.value.trim());
+
+    // Check if we're showing filtered results (less than total products or have active filters)
+    const totalProducts = fabricProducts.length;
+    const hasActiveFilters = Object.keys(activeSearchFilters || {}).length > 0;
+    const isFiltered = count < totalProducts || hasSearch || hasActiveFilters;
 
     // Calculate items shown on current page
     const startItem = (currentPage - 1) * itemsPerPage + 1;
@@ -1997,12 +2071,11 @@ function updateResultsCount(count) {
       count - (currentPage - 1) * itemsPerPage
     );
 
-    if (hasSearch || Object.keys(activeSearchFilters || {}).length > 0) {
-      // When search/filter is active, show current page items vs total filtered results
+    if (isFiltered) {
+      // When showing filtered results, show current page items vs total filtered results
       unifiedDisplay.textContent = `Showing ${itemsOnPage} of ${count} products`;
     } else {
-      // When no search/filter, show current page items vs total available products
-      const totalProducts = fabricProducts.length;
+      // When showing all products, show current page items vs total available products
       unifiedDisplay.textContent = `Showing ${itemsOnPage} of ${totalProducts} products`;
     }
   }
@@ -2014,10 +2087,13 @@ function updatePagination(totalPages) {
     existingPagination.remove();
   }
 
+  // Only show pagination if there are more than 1 page worth of content
   if (totalPages > 1) {
     createPagination(totalPages);
   }
 }
+
+// Category view pagination removed - all categories fit on one page
 
 function createPagination(totalPages) {
   const paginationHTML = `
@@ -2091,9 +2167,12 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Initialize pagination
+  // Initialize pagination - only show if needed
   updateResultsCount(fabricProducts.length);
-  updatePagination(Math.ceil(fabricProducts.length / itemsPerPage));
+  const totalInitialPages = Math.ceil(fabricProducts.length / itemsPerPage);
+  if (fabricProducts.length > itemsPerPage) {
+    updatePagination(totalInitialPages);
+  }
 
   // ESC key to close menu
   document.addEventListener("keydown", function (e) {
@@ -2312,6 +2391,66 @@ function selectSearchSuggestion(text) {
   }
 }
 
+// Handle bottom search for small screens
+function handleBottomSearch() {
+  const bottomSearchInput = document.querySelector("#bottom-search-input");
+  const query = bottomSearchInput ? bottomSearchInput.value.trim() : "";
+
+  if (query) {
+    // Copy query to main search input to keep them in sync
+    const mainSearchInput = document.querySelector("#fabric-search-input");
+    if (mainSearchInput) {
+      mainSearchInput.value = query;
+    }
+
+    // Perform the search
+    performFabricSearch(query);
+  }
+}
+
+// Handle main search
+function handleSearch() {
+  const searchInput = document.querySelector("#fabric-search-input");
+  const query = searchInput ? searchInput.value.trim() : "";
+
+  if (query) {
+    // Copy query to bottom search input to keep them in sync
+    const bottomSearchInput = document.querySelector("#bottom-search-input");
+    if (bottomSearchInput) {
+      bottomSearchInput.value = query;
+    }
+
+    // Perform the search
+    performFabricSearch(query);
+  }
+}
+
+// Reset search function
+function resetSearch() {
+  // Clear both search inputs
+  const mainSearchInput = document.querySelector("#fabric-search-input");
+  const bottomSearchInput = document.querySelector("#bottom-search-input");
+
+  if (mainSearchInput) {
+    mainSearchInput.value = "";
+  }
+  if (bottomSearchInput) {
+    bottomSearchInput.value = "";
+  }
+
+  // Reset category dropdown
+  const categoryDropdown = document.getElementById('fabric-category-filter');
+  if (categoryDropdown) {
+    categoryDropdown.value = 'All Categories';
+  }
+
+  // Reset to show all products/categories
+  resetToAllProducts();
+
+  // Hide search suggestions
+  hideSearchSuggestions();
+}
+
 // Main search function
 function performFabricSearch(query = null) {
   const searchInput = document.querySelector("#fabric-search-input");
@@ -2322,8 +2461,41 @@ function performFabricSearch(query = null) {
     return;
   }
 
-  // Enhanced search algorithm
-  searchResults = fabricProducts.filter((product) => {
+  // Reset category dropdown based on search query
+  const categoryDropdown = document.getElementById('fabric-category-filter');
+  if (categoryDropdown) {
+    const queryLower = query.toLowerCase();
+
+    // Map search terms to categories
+    if (queryLower.includes('cotton')) {
+      categoryDropdown.value = 'Cotton';
+    } else if (queryLower.includes('silk')) {
+      categoryDropdown.value = 'Silk';
+    } else if (queryLower.includes('linen')) {
+      categoryDropdown.value = 'Linen';
+    } else if (queryLower.includes('wool')) {
+      categoryDropdown.value = 'Wool';
+    } else if (queryLower.includes('cashmere')) {
+      categoryDropdown.value = 'Cashmere';
+    } else {
+      categoryDropdown.value = 'All Categories';
+    }
+  }
+
+  // Check if we're in category view to filter category tiles
+  const categoriesView = document.getElementById('categoriesView');
+  const allFabricsView = document.getElementById('allFabricsView');
+  const isInCategoryView = categoriesView && categoriesView.style.display !== 'none';
+
+  if (isInCategoryView) {
+    // Filter category tiles based on search query
+    filterCategoryTiles(query);
+    // Exit early for category view - don't run fabric search logic or pagination
+    return;
+  }
+
+  // Enhanced search algorithm - update filteredProducts so it works with category filtering
+  filteredProducts = fabricProducts.filter((product) => {
     const searchableText = [
       product.name,
       product.description,
@@ -2402,7 +2574,18 @@ function updateSearchResultsDisplay() {
   currentPage = 1;
   renderCurrentPage();
   updateResultsCount(filteredProducts.length);
-  updatePagination(Math.ceil(filteredProducts.length / itemsPerPage));
+
+  // Smart pagination - only show if needed
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  if (filteredProducts.length > itemsPerPage) {
+    updatePagination(totalPages);
+  } else {
+    // Remove pagination if not needed
+    const existingPagination = document.querySelector(".pagination");
+    if (existingPagination) {
+      existingPagination.remove();
+    }
+  }
 }
 
 function updateSearchInfo(query, count) {
@@ -2420,6 +2603,9 @@ function resetToAllProducts() {
   filteredProducts = [...fabricProducts];
   updateSearchResultsDisplay();
   updateSearchInfo("", fabricProducts.length);
+
+  // Also reset category tiles if in category view
+  resetCategoryTiles();
 }
 
 // Advanced filter functions
@@ -2440,14 +2626,51 @@ function removeSearchFilter(filterType) {
 function clearAllSearchFilters() {
   activeSearchFilters = {};
 
+  // Clear search inputs
+  const mainSearchInput = document.querySelector("#fabric-search-input");
+  const bottomSearchInput = document.querySelector("#bottom-search-input");
+  if (mainSearchInput) mainSearchInput.value = "";
+  if (bottomSearchInput) bottomSearchInput.value = "";
+
+  // Reset category dropdown to "All Categories"
+  const categoryDropdown = document.getElementById('fabric-category-filter');
+  if (categoryDropdown) {
+    categoryDropdown.value = 'All Categories';
+  }
+
   // Reset filter dropdowns
   const filterSelects = document.querySelectorAll(".search-filter-select");
   filterSelects.forEach((select) => {
-    select.value = "";
+    select.selectedIndex = 0;
+    select.value = select.options[0] ? select.options[0].value : "";
   });
 
-  applySearchFilters();
-  updateSearchResultsDisplay();
+  // Reset to show all products and categories
+  resetToAllProducts();
+  resetCategoryTiles();
+
+  // Hide search suggestions
+  if (typeof hideSearchSuggestions === 'function') {
+    hideSearchSuggestions();
+  }
+
+  // Check current view and update results display accordingly
+  const categoriesView = document.getElementById('categoriesView');
+  const isInCategoryView = categoriesView && categoriesView.style.display !== 'none';
+
+  if (isInCategoryView) {
+    // Update category view results display
+    const categoryCards = document.querySelectorAll('.fabric-category-card');
+    const resultsDisplay = document.getElementById('unified-results-display');
+    if (resultsDisplay && categoryCards.length > 0) {
+      resultsDisplay.textContent = `Showing ${categoryCards.length} of ${categoryCards.length} fabric categories`;
+    }
+  } else {
+    // Update fabric view results display
+    applySearchFilters();
+    updateSearchResultsDisplay();
+  }
+
   updateActiveSearchFilters();
 }
 
@@ -2501,6 +2724,80 @@ function sortSearchResults(sortBy) {
   }
 
   updateSearchResultsDisplay();
+}
+
+// Filter category tiles in category view based on search query
+function filterCategoryTiles(query) {
+  const categoryCards = document.querySelectorAll('.fabric-category-card');
+  const queryLower = query.toLowerCase();
+  let visibleCount = 0;
+
+  categoryCards.forEach(card => {
+    // Get category title from the card
+    const titleElement = card.querySelector('h3');
+    const title = titleElement ? titleElement.textContent.toLowerCase() : '';
+
+    // Get description if exists
+    const descElement = card.querySelector('p');
+    const description = descElement ? descElement.textContent.toLowerCase() : '';
+
+    // Check if search query matches category name or description
+    const isMatch = title.includes(queryLower) ||
+                   description.includes(queryLower) ||
+                   queryLower.includes(title.replace(/\s+/g, '').toLowerCase());
+
+    if (isMatch) {
+      card.style.display = 'block';
+      card.style.opacity = '1';
+      // Add highlight effect
+      card.style.boxShadow = '0 8px 25px rgba(109, 157, 140, 0.3)';
+      card.style.transform = 'scale(1.02)';
+      visibleCount++;
+    } else {
+      card.style.display = 'none';
+      card.style.opacity = '0.3';
+      card.style.boxShadow = '';
+      card.style.transform = '';
+    }
+  });
+
+  // Update results display for category view
+  const resultsDisplay = document.getElementById('unified-results-display');
+  if (resultsDisplay) {
+    const totalCategories = categoryCards.length;
+    resultsDisplay.textContent = `Showing ${visibleCount} of ${totalCategories} fabric categories matching "${query}"`;
+  }
+
+  // Remove any existing pagination - category view never needs pagination
+  const existingPagination = document.querySelector('.pagination');
+  if (existingPagination) {
+    existingPagination.remove();
+  }
+}
+
+// Reset category tiles to show all
+function resetCategoryTiles() {
+  const categoryCards = document.querySelectorAll('.fabric-category-card');
+
+  categoryCards.forEach(card => {
+    card.style.display = 'block';
+    card.style.opacity = '1';
+    card.style.boxShadow = '';
+    card.style.transform = '';
+  });
+
+  // Update results display
+  const resultsDisplay = document.getElementById('unified-results-display');
+  if (resultsDisplay) {
+    const totalCategories = categoryCards.length;
+    resultsDisplay.textContent = `Showing ${totalCategories} of ${totalCategories} fabric categories`;
+  }
+
+  // Remove any existing pagination - category view never needs pagination
+  const existingPagination = document.querySelector('.pagination');
+  if (existingPagination) {
+    existingPagination.remove();
+  }
 }
 
 // Initialize search when DOM is ready
