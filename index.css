@@ -742,12 +742,19 @@ section[id]::before {
   opacity: 0;
   transform: translateY(20px);
   transition: all 0.5s ease;
+  width: 100%;
+  min-height: 400px;
+  padding: 2rem;
+  box-sizing: border-box;
 }
 
 .expanded-search-interface.show {
   opacity: 1;
   transform: translateY(0);
   display: block !important;
+  visibility: visible;
+  position: relative;
+  z-index: 1000;
 }
 
 .main-search-container {
@@ -849,11 +856,15 @@ section[id]::before {
   overflow: hidden;
   transition: all 0.4s ease;
   opacity: 0;
+  margin-top: 2rem;
 }
 
 .search-results-container.show {
-  max-height: 300px;
+  max-height: 600px;
   opacity: 1;
+  visibility: visible;
+  z-index: 1000;
+  overflow-y: auto;
 }
 
 .results-grid {
@@ -3666,9 +3677,9 @@ body.dark-theme .panel-chat-input {
   .chat-toggle::before {
     content: '';
     position: absolute;
-    width: 58px;
-    height: 58px;
-    background-image: url('Images/chat.svg');
+    width: 28px;
+    height: 28px;
+    background-image: url('Images/chat.jpeg');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -4130,16 +4141,16 @@ body.dark-theme .panel-chat-input {
   .chat-toggle::before {
     content: '';
     position: absolute;
-    width: 52px;
-    height: 52px;
-    background-image: url('Images/chat.svg');
+    width: 25px;
+    height: 25px;
+    background-image: url('Images/chat.jpeg');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
   }
 
   .chat-toggle:hover {
-    transform: scale(1.1);
+    transform: scale(0.1);
   }
 
   /* Hide avatar since we're using SVG icon */
@@ -4686,9 +4697,9 @@ body.dark-theme .panel-chat-input {
   .chat-toggle::before {
     content: '';
     position: absolute;
-    width: 50px;
-    height: 50px;
-    background-image: url('Images/chat.svg');
+    width: 25px;
+    height: 25px;
+    background-image: url('Images/chat.jpeg');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;

@@ -1231,12 +1231,82 @@
         });
       }
 
+      // Function to handle URL parameters and apply filters
+      function handleUrlParameters() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const searchQuery = urlParams.get('search');
+        const categoryFilter = urlParams.get('category');
+
+        console.log('🔍 URL Parameters - Search:', searchQuery, 'Category:', categoryFilter);
+
+        // If there's a search query, apply it to the search input
+        if (searchQuery) {
+          const searchInput = document.getElementById('fabric-search-input');
+          if (searchInput) {
+            searchInput.value = searchQuery;
+            console.log('✅ Applied search query:', searchQuery);
+          }
+        }
+
+        // If there's a category filter, apply it
+        if (categoryFilter) {
+          console.log('✅ Applying category filter:', categoryFilter);
+
+          // Map URL category to dropdown value
+          const categoryMapping = {
+            'fabrics': 'Premium Fabrics',
+            'lace': 'Lace',
+            'silk': 'Silk',
+            'cotton': 'Cotton'
+          };
+
+          const dropdownValue = categoryMapping[categoryFilter];
+          if (dropdownValue) {
+            // Set the category dropdown
+            const categoryDropdown = document.getElementById('fabric-category-filter');
+            if (categoryDropdown) {
+              categoryDropdown.value = dropdownValue;
+              console.log('✅ Set category dropdown to:', dropdownValue);
+            }
+
+            // If category is selected, switch to All Fabrics view to show filtered results
+            switchToAllFabrics();
+          }
+        }
+
+        // Apply the filters
+        if (searchQuery || categoryFilter) {
+          // Give a short delay to ensure everything is loaded
+          setTimeout(() => {
+            console.log('🔍 Triggering search with parameters');
+
+            // Check which view we're in and apply appropriate filtering
+            const categoriesView = document.getElementById('categoriesView');
+            const allFabricsView = document.getElementById('allFabricsView');
+
+            if (categoriesView && categoriesView.style.display !== 'none') {
+              // In category view - filter categories
+              if (typeof filterCategories === 'function') {
+                filterCategories();
+              }
+            } else if (allFabricsView && allFabricsView.style.display !== 'none') {
+              // In all fabrics view - filter fabrics
+              if (typeof performSearch === 'function') {
+                performSearch();
+              }
+            }
+          }, 500);
+        }
+      }
+
       // Wait for all scripts to load before initializing
       window.addEventListener('load', function () {
         // Initialize the view - start with categories view
         switchToCategories();
         // Apply category background images
         applyCategoryBackgrounds();
+        // Handle URL parameters from index page search
+        handleUrlParameters();
       });
     </script>
   </body>

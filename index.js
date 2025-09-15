@@ -1183,59 +1183,39 @@ const premiumCollectionsDatabase = [
 
 function performAdvancedSearch() {
   console.log('🔍 performAdvancedSearch called');
-  
+
   const searchInput = document.getElementById('mainSearchInput');
-  const resultsContainer = document.getElementById('advancedSearchResults');
-  const resultsGrid = document.getElementById('resultsGrid');
-  
+
   if (!searchInput) {
     console.error('❌ Search input not found');
     return;
   }
-  
-  if (!resultsContainer || !resultsGrid) {
-    console.error('❌ Results containers not found');
-    return;
-  }
-  
-  const activeChip = document.querySelector('.category-chip.active');
+
   const query = searchInput.value.toLowerCase().trim();
-  const activeCategory = activeChip ? activeChip.dataset.category : 'all';
-  
-  console.log(`🔍 Query: "${query}", Category: "${activeCategory}"`);
-  
-  // Show results container
-  resultsContainer.classList.add('show');
-  
-  if (query.length === 0) {
-    resultsGrid.innerHTML = '<div style="text-align: center; color: #7f8c8d; padding: 2rem;">Enter a search term to find products</div>';
-    return;
-  }
-  
-  let results = premiumCollectionsDatabase.filter(item => {
-    const matchesQuery = item.title.toLowerCase().includes(query) || 
-                        item.description.toLowerCase().includes(query) ||
-                        item.category.toLowerCase().includes(query);
-    const matchesCategory = activeCategory === 'all' || item.category === activeCategory;
-    return matchesQuery && matchesCategory;
-  });
-  
-  console.log(`🔍 Found ${results.length} results:`, results);
-  
-  if (results.length === 0) {
-    resultsGrid.innerHTML = `
-      <div style="grid-column: 1 / -1; text-align: center; color: #7f8c8d; padding: 2rem;">
-        <p>No results found for "${query}". Try different keywords or collections.</p>
-      </div>
-    `;
+
+  // Only redirect if there's a search query typed in
+  if (query.length > 0) {
+    const activeChip = document.querySelector('.category-chip.active');
+    const activeCategory = activeChip ? activeChip.dataset.category : 'all';
+
+    console.log(`🔍 Query: "${query}", Category: "${activeCategory}"`);
+
+    // Redirect to fabrics page with search parameters
+    let fabricsUrl = 'Fabrics.html';
+    const params = new URLSearchParams();
+
+    params.append('search', query);
+
+    if (activeCategory && activeCategory !== 'all') {
+      params.append('category', activeCategory);
+    }
+
+    fabricsUrl += '?' + params.toString();
+
+    console.log(`🔍 Redirecting to: ${fabricsUrl}`);
+    window.location.href = fabricsUrl;
   } else {
-    resultsGrid.innerHTML = results.map(item => `
-      <div class="result-card">
-        <h3>${item.title}</h3>
-        <p class="result-category">${item.category}</p>
-        <p class="result-description">${item.description}</p>
-      </div>
-    `).join('');
+    console.log('🔍 No search query - not redirecting');
   }
 }
 
@@ -1275,27 +1255,44 @@ function hideAdvancedSearchResults() {
 
 function setActiveCategoryChip(category) {
   console.log('🏷️ Setting active category:', category);
-  
-  // Remove active class from all chips
-  document.querySelectorAll('.category-chip').forEach(chip => {
-    chip.classList.remove('active');
-    console.log('Removed active from:', chip.dataset.category);
-  });
-  
-  // Add active class to selected chip
-  const targetChip = document.querySelector(`[data-category="${category}"]`);
-  if (targetChip) {
-    targetChip.classList.add('active');
-    console.log('✅ Set active category to:', category);
-  } else {
-    console.error('❌ Target chip not found for category:', category);
+
+  // If category is 'all', just set it active but don't redirect
+  if (category === 'all') {
+    // Remove active class from all chips
+    document.querySelectorAll('.category-chip').forEach(chip => {
+      chip.classList.remove('active');
+    });
+
+    // Add active class to selected chip
+    const targetChip = document.querySelector(`[data-category="${category}"]`);
+    if (targetChip) {
+      targetChip.classList.add('active');
+      console.log('✅ Set active category to:', category);
+    }
+    return;
   }
-  
-  // Trigger search with new filter
-  const query = document.getElementById('mainSearchInput').value.toLowerCase().trim();
-  if (query.length > 0) {
-    performAdvancedSearch();
+
+  // For specific categories, redirect to fabrics page
+  console.log(`🏷️ Redirecting to fabrics page with category: ${category}`);
+
+  let fabricsUrl = 'Fabrics.html';
+  const params = new URLSearchParams();
+
+  // Map category names to fabric page filters
+  const categoryMapping = {
+    'fabrics': 'fabrics',
+    'lace': 'lace',
+    'silk': 'silk',
+    'cotton': 'cotton'
+  };
+
+  if (categoryMapping[category]) {
+    params.append('category', categoryMapping[category]);
+    fabricsUrl += '?' + params.toString();
   }
+
+  console.log(`🏷️ Redirecting to: ${fabricsUrl}`);
+  window.location.href = fabricsUrl;
 }
 
 // Initialize search functionality
@@ -1341,6 +1338,22 @@ function initializeSearchFunctionality() {
 document.addEventListener('DOMContentLoaded', () => {
   // Wait a bit for everything to load
   setTimeout(initializeSearchFunctionality, 500);
+
+  // Add backup event listener for search button
+  setTimeout(() => {
+    const searchBtn = document.querySelector('.search-icon-btn');
+    if (searchBtn) {
+      console.log('✅ Adding backup event listener to search button');
+      searchBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        console.log('🔍 Backup search button clicked');
+        expandSearchInterface();
+      });
+    } else {
+      console.error('❌ Search button not found for backup listener');
+    }
+  }, 1000);
+
   document.addEventListener('click', (e) => {
     if (!e.target.closest('.premium-search-container')) {
       hideAdvancedSearchResults();
@@ -1465,29 +1478,55 @@ document.addEventListener('DOMContentLoaded', () => {
 // =================== SEARCH EXPANSION FUNCTIONALITY ===================
 function expandSearchInterface() {
   console.log('🚀 expandSearchInterface called');
-  
+
   const iconContainer = document.getElementById('searchIconContainer');
   const expandedInterface = document.getElementById('expandedSearchInterface');
-  
+
+  console.log('iconContainer:', iconContainer);
+  console.log('expandedInterface:', expandedInterface);
+
   if (!iconContainer) {
     console.error('❌ searchIconContainer not found');
+    alert('Error: Search icon container not found');
     return;
   }
-  
+
   if (!expandedInterface) {
     console.error('❌ expandedSearchInterface not found');
+    alert('Error: Expanded interface not found');
     return;
   }
-  
+
   console.log('✅ Found search elements, expanding interface');
-  
+
   // Hide the search icon
   iconContainer.style.display = 'none';
-  
-  // Show and animate the expanded interface
-  expandedInterface.style.display = 'block';
+  console.log('✅ Hidden search icon container');
+
+  // Force show the expanded interface with important styles and scrollbar
+  expandedInterface.style.cssText = `
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+    position: relative !important;
+    z-index: 1000 !important;
+    width: 100% !important;
+    height: 400px !important;
+    max-height: 400px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    background: rgba(0,0,0,0.1) !important;
+    border: 2px solid #4ECDC4 !important;
+    border-radius: 10px !important;
+    padding: 20px !important;
+    box-sizing: border-box !important;
+  `;
+
   setTimeout(() => {
     expandedInterface.classList.add('show');
+    console.log('✅ Added show class to expanded interface');
+    console.log('Expanded interface styles:', expandedInterface.style.cssText);
   }, 50);
   
   // Ensure we have a default active category chip
