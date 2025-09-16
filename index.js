@@ -1316,8 +1316,20 @@ function performAdvancedSearch() {
     console.log(`🔍 Query: "${query}", Category: "${activeCategory}"`);
 
     // Check if query contains lace-related terms
-    const laceTerms = ['lace', 'chantilly', 'venetian', 'guipure', 'alençon', 'alencon', 'crochet', 'embroidered', 'eyelet', 'cutwork', 'battenberg'];
-    const isLaceQuery = laceTerms.some(term => query.includes(term));
+    const laceTerms = [
+      "lace",
+      "chantilly",
+      "venetian",
+      "guipure",
+      "alençon",
+      "alencon",
+      "crochet",
+      "embroidered",
+      "eyelet",
+      "cutwork",
+      "battenberg",
+    ];
+    const isLaceQuery = laceTerms.some((term) => query.includes(term));
 
     // Determine target page based on query content or active category
     let targetUrl;
@@ -1661,9 +1673,9 @@ function getRandomImage(imageArray) {
 function getRandomLaceImage() {
   // Get all lace images from all color folders
   const allLaceImages = [];
-  Object.keys(laceImages).forEach(color => {
+  Object.keys(laceImages).forEach((color) => {
     const colorImages = laceImages[color];
-    colorImages.forEach(image => {
+    colorImages.forEach((image) => {
       allLaceImages.push(`/Images/Laces/${color}/${image}`);
     });
   });
@@ -1674,13 +1686,13 @@ function getRandomLaceImage() {
 async function getContrastingTextColor(imageSrc) {
   return new Promise((resolve) => {
     const img = new Image();
-    img.crossOrigin = 'anonymous';
+    img.crossOrigin = "anonymous";
 
-    img.onload = function() {
+    img.onload = function () {
       try {
         // Create canvas to analyze image
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
 
         // Use a smaller canvas for performance
         const sampleSize = 50;
@@ -1702,7 +1714,7 @@ async function getContrastingTextColor(imageSrc) {
           const b = data[i + 2];
 
           // Calculate perceived brightness using luminance formula
-          const brightness = (0.299 * r + 0.587 * g + 0.114 * b);
+          const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
           totalBrightness += brightness;
           pixelCount++;
         }
@@ -1711,23 +1723,35 @@ async function getContrastingTextColor(imageSrc) {
 
         // Return contrasting color based on brightness
         // If image is bright (> 128), use dark text; if dark, use light text
-        const textColor = averageBrightness > 128 ? '#1a1a1a' : '#ffffff';
-        const textShadow = averageBrightness > 128
-          ? '1px 1px 2px rgba(255,255,255,0.8), 0 0 8px rgba(255,255,255,0.3)'
-          : '1px 1px 2px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.3)';
+        const textColor = averageBrightness > 128 ? "#1a1a1a" : "#ffffff";
+        const textShadow =
+          averageBrightness > 128
+            ? "1px 1px 2px rgba(255,255,255,0.8), 0 0 8px rgba(255,255,255,0.3)"
+            : "1px 1px 2px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.3)";
 
         resolve({ color: textColor, shadow: textShadow });
       } catch (error) {
-        console.warn('Could not analyze image brightness, using default colors:', error);
+        console.warn(
+          "Could not analyze image brightness, using default colors:",
+          error
+        );
         // Default to white text with dark shadow
-        resolve({ color: '#ffffff', shadow: '1px 1px 2px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.3)' });
+        resolve({
+          color: "#ffffff",
+          shadow: "1px 1px 2px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.3)",
+        });
       }
     };
 
-    img.onerror = function() {
-      console.warn('Could not load image for brightness analysis, using default colors');
+    img.onerror = function () {
+      console.warn(
+        "Could not load image for brightness analysis, using default colors"
+      );
       // Default to white text with dark shadow
-      resolve({ color: '#ffffff', shadow: '1px 1px 2px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.3)' });
+      resolve({
+        color: "#ffffff",
+        shadow: "1px 1px 2px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.3)",
+      });
     };
 
     img.src = imageSrc;
@@ -1735,39 +1759,44 @@ async function getContrastingTextColor(imageSrc) {
 }
 
 // Apply dynamic text styling to card content
-function applyDynamicTextStyling(card, textColor, textShadow, isLaceCard = false) {
+function applyDynamicTextStyling(
+  card,
+  textColor,
+  textShadow,
+  isLaceCard = false
+) {
   // Style text elements (excluding links/buttons)
-  const textElements = card.querySelectorAll('h3, p, li, .product-icon');
+  const textElements = card.querySelectorAll("h3, p, li, .product-icon");
 
-  textElements.forEach(element => {
+  textElements.forEach((element) => {
     if (isLaceCard) {
       // For lace cards, add background only to text elements (not buttons)
-      element.style.color = '#ffffff';
-      element.style.textShadow = '1px 1px 2px rgba(0,0,0,0.8)';
-      element.style.background = 'rgba(0, 0, 0, 0.5)';
-      element.style.padding = '2px 6px';
-      element.style.borderRadius = '3px';
-      element.style.display = 'inline-block';
-      element.style.transition = 'all 0.3s ease';
+      element.style.color = "#ffffff";
+      element.style.textShadow = "1px 1px 2px rgba(0,0,0,0.8)";
+      element.style.background = "rgba(0, 0, 0, 0.5)";
+      element.style.padding = "2px 6px";
+      element.style.borderRadius = "3px";
+      element.style.display = "inline-block";
+      element.style.transition = "all 0.3s ease";
     } else {
       // For other cards, use dynamic contrast without background
       element.style.color = textColor;
       element.style.textShadow = textShadow;
-      element.style.background = 'none';
-      element.style.padding = '';
-      element.style.borderRadius = '';
-      element.style.display = '';
-      element.style.transition = 'color 0.3s ease, text-shadow 0.3s ease';
+      element.style.background = "none";
+      element.style.padding = "";
+      element.style.borderRadius = "";
+      element.style.display = "";
+      element.style.transition = "color 0.3s ease, text-shadow 0.3s ease";
     }
   });
 
   // Handle links/buttons separately - keep original styling, only change text color
-  const links = card.querySelectorAll('a');
-  links.forEach(link => {
+  const links = card.querySelectorAll("a");
+  links.forEach((link) => {
     if (isLaceCard) {
       // For lace card links, only change text color, keep original button styling
-      link.style.color = '#ffffff';
-      link.style.textShadow = '1px 1px 2px rgba(0,0,0,0.8)';
+      link.style.color = "#ffffff";
+      link.style.textShadow = "1px 1px 2px rgba(0,0,0,0.8)";
       // Don't modify button background, padding, etc. - keep original styling
     } else {
       // For other cards, use dynamic contrast
@@ -1775,14 +1804,14 @@ function applyDynamicTextStyling(card, textColor, textShadow, isLaceCard = false
       link.style.textShadow = textShadow;
 
       // Standard hover effects
-      const isLightText = textColor === '#ffffff';
-      const hoverColor = isLightText ? '#e0e0e0' : '#333333';
+      const isLightText = textColor === "#ffffff";
+      const hoverColor = isLightText ? "#e0e0e0" : "#333333";
 
-      link.addEventListener('mouseenter', () => {
+      link.addEventListener("mouseenter", () => {
         link.style.color = hoverColor;
       });
 
-      link.addEventListener('mouseleave', () => {
+      link.addEventListener("mouseleave", () => {
         link.style.color = textColor;
       });
     }
@@ -1791,10 +1820,10 @@ function applyDynamicTextStyling(card, textColor, textShadow, isLaceCard = false
 
 function addComingSoonBadge(card) {
   // Ensure the card is positioned relative for absolute positioning of badge
-  card.style.position = 'relative';
+  card.style.position = "relative";
 
   // Create coming soon badge
-  const comingSoonBadge = document.createElement('div');
+  const comingSoonBadge = document.createElement("div");
   comingSoonBadge.style.cssText = `
     position: absolute;
     top: 15px;
@@ -1811,11 +1840,11 @@ function addComingSoonBadge(card) {
     z-index: 10;
     animation: pulse 2s ease-in-out infinite;
   `;
-  comingSoonBadge.textContent = 'Coming Soon';
-  comingSoonBadge.classList.add('coming-soon-badge');
+  comingSoonBadge.textContent = "Coming Soon";
+  comingSoonBadge.classList.add("coming-soon-badge");
 
   // Add CSS animation for pulse effect
-  const style = document.createElement('style');
+  const style = document.createElement("style");
   style.textContent = `
     @keyframes pulse {
       0%, 100% { transform: scale(1); opacity: 1; }
@@ -1828,8 +1857,8 @@ function addComingSoonBadge(card) {
   `;
 
   // Add style only once
-  if (!document.querySelector('#coming-soon-styles')) {
-    style.id = 'coming-soon-styles';
+  if (!document.querySelector("#coming-soon-styles")) {
+    style.id = "coming-soon-styles";
     document.head.appendChild(style);
   }
 
@@ -1840,7 +1869,7 @@ function addComingSoonBadge(card) {
 function applyCardBackgroundImages() {
   console.log("🎨 Applying dynamic card background images...");
 
-  const productCards = document.querySelectorAll('.product-card');
+  const productCards = document.querySelectorAll(".product-card");
 
   if (productCards.length === 0) {
     console.warn("⚠️ No product cards found");
@@ -1848,28 +1877,81 @@ function applyCardBackgroundImages() {
   }
 
   productCards.forEach((card, index) => {
-    const cardTitle = card.querySelector('h3')?.textContent?.toLowerCase() || '';
+    const cardTitle =
+      card.querySelector("h3")?.textContent?.toLowerCase() || "";
     let backgroundImage = null;
 
+    // Initialize card with transition layers if not already done
+    if (!card.dataset.initialized) {
+      card.style.position = "relative";
+      card.style.overflow = "hidden";
+
+      // Create two background layers for smooth transition
+      const layer1 = document.createElement("div");
+      layer1.className = "card-bg-layer card-bg-layer-1";
+      layer1.style.cssText = `
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        transition: opacity 1.2s ease-in-out;
+        z-index: 1;
+      `;
+
+      const layer2 = document.createElement("div");
+      layer2.className = "card-bg-layer card-bg-layer-2";
+      layer2.style.cssText = `
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        transition: opacity 1.2s ease-in-out;
+        opacity: 0;
+        z-index: 1;
+      `;
+
+      card.insertBefore(layer1, card.firstChild);
+      card.insertBefore(layer2, card.firstChild);
+
+      // Ensure card content is above background layers
+      Array.from(card.children).forEach((child) => {
+        if (!child.classList.contains("card-bg-layer")) {
+          child.style.position = "relative";
+          child.style.zIndex = "2";
+        }
+      });
+
+      card.dataset.initialized = "true";
+      card.dataset.activeLayer = "1";
+    }
+
     // Determine which type of background image to use
-    if (cardTitle.includes('fabric')) {
+    if (cardTitle.includes("fabric")) {
       // Fabrics card - use fabric images from cardImages
       const fabricImage = getRandomImage(cardBackgroundImages.fabricCard);
       if (fabricImage) {
         backgroundImage = `/Images/cardImages/${fabricImage}`;
       }
-    } else if (cardTitle.includes('lace')) {
+    } else if (cardTitle.includes("lace")) {
       // Lace card - use curated lace images
       const laceImage = getRandomImage(cardBackgroundImages.laceCard);
       if (laceImage) {
         // Check if the image path already includes directory structure
-        if (laceImage.startsWith('Laces/')) {
+        if (laceImage.startsWith("Laces/")) {
           backgroundImage = `/Images/${laceImage}`;
         } else {
           backgroundImage = `/Images/cardImages/${laceImage}`;
         }
       }
-    } else if (cardTitle.includes('atelier') || cardTitle.includes('fashion')) {
+    } else if (cardTitle.includes("atelier") || cardTitle.includes("fashion")) {
       // Fashion Atelier card - no background image, add coming soon badge
       addComingSoonBadge(card);
       return; // Skip adding background image
@@ -1881,36 +1963,62 @@ function applyCardBackgroundImages() {
       }
     }
 
-    // Apply the background image and analyze for text contrast
+    // Apply smooth crossfade transition
     if (backgroundImage) {
-      card.style.backgroundImage = `url('${backgroundImage}')`;
-      card.style.backgroundSize = 'cover';
-      card.style.backgroundPosition = 'center';
-      card.style.backgroundRepeat = 'no-repeat';
-      card.style.position = 'relative';
+      const layer1 = card.querySelector(".card-bg-layer-1");
+      const layer2 = card.querySelector(".card-bg-layer-2");
+      const activeLayer = card.dataset.activeLayer;
+
+      if (activeLayer === "1") {
+        // Set new image on layer 2 and fade it in
+        layer2.style.backgroundImage = `url('${backgroundImage}')`;
+        layer2.style.opacity = "1";
+        layer1.style.opacity = "0";
+        card.dataset.activeLayer = "2";
+      } else {
+        // Set new image on layer 1 and fade it in
+        layer1.style.backgroundImage = `url('${backgroundImage}')`;
+        layer1.style.opacity = "1";
+        layer2.style.opacity = "0";
+        card.dataset.activeLayer = "1";
+      }
+      card.style.position = "relative";
 
       // Determine if this is a lace card
-      const isLaceCard = cardTitle.includes('lace');
+      const isLaceCard = cardTitle.includes("lace");
 
       // Analyze image and apply appropriate text styling
       if (isLaceCard) {
         // For lace cards, always use text backgrounds regardless of image brightness
-        applyDynamicTextStyling(card, '#ffffff', '1px 1px 2px rgba(0,0,0,0.8)', true);
-        console.log(`✅ Applied background and lace text styling to ${cardTitle}: ${backgroundImage}`);
+        applyDynamicTextStyling(
+          card,
+          "#ffffff",
+          "1px 1px 2px rgba(0,0,0,0.8)",
+          true
+        );
+        console.log(
+          `✅ Applied background and lace text styling to ${cardTitle}: ${backgroundImage}`
+        );
       } else {
         // For other cards, use dynamic contrast analysis
         getContrastingTextColor(backgroundImage)
           .then(({ color, shadow }) => {
             applyDynamicTextStyling(card, color, shadow, false);
-            console.log(`✅ Applied background and dynamic text styling to ${cardTitle}: ${backgroundImage} (text: ${color})`);
+            console.log(
+              `✅ Applied background and dynamic text styling to ${cardTitle}: ${backgroundImage} (text: ${color})`
+            );
           })
-          .catch(error => {
-            console.warn('Failed to apply dynamic text styling:', error);
+          .catch((error) => {
+            console.warn("Failed to apply dynamic text styling:", error);
             // Apply default styling
-            applyDynamicTextStyling(card, '#ffffff', '1px 1px 2px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.3)', false);
+            applyDynamicTextStyling(
+              card,
+              "#ffffff",
+              "1px 1px 2px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.3)",
+              false
+            );
           });
       }
-
     } else {
       console.warn(`⚠️ No background image found for card: ${cardTitle}`);
     }
@@ -1923,10 +2031,16 @@ async function initializeProductCardBackgrounds() {
   await loadCardBackgroundImages();
 
   // Wait for DOM to be ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', applyCardBackgroundImages);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => {
+      applyCardBackgroundImages();
+      // Start auto-rotation every 8 seconds
+      setInterval(applyCardBackgroundImages, 8000);
+    });
   } else {
     applyCardBackgroundImages();
+    // Start auto-rotation every 8 seconds
+    setInterval(applyCardBackgroundImages, 8000);
   }
 }
 

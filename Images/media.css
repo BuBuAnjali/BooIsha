@@ -1,0 +1,2280 @@
+/* WhatsApp modal responsive styling */
+@media (max-width: 480px) {
+  .whatsapp-modal {
+    margin: 20px;
+    width: calc(100% - 40px);
+  }
+
+  .whatsapp-modal-header,
+  .whatsapp-modal-content {
+    padding: 20px;
+  }
+}
+
+/* ===== LARGE DESKTOP - 1200px and above ===== */
+@media (min-width: 1200px) {
+  .chat-widget {
+    bottom: 60px;
+    right: 100px;
+  }
+
+  .blurred {
+    filter: blur(4px);
+  }
+
+  :root {
+    --top-blur-height: 32px;
+  }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .story-content {
+    gap: 8rem;
+  }
+
+  .image-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    max-width: 1600px;
+    margin: 0 auto 2rem;
+    padding: 0 1rem;
+    max-width: 100%;
+  }
+
+  .image-placeholder {
+    height: 200px;
+  }
+
+  .logo {
+    font-size: 3rem;
+  }
+
+  .section-title {
+    font-size: 2.5rem;
+  }
+
+  .section-subtitle {
+    font-size: 1.2rem;
+  }
+
+  .nav-menu a {
+    padding: 0 1.2rem;
+    font-size: 1.1rem;
+  }
+
+  .hero-section {
+    min-height: 700px;
+  }
+
+  .hero-title {
+    font-size: 4rem;
+  }
+
+  .hero-description {
+    font-size: 1.4rem;
+    max-width: 700px;
+  }
+
+  .image-grid {
+    min-height: 450px;
+  }
+
+  .image-placeholder {
+    height: 380px;
+  }
+
+  .story-text h2 {
+    font-size: 3rem;
+  }
+
+  .story-text p {
+    font-size: 1.3rem;
+    max-width: 65ch;
+  }
+
+  .products-grid {
+    gap: 3rem;
+  }
+
+  .product-card {
+    max-width: 280px;
+  }
+
+  .story-video {
+    width: 100%;
+    max-width: 600px;
+    height: 100%;
+    margin: 0 auto;
+  }
+}
+
+/* ===== EXTRA LARGE DESKTOP - 1440px and above ===== */
+@media (min-width: 1440px) {
+  .chat-widget {
+    bottom: 80px;
+    right: 120px;
+  }
+}
+
+/* ===== ULTRA LARGE DESKTOP - 1600px and above ===== */
+@media (min-width: 1600px) {
+  .chat-widget {
+    bottom: 100px;
+    right: 150px;
+  }
+}
+
+/* ===== ULTRA WIDE DESKTOP - 1920px and above ===== */
+@media (min-width: 1920px) {
+  .chat-widget {
+    bottom: 20px;
+    right: 20px;
+  }
+}
+
+/* ===== DESKTOP - 1024px to 1199px ===== */
+@media (max-width: 1199px) and (min-width: 1024px) {
+  .blurred {
+    filter: blur(4px);
+  }
+
+  :root {
+    --top-blur-height: 28px;
+  }
+
+  .story-content {
+    gap: 6rem;
+  }
+
+  .story-video {
+    width: 100%;
+    max-width: 600px;
+    height: 100%;
+    margin: 0 auto;
+  }
+
+  .image-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+    margin: -8px auto 1.5rem;
+    max-width: 100%;
+  }
+
+  .image-placeholder {
+    height: 190px;
+  }
+
+  .logo {
+    font-size: 2.5rem;
+  }
+
+  .container {
+    max-width: 1100px;
+    padding: 0 2rem;
+  }
+
+  .nav-menu a {
+    padding: 0 1rem;
+    font-size: 1rem;
+  }
+
+  .hero-section {
+    min-height: 650px;
+  }
+
+  .hero-title {
+    font-size: 3.5rem;
+  }
+
+  .hero-description {
+    font-size: 1.3rem;
+    max-width: 650px;
+  }
+
+  .image-grid {
+    min-height: 420px;
+  }
+
+  .image-placeholder {
+    height: 350px;
+  }
+
+  .story-text h2 {
+    font-size: 2.8rem;
+  }
+
+  .story-text p {
+    font-size: 1.2rem;
+    max-width: 60ch;
+  }
+
+  .products-grid {
+    gap: 2.5rem;
+  }
+
+  .product-card {
+    max-width: 260px;
+  }
+}
+
+/* ===== TABLET - 769px to 1023px ===== */
+@media (max-width: 1023px) and (min-width: 769px) {
+  .theme-menu {
+    left: -40%;
+    transform: translateX(-50%) translateY(-10px);
+    top: 165%;
+  }
+
+  .blurred {
+    filter: blur(3px);
+  }
+
+  .container {
+    max-width: 900px;
+    padding: 0 1.5rem;
+  }
+
+  .nav-container {
+    padding: 1rem 1.5rem;
+  }
+
+  .nav-menu a {
+    padding: 0 0.8rem;
+    font-size: 0.95rem;
+  }
+
+  .hero-section {
+    min-height: 550px;
+  }
+
+  .hero-title {
+    font-size: 3rem;
+  }
+
+  .hero-description {
+    font-size: 1.2rem;
+    max-width: 600px;
+  }
+
+  .image-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    min-height: 350px;
+  }
+
+  .image-placeholder {
+    height: 280px;
+  }
+
+  .story-content {
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .story-text h2 {
+    font-size: 2.5rem;
+  }
+
+  .story-text p {
+    font-size: 1.1rem;
+    max-width: 55ch;
+    text-align: center;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+
+  .product-card {
+    max-width: 240px;
+  }
+
+  .mission-title {
+    font-size: 2.5rem;
+  }
+
+  .mission-text {
+    font-size: 1.1rem;
+    max-width: 55ch;
+  }
+
+  .markets-list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .founder-section {
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .founder-text h2 {
+    font-size: 2.2rem;
+  }
+
+  .founder-text p {
+    font-size: 1.1rem;
+    text-align: center;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .markets-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+
+  .mission-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  .story-video {
+    width: 100%;
+    max-width: 600px;
+    height: 100%;
+    margin: 0 auto;
+  }
+}
+
+
+/* ===== MOBILE LARGE - 481px to 768px ===== */
+@media (max-width: 768px) {
+  .blurred {
+    filter: blur(2px);
+    transition: filter 0.2s ease-in-out;
+  }
+
+  .blurred::before {
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .container {
+    padding: 0 1rem;
+  }
+
+  /* Navigation */
+  .nav-container {
+    flex-direction: column;
+    gap: 0.1rem;
+    padding: 0.1rem;
+    align-items: center;
+  }
+
+  .contact-bar-content {
+    font-size: 0.8rem;
+    padding: 0 0.75rem;
+    justify-content: space-between;
+  }
+
+  .nav-container img {
+    width: 56px !important;
+    height: 56px !important;
+  }
+
+  .logo-link,
+  .logo-container {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .logo-container img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .logo {
+    font-size: 2rem;
+    padding-left: 0;
+    text-align: center;
+  }
+
+  .theme-toggle-container {
+    order: -1;
+  }
+
+  .arrow-toggle {
+    padding: 6px;
+  }
+
+  .nav-menu {
+    gap: 0.1rem;
+    font-size: 1rem;
+    justify-content: center;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+
+  .nav-menu a {
+    padding: 6px 2px;
+    white-space: nowrap;
+  }
+
+  .nav-menu a:not(:last-child)::after {
+    content: "•";
+    margin: 0 0.55rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    color: var(--text-color);
+    opacity: 0.6;
+    vertical-align: middle;
+    line-height: 1;
+    position: relative;
+    top: -1px;
+  }
+
+  .nav-dropdown::after {
+    display: none;
+  }
+
+  /* Theme arrow faces down and menu appears below for all screens under 800px */
+  .arrow-toggle svg {
+    transform: rotate(90deg);
+  }
+
+  .theme-menu {
+    left: 50%;
+    top: calc(100% + 4px);
+    transform: translateX(-50%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(240, 248, 255, 0.95);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+  }
+
+  /* Fixed dropdown behavior for mobile */
+  .nav-dropdown {
+    position: relative;
+  }
+
+  .nav-dropdown .dropdown-content {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(240, 248, 255, 0.95);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    width: max-content;
+    min-width: 150px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-radius: 8px;
+    padding: 8px 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 1001;
+  }
+
+  .nav-dropdown:hover .dropdown-content,
+  .nav-dropdown.active .dropdown-content,
+  .nav-dropdown.open .dropdown-content {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .nav-dropdown .dropdown-content a {
+    color: var(--bordercolor);
+    padding: 8px 20px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 0;
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 500;
+    white-space: nowrap;
+    line-height: 1.4;
+  }
+
+  .nav-dropdown .dropdown-content a::after {
+    display: none !important;
+  }
+
+  .nav-dropdown .dropdown-content a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: var(--button-bg) !important;
+  }
+
+  /* Hero Section */
+  .hero-section {
+    min-height: 450px;
+    padding: 3rem 0;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .hero-description {
+    font-size: 1rem;
+    max-width: 500px;
+    margin-bottom: 2rem;
+  }
+
+  /* Image Grid */
+  .image-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    min-height: 250px;
+  }
+
+  .image-placeholder {
+    height: 200px;
+  }
+
+  /* Story Section */
+  .story-content {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .story-text h2 {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  .story-text p {
+    font-size: 0.95rem;
+    max-width: 45ch;
+    text-align: center;
+  }
+
+  /* Products Grid */
+  .products-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    justify-items: center;
+  }
+
+  .product-card {
+    max-width: 300px;
+    width: 100%;
+  }
+
+  /* Mission Section */
+  .mission-title {
+    font-size: 2rem;
+  }
+
+  .mission-text {
+    font-size: 0.95rem;
+    max-width: 45ch;
+  }
+
+  /* Markets Section */
+  .markets-list {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .market-item {
+    padding: 1rem;
+  }
+
+  /* Founder Section */
+  .founder-section {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .founder-image {
+    max-width: 200px;
+  }
+
+  .founder-text h2 {
+    font-size: 1.8rem;
+    text-align: center;
+  }
+
+  .founder-text p {
+    font-size: 0.95rem;
+    text-align: center;
+  }
+
+  /* Contact Section */
+  .contact-form {
+    max-width: 350px;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    font-size: 0.9rem;
+  }
+
+  .form-submit-btn,
+  .form-cancel-btn {
+    font-size: 0.9rem;
+    padding: 0.7rem 1.5rem;
+  }
+
+  /* Footer */
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    text-align: center;
+  }
+
+  .footer-section h3 {
+    font-size: 1.1rem;
+  }
+
+  .footer-section p,
+  .footer-section a {
+    font-size: 0.85rem;
+  }
+
+  .chat-window {
+    width: calc(100vw - 40px);
+    height: calc(100vh - 120px);
+    bottom: 84px;
+    right: 50%;
+    transform: translateX(50%);
+  }
+
+  .chat-window.open {
+    transform: translateX(50%);
+  }
+
+  .chat-toggle {
+    width: 58px;
+    height: 58px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  /* Use chat SVG icon */
+  .chat-toggle::before {
+    content: '';
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    background-image: url('Images/chat.jpeg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .chat-toggle:hover {
+    transform: scale(1.1);
+  }
+
+  /* Hide avatar since we're using SVG icon */
+  .chat-avatar {
+    display: none;
+  }
+
+  /* Hide text content, show only logo */
+  .chat-toggle-content {
+    display: none;
+  }
+
+  .chat-toggle-title {
+    display: none;
+  }
+
+  .chat-toggle-subtitle {
+    display: none;
+  }
+
+  .notification-badge {
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+  }
+
+  /* Contact panel mobile adjustments */
+  .contact-panel {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+    max-width: none;
+    max-height: none;
+  }
+
+  .contact-panel-header h2 {
+    font-size: 1.3rem;
+  }
+
+  .contact-section {
+    padding: 1rem;
+  }
+
+  .contact-section h3 {
+    font-size: 1.1rem;
+  }
+
+  .contact-info {
+    font-size: 0.9rem;
+  }
+
+  .social-links a {
+    font-size: 1.5rem;
+  }
+
+  .quick-actions {
+    gap: 0.5rem;
+    padding: 1rem;
+  }
+
+  .quick-action {
+    font-size: 0.8rem;
+    padding: 0.6rem 1rem;
+  }
+
+  /* Form adjustments */
+  .form-group label {
+    font-size: 0.9rem;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    font-size: 0.9rem;
+    padding: 0.7rem;
+  }
+
+  .form-submit-btn,
+  .form-cancel-btn {
+    font-size: 0.9rem;
+    padding: 0.7rem 1.2rem;
+  }
+
+  .theme-menu {
+    width: 50px;
+    height: 50px;
+    left: 50%;
+    top: 15%;
+  }
+
+  .story-video {
+    width: 100%;
+    max-width: 560px;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    margin: 0 auto;
+    border-radius: 14px;
+  }
+
+  .products-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .markets-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .mission-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .founder-card {
+    padding: 2rem;
+    margin: 2rem auto;
+  }
+
+  .customer-form form {
+    padding: 1.5rem;
+  }
+
+  .watermark.sticky img {
+    width: 80vw;
+  }
+}
+
+/* ===== MOBILE LARGE - 400px to 480px ===== */
+@media (max-width: 480px) {
+  .container {
+    padding: 0 0.5rem;
+  }
+
+  /* Navigation adjustments */
+  .nav-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem;
+  }
+
+  .logo-container img {
+    width: 45px;
+    height: 45px;
+  }
+
+  .logo {
+    font-size: 1.8rem;
+  }
+
+  .nav-menu {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.3rem;
+    font-size: 0.85rem;
+  }
+
+  .nav-menu a {
+    padding: 0.4rem 0.6rem;
+  }
+
+  /* Hero section */
+  .hero-section {
+    min-height: 400px;
+    padding: 2.5rem 0;
+  }
+
+  .hero-title {
+    font-size: 2.2rem;
+  }
+
+  .hero-description {
+    font-size: 0.95rem;
+    max-width: 450px;
+  }
+
+  /* Image grid */
+  .image-grid {
+    min-height: 200px;
+  }
+
+  .image-placeholder {
+    height: 180px;
+  }
+
+  /* Story section */
+  .story-text h2 {
+    font-size: 1.8rem;
+  }
+
+  .story-text p {
+    font-size: 0.9rem;
+    max-width: 40ch;
+  }
+
+  /* Products grid */
+  .product-card {
+    max-width: 280px;
+  }
+
+  .product-title {
+    font-size: 1.1rem;
+  }
+
+  .product-description {
+    font-size: 0.85rem;
+  }
+
+  /* Mission section */
+  .mission-title {
+    font-size: 1.8rem;
+  }
+
+  .mission-text {
+    font-size: 0.9rem;
+    max-width: 40ch;
+  }
+
+  /* Markets section */
+  .market-item {
+    padding: 0.8rem;
+  }
+
+  .market-title {
+    font-size: 1rem;
+  }
+
+  .market-description {
+    font-size: 0.8rem;
+  }
+
+  /* Founder section */
+  .founder-image {
+    max-width: 180px;
+  }
+
+  .founder-text h2 {
+    font-size: 1.6rem;
+  }
+
+  .founder-text p {
+    font-size: 0.9rem;
+  }
+
+  /* Contact form */
+  .contact-form {
+    max-width: 320px;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    font-size: 0.85rem;
+  }
+
+  .form-submit-btn,
+  .form-cancel-btn {
+    font-size: 0.85rem;
+    padding: 0.6rem 1.2rem;
+  }
+
+  /* Footer */
+  .footer-section h3 {
+    font-size: 1rem;
+  }
+
+  .footer-section p,
+  .footer-section a {
+    font-size: 0.8rem;
+  }
+
+
+   .theme-menu {
+    width: 40px;
+    height: 40px;
+    left: 50%;
+    top: 12%;
+  }
+
+  .theme-menu-item {
+    font-size: 0.7rem;
+    padding: 0.4rem 0.6rem;
+  }
+
+  /* Contact panel adjustments */
+  .contact-panel-header h2 {
+    font-size: 1.2rem;
+  }
+
+  .contact-section h3 {
+    font-size: 1rem;
+  }
+
+  .contact-info {
+    font-size: 0.85rem;
+  }
+
+  .quick-action {
+    font-size: 0.75rem;
+    padding: 0.5rem 0.8rem;
+  }
+
+  /* Form adjustments */
+  .form-group label {
+    font-size: 0.85rem;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    font-size: 0.85rem;
+    padding: 0.6rem;
+  }
+
+  .form-submit-btn,
+  .form-cancel-btn {
+    font-size: 0.85rem;
+    padding: 0.6rem 1rem;
+  }
+
+  .story-video {
+    width: 100%;
+    max-width: 480px;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    border-radius: 14px;
+    margin: 0 auto;
+  }
+
+  .customer-form form {
+    padding: 1.2rem;
+  }
+
+  .customer-form h2 {
+    font-size: 1.5rem;
+  }
+
+  .watermark {
+    bottom: 20px;
+    right: 20px;
+  }
+
+  .watermark img {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+/* ===== MOBILE SMALL - 320px to 399px ===== */
+@media (max-width: 399px) {
+  .blurred {
+    filter: blur(1px);
+  }
+
+  :root {
+    --top-blur-height: 14px;
+  }
+
+  .blurred::before {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .container {
+    padding: 0 0.6rem;
+  }
+
+  /* Navigation adjustments */
+  .nav-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.1rem;
+    padding: 0.6rem;
+  }
+
+  .logo-container img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .logo {
+    font-size: 1.6rem;
+  }
+
+  .nav-menu {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.2rem;
+    font-size: 0.9rem;
+  }
+
+  .nav-menu a {
+    padding: 0.3rem 0.5rem;
+  }
+
+  /* Hero section */
+  .hero-section {
+    min-height: 350px;
+    padding: 2rem 0;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-description {
+    font-size: 0.9rem;
+    max-width: 400px;
+  }
+
+  /* Image grid */
+  .image-grid {
+    min-height: 180px;
+  }
+
+  .image-placeholder {
+    height: 160px;
+  }
+
+  /* Story section */
+  .story-text h2 {
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .story-text p {
+    font-size: 0.92rem;
+    max-width: 56ch;
+  }
+
+  /* Products grid */
+  .product-card {
+    max-width: 260px;
+  }
+
+  .product-title {
+    font-size: 1rem;
+  }
+
+  .product-description {
+    font-size: 0.8rem;
+  }
+
+  /* Mission section */
+  .mission-title {
+    font-size: 1.6rem;
+  }
+
+  .mission-text {
+    font-size: 0.85rem;
+    max-width: 35ch;
+  }
+
+  /* Markets section */
+  .market-item {
+    padding: 0.6rem;
+  }
+
+  .market-title {
+    font-size: 0.9rem;
+  }
+
+  .market-description {
+    font-size: 0.75rem;
+  }
+
+  /* Founder section */
+  .founder-image {
+    max-width: 160px;
+  }
+
+  .founder-text h2 {
+    font-size: 1.4rem;
+  }
+
+  .founder-text p {
+    font-size: 0.85rem;
+  }
+
+  /* Contact form */
+  .contact-form {
+    max-width: 300px;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    font-size: 0.9rem;
+    padding: 0.6rem;
+  }
+
+  .form-submit-btn,
+  .form-cancel-btn {
+    font-size: 0.8rem;
+    padding: 0.5rem 1rem;
+  }
+
+  /* Footer */
+  .footer-section h3 {
+    font-size: 0.95rem;
+  }
+
+  .footer-section p,
+  .footer-section a {
+    font-size: 0.75rem;
+  }
+
+  .chat-widget {
+    bottom: 10px;
+    right: 10px;
+  }
+
+  .chat-toggle {
+    width: 52px;
+    height: 52px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  /* Use chat SVG icon */
+  .chat-toggle::before {
+    content: '';
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background-image: url('Images/chat.jpeg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .chat-toggle:hover {
+    transform: scale(1.1);
+  }
+
+  /* Hide avatar since we're using SVG icon */
+  .chat-avatar {
+    display: none;
+  }
+
+  /* Hide text content, show only logo */
+  .chat-toggle-content {
+    display: none;
+  }
+
+  .chat-toggle-title {
+    display: none;
+  }
+
+  .chat-toggle-subtitle {
+    display: none;
+  }
+
+  .notification-badge {
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+    top: -3px;
+    right: -3px;
+  }
+
+  .theme-menu {
+    width: 35px;
+    height: 35px;
+    left: 50%;
+    top: 40%;
+    transform: translateX(-50%) translateY(-10px);
+  }
+
+  .theme-menu-item {
+    font-size: 0.65rem;
+    padding: 0.3rem 0.5rem;
+  }
+
+  /* Contact panel adjustments */
+  .contact-panel-header h2 {
+    font-size: 1.1rem;
+  }
+
+  .contact-section h3 {
+    font-size: 0.95rem;
+  }
+
+  .contact-info {
+    font-size: 0.8rem;
+  }
+
+  .quick-action {
+    font-size: 0.7rem;
+    padding: 0.4rem 0.7rem;
+  }
+
+  /* Form adjustments */
+  .form-group label {
+    font-size: 0.8rem;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    font-size: 0.8rem;
+    padding: 0.5rem;
+  }
+
+  .form-submit-btn,
+  .form-cancel-btn {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.9rem;
+  }
+
+  .story-video {
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    border-radius: 12px;
+    margin: 0 auto;
+  }
+
+  .customer-form {
+    margin: 1rem auto;
+  }
+
+  .customer-form form {
+    padding: 1rem;
+  }
+
+  .customer-form h2 {
+    font-size: 1.3rem;
+  }
+
+  .section-title {
+    font-size: 1.4rem;
+  }
+
+  .section-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .product-card {
+    padding: 1rem;
+  }
+
+  .product-card h3 {
+    font-size: 1.1rem;
+  }
+
+  .product-card p {
+    font-size: 0.85rem;
+  }
+
+  .mission-content h2 {
+    font-size: 1.4rem;
+  }
+
+  .mission-item h3 {
+    font-size: 1rem;
+  }
+
+  .mission-item p {
+    font-size: 0.9rem;
+  }
+
+  .founder-image {
+    width: 90px;
+    height: 90px;
+    font-size: 0.9rem;
+  }
+
+  .founder-name {
+    font-size: 1.2rem;
+  }
+
+  .founder-bio {
+    font-size: 0.9rem;
+  }
+
+  .market-card {
+    padding: 1.5rem 1rem;
+  }
+
+  .market-flag {
+    font-size: 2rem;
+  }
+
+  .market-card h3 {
+    font-size: 1.2rem;
+  }
+
+  .market-card p {
+    font-size: 0.9rem;
+  }
+
+  .contact-item {
+    padding: 1.2rem;
+  }
+
+  .contact-icon {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+  }
+
+  .contact-value {
+    font-size: 1rem;
+  }
+
+  .footer-logo {
+    font-size: 1.5rem;
+  }
+
+  .footer-text {
+    font-size: 0.9rem;
+  }
+
+  .submit-enquiry-btn {
+    padding: 0.8rem;
+    font-size: 0.95rem;
+  }
+
+  .chat-toggle {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    font-size: 12px;
+  }
+}
+
+/* ===== EXTRA SMALL MOBILE - Below 320px ===== */
+@media (max-width: 319px) {
+  .blurred {
+    filter: blur(0.5px);
+  }
+
+  :root {
+    --top-blur-height: 12px;
+  }
+
+  .blurred::before {
+    display: none;
+  }
+
+  .container {
+    max-width: 319px;
+    margin: 0 auto;
+    padding: 0 0.5rem;
+  }
+
+  /* Navigation adjustments */
+  .nav-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.5rem;
+  }
+
+  .logo-link,
+  .logo-container {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .logo-container img {
+    width: 35px;
+    height: 35px;
+  }
+
+  .logo {
+    font-size: 1.4rem;
+    padding-left: 0;
+    text-align: center;
+  }
+
+  .theme-toggle-container {
+    order: -1;
+  }
+
+  .nav-menu {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.3rem 0;
+    font-size: 0.8rem;
+  }
+
+  .nav-menu a {
+    padding: 0.2rem 0.4rem;
+  }
+
+  /* Hero section */
+  .hero-section {
+    min-height: 300px;
+    padding: 1.5rem 0;
+  }
+
+  .hero-title {
+    font-size: 1.8rem;
+  }
+
+  .hero-description {
+    font-size: 0.8rem;
+    max-width: 350px;
+  }
+
+  /* Image grid */
+  .image-grid {
+    min-height: 140px;
+  }
+
+  .image-placeholder {
+    height: 120px;
+  }
+
+  /* Story section */
+  .story-content {
+    gap: 1rem;
+  }
+
+  .story-text h2 {
+    font-size: 1.3rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .section-title {
+    font-size: 1.2rem;
+  }
+
+  .story-text p {
+    font-size: 0.8rem;
+    max-width: 30ch;
+  }
+
+  /* Products grid */
+  .product-card {
+    max-width: 240px;
+  }
+
+  .product-title {
+    font-size: 0.9rem;
+  }
+
+  .product-description {
+    font-size: 0.75rem;
+  }
+
+  /* Mission section */
+  .mission-title {
+    font-size: 1.4rem;
+  }
+
+  .mission-text {
+    font-size: 0.8rem;
+    max-width: 30ch;
+  }
+
+  /* Markets section */
+  .market-item {
+    padding: 0.5rem;
+  }
+
+  .market-title {
+    font-size: 0.8rem;
+  }
+
+  .market-description {
+    font-size: 0.7rem;
+  }
+
+  /* Founder section */
+  .founder-image {
+    max-width: 140px;
+  }
+
+  .founder-text h2 {
+    font-size: 1.2rem;
+  }
+
+  .founder-text p {
+    font-size: 0.8rem;
+  }
+
+  /* Contact form */
+  .contact-form {
+    max-width: 280px;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    font-size: 0.75rem;
+  }
+
+  .form-submit-btn,
+  .form-cancel-btn {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  /* Footer */
+  .footer-section h3 {
+    font-size: 0.9rem;
+  }
+
+  .footer-section p,
+  .footer-section a {
+    font-size: 0.7rem;
+  }
+
+  /* Chat widget adjustments - simplified to icon only */
+  .chat-widget {
+    bottom: 0.75rem;
+    right: 0.5rem;
+  }
+
+  .chat-toggle {
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  /* Use chat SVG icon */
+  .chat-toggle::before {
+    content: '';
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background-image: url('Images/chat.jpeg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .chat-toggle:hover {
+    transform: scale(1.1);
+  }
+
+  /* Hide text content, show only logo */
+  .chat-toggle-content {
+    display: none;
+  }
+
+  .chat-toggle-title {
+    display: none;
+  }
+
+  .chat-toggle-subtitle {
+    display: none;
+  }
+
+  /* Hide avatar since we're using SVG icon */
+  .chat-avatar {
+    display: none;
+  }
+
+  /* Hide close button in icon mode */
+  .close-button {
+    display: none;
+  }
+
+  .chat-window {
+    width: calc(100vw - 20px);
+    max-width: 280px;
+    height: 400px;
+    bottom: 4rem;
+    right: 50%;
+    transform: translateX(50%) translateY(20px) scale(0.9);
+  }
+
+  .chat-window.open {
+    transform: translateX(50%);
+  }
+
+  .welcome-title {
+    font-size: 1.1rem;
+  }
+
+  .welcome-message {
+    font-size: 0.8rem;
+  }
+
+  .welcome-buttons {
+    gap: 0.5rem;
+  }
+
+  .welcome-btn {
+    font-size: 0.8rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .theme-menu {
+    width: 30px;
+    height: 30px;
+    left: 50%;
+    top: 8%;
+  }
+
+  .theme-menu-item {
+    font-size: 0.6rem;
+    padding: 0.25rem 0.4rem;
+  }
+
+  /* Contact panel adjustments */
+  .contact-panel-header h2 {
+    font-size: 1rem;
+  }
+
+  .contact-section h3 {
+    font-size: 0.9rem;
+  }
+
+  .contact-info {
+    font-size: 0.75rem;
+  }
+
+  .quick-actions {
+    gap: 0.3rem;
+    padding: 0.8rem;
+  }
+
+  .quick-action {
+    font-size: 0.65rem;
+    padding: 0.3rem 0.6rem;
+  }
+
+  /* Form adjustments */
+  .form-group label {
+    font-size: 0.75rem;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    font-size: 0.75rem;
+    padding: 0.4rem;
+  }
+
+  .form-submit-btn,
+  .form-cancel-btn {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  /* Chat messages adjustments */
+  .chat-messages {
+    font-size: 0.8rem;
+  }
+
+  .message-content {
+    padding: 0.5rem;
+  }
+
+  .chat-input {
+    font-size: 0.8rem;
+  }
+
+  .story-video {
+    width: 100%;
+    max-width: 360px;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    border-radius: 10px;
+    margin: 0 auto;
+  }
+
+  .customer-form h2 {
+    font-size: 1.2rem;
+  }
+
+  .market-flag {
+    font-size: 1.8rem;
+  }
+
+  .mission-content h2 {
+    font-size: 0.8rem;
+  }
+
+  .founder-name {
+    font-size: 1.1rem;
+  }
+
+  .chat-avatar {
+    width: 50px;
+    height: 50px;
+  }
+
+}
+
+
+/* Ultra Small Mobile - Below 250px */
+@media (max-width: 250px) {
+  /* Navigation adjustments - prioritizing 239px values where more restrictive */
+  .container {
+    max-width: 250px;
+    margin: 0 auto;
+    padding: 0 0.5rem;
+  }
+
+  .nav-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 0 !important; /* Using 239px value - more restrictive */
+    padding: 0; /* Using 239px value - more restrictive */
+  }
+
+  .logo-link, .logo-container {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .logo-container img {
+    width: 25px !important; /* Using 239px value - smaller size */
+    height: 25px !important; /* Using 239px value - smaller size */
+  }
+
+  .logo {
+    font-size: 1rem; /* Using 239px value - smaller size */
+    padding-left: 0;
+    text-align: center;
+  }
+
+  .theme-toggle-container {
+    order: -1;
+  }
+
+  .arrow-toggle {
+    padding: 3px; /* Using 239px value - smaller padding */
+  }
+
+  .arrow-toggle::before {
+    font-size: 0.6rem; /* Using 239px value - smaller font */
+    padding: 2px 5px; /* Using 239px value - smaller padding */
+  }
+
+  .nav-menu {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 0;
+    padding: 0; /* Using 239px value - no padding */
+    font-size: 0.7rem; /* Using both values - same */
+    justify-content: center;
+    width: 100%;
+    white-space: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nav-menu a {
+     padding:0;/* Using 250px value - slightly larger */
+  }
+
+
+  .nav-dropdown::after {
+    display: none;
+  }
+
+  .nav-dropdown .dropdown-content a {
+    padding: 2px 8px;
+    display: block;
+    margin: 0;
+    font-size: 0.7rem;
+    max-width:50px !important;
+  }
+
+  .dropdown-content {
+ max-width:20px !important;
+  }
+  /* Header and hero section adjustments */
+  .contact-bar {
+    padding: 0.25rem 0.5rem;
+    height: 15px;
+  }
+
+  .contact-bar-content {
+    font-size: 0.5rem !important;
+  }
+
+  /* Fix nav positioning to match reduced contact bar height */
+  nav {
+    top: 15px; /* Match contact bar height at 250px */
+  }
+
+  .theme-toggle-container .arrow-toggle {
+    padding: 2px;
+  }
+
+  /* Make arrow face down and position menu below */
+  .arrow-toggle svg {
+    transform: rotate(180deg);
+  }
+
+  .theme-menu {
+    min-width: 40px;
+    min-height: 40px;
+    left: 50%;
+    top: 50px; /* Position below nav for ultra small */
+    transform: translateX(-50%);
+  }
+
+  .theme-menu-item {
+    font-size: 0.6rem;
+    padding: 4px 8px;
+    min-height: 24px;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+  }
+
+  /* Hero Section ultra-compact */
+  .hero-section {
+    min-height: 150px;
+    padding: 1rem 0;
+  }
+
+  .hero-title {
+    font-size: 1.2rem; /* Using 250px value - larger font */
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+
+  .hero-description {
+    font-size: 0.6rem; /* Using 250px value - larger font */
+    max-width: 45ch;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+  }
+
+  /* Image Grid ultra-compact */
+  .image-grid {
+    min-height: 120px; /* Using 250px value - larger */
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .image-placeholder {
+    height: 110px; /* Using 250px value - larger */
+  }
+
+  /* Our Story ultra-compact */
+  .story-content {
+    flex-direction: column;
+    gap: 0.5rem; /* Using 250px value - larger gap */
+  }
+
+  .story-text h2 {
+    font-size: 1.1rem; /* Using 250px value - larger font */
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .story-text h2::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .story-text p {
+    font-size: 0.65rem; /* Using 250px value - larger font */
+    max-width: 45ch; /* Using 250px value - wider */
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  /* Products grid ultra-compact */
+  .products-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem; /* Using 250px value - larger gap */
+  }
+
+  .product-card {
+    max-width: 200px; /* Using 250px value - larger width */
+    padding: 0.5rem; /* Using 250px value - larger padding */
+  }
+
+  .product-title {
+    font-size: 0.75rem; /* Using 250px value - larger font */
+  }
+
+  .product-description {
+    font-size: 0.6rem; /* Using 250px value - larger font */
+  }
+
+  /* Mission Section ultra-compact */
+  .mission-title {
+    font-size: 1.1rem; /* Using 250px value - larger font */
+  }
+
+  .mission-text {
+    font-size: 0.65rem; /* Using 250px value - larger font */
+    max-width: 45ch; /* Using 250px value - wider */
+  }
+
+  /* Markets section ultra-compact */
+  .market-item {
+    padding: 0.4rem; /* Using 250px value - larger padding */
+  }
+
+  .market-title {
+    font-size: 0.7rem; /* Using 250px value - larger font */
+  }
+
+  .market-description {
+    font-size: 0.6rem; /* Using 239px value - smaller font */
+  }
+
+  /* Founder section ultra-compact */
+  .founder-image {
+    max-width: 110px; /* Using 250px value - larger size */
+  }
+
+  .founder-text h2 {
+    font-size: 1rem; /* Using 250px value - larger font */
+    text-align: center;
+  }
+
+  .founder-text p {
+    font-size: 0.65rem; /* Using 250px value - larger font */
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  /* Footer ultra-compact */
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 0.8rem; /* Using 250px value - larger gap */
+    text-align: center;
+  }
+
+  .footer-section h3 {
+    font-size: 0.75rem; /* Using 250px value - larger font */
+  }
+
+  .footer-section p,
+  .footer-section a {
+    font-size: 0.6rem; /* Using 250px value - larger font */
+  }
+
+  /* Contact form ultra-compact */
+  .contact-form {
+    max-width: 220px; /* Using 250px value - larger width */
+  }
+
+  .form-group label {
+    font-size: 0.65rem; /* Using 250px value - larger font */
+  }
+
+  .form-group input,
+  .form-group textarea {
+    font-size: 0.65rem; /* Using 250px value - larger font */
+    padding: 0.3rem; /* Using 250px value - larger padding */
+  }
+
+  .form-submit-btn,
+  .form-cancel-btn {
+    font-size: 0.65rem; /* Using 250px value - larger font */
+    padding: 0.3rem 0.6rem; /* Using 250px value - larger padding */
+  }
+
+  /* Contact panel ultra-compact */
+  .contact-panel {
+    width: calc(100vw - 10px);
+    height: calc(100vh - 20px);
+    margin: 10px 5px;
+  }
+
+  .contact-panel-header h2 {
+    font-size: 0.8rem; /* Using 250px value - larger font */
+  }
+
+  .contact-section h3 {
+    font-size: 0.7rem; /* Using 250px value - larger font */
+  }
+
+  .contact-info {
+    font-size: 0.6rem; /* Using 250px value - larger font */
+  }
+
+  .social-links a {
+    font-size: 1rem; /* Using 250px value - larger icons */
+  }
+
+  .quick-actions {
+    gap: 0.2rem; /* Using 250px value - larger gap */
+    padding: 0.4rem; /* Using 250px value - larger padding */
+  }
+
+  .quick-action {
+    font-size: 0.55rem; /* Using 250px value - larger font */
+    padding: 0.3rem 0.5rem; /* Using 250px value - larger padding */
+  }
+
+
+  /* Quick actions adjustments */
+  .quick-actions {
+    gap: 0.25rem;
+    padding: 0.5rem;
+  }
+
+  .quick-action {
+    font-size: 0.7rem;
+    padding: 0.4rem 0.6rem;
+  }
+
+  /* Chat messages adjustments */
+  .chat-messages {
+    font-size: 0.8rem;
+  }
+
+  .message-content {
+    padding: 0.5rem;
+  }
+
+  .chat-input {
+    font-size: 0.8rem;
+  }
+
+  /* Chat widget adjustments - simplified to icon only */
+  .chat-widget {
+    bottom: 0.5rem;
+    right: 0.3rem;
+  }
+
+  .chat-toggle {
+    width: 45px;
+    height: 45px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  /* Use chat SVG icon */
+  .chat-toggle::before {
+    content: '';
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    background-image: url('Images/chat.jpeg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .chat-toggle:hover {
+    transform: scale(1.1);
+  }
+
+  /* Hide text content, show only logo */
+  .chat-toggle-content {
+    display: none;
+  }
+
+  .chat-toggle-title {
+    display: none;
+  }
+
+  .chat-toggle-subtitle {
+    display: none;
+  }
+
+  /* Hide avatar since we're using SVG icon */
+  .chat-avatar {
+    display: none;
+  }
+
+  .chat-window {
+    width: calc(100vw - 15px);
+    max-width: 260px;
+    height: 350px;
+    bottom: 3rem;
+    right: 50%;
+    transform: translateX(50%) translateY(20px) scale(0.9);
+  }
+
+  .chat-window.open {
+    transform: translateX(50%);
+  }
+
+  .story-video {
+    width: 100%;
+    max-width: 360px;
+    height: 200px;
+    aspect-ratio: 16 / 9;
+    border-radius: 10px;
+    margin: 0 auto;
+  }
+
+  .products-grid {
+    gap: 1rem;
+    padding: 0 0.5rem;
+  }
+
+  .mission-grid {
+    gap: 1rem;
+  }
+
+  .founder-card {
+    padding: 1rem;
+    max-width: none;
+  }
+
+  .theme-menu.show {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .theme-btn {
+    padding: 8px 10px;
+    min-height: 40px;
+    min-width: 50px;
+  }
+
+  .theme-icon-light,
+  .theme-icon-dark {
+    width: 20px !important;
+    height: 20px !important;
+    background-size: contain !important;
+  }
+
+  .premium-search-container {
+    padding: 1rem 0.5rem;
+  }
+
+  .search-header h2 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .search-header p {
+    font-size: 0.8rem;
+  }
+
+  .search-icon-container {
+    padding: 0.75rem;
+  }
+
+  .search-text {
+    font-size: 0.9rem;
+  }
+
+  .search-icon-btn svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .products-section {
+    padding: 1rem 0.5rem;
+  }
+
+  .mission-section {
+    padding: 1rem 0.5rem;
+  }
+
+  .markets-section {
+    padding: 1rem 0.5rem;
+  }
+
+  .founder-section {
+    padding: 1rem 0.5rem;
+  }
+}
+
+
+/* Reduced motion support for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .blurred {
+    transition: none;
+  }
+
+  .hero-title,
+  .story-text h2,
+  .product-card,
+  .mission-title,
+  .founder-text h2 {
+    animation: none;
+  }
+
+  .image-placeholder {
+    transition: none;
+  }
+
+  .nav-menu a:hover,
+  .product-card:hover,
+  .market-item:hover {
+    transform: none;
+  }
+
+  .theme-toggle-container .arrow-toggle:hover {
+    transform: none;
+  }
+
+  .chat-toggle:hover {
+    transform: none;
+  }
+}
