@@ -1,0 +1,72 @@
+# BooIsha - Premium Textiles & Fabrics
+# Australia's Leading Luxury Textile Company
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://booisha.com/sitemap.xml
+
+# Main pages - High priority
+Allow: /index.html
+Allow: /Fabrics.html
+Allow: /Lace.html
+
+# Product categories - High priority
+Allow: /Fabrics.html?category=silk
+Allow: /Fabrics.html?category=cotton
+Allow: /Fabrics.html?category=linen
+Allow: /Fabrics.html?category=wool
+Allow: /Fabrics.html?category=cashmere
+Allow: /Lace.html?category=chantilly
+Allow: /Lace.html?category=venetian
+Allow: /Lace.html?category=guipure
+
+# Static assets
+Allow: /*.css$
+Allow: /*.js$
+Allow: /Images/
+Allow: /Videos/
+
+# Search functionality
+Allow: /*?search=*
+
+# Disallow admin, development, and system areas
+Disallow: /scripts/
+Disallow: /functions/
+Disallow: /.git/
+Disallow: /.claude/
+Disallow: /node_modules/
+Disallow: /.env
+Disallow: /package.json
+Disallow: /package-lock.json
+
+# Disallow test files and development resources
+Disallow: /test*
+Disallow: /dev*
+Disallow: /temp*
+Disallow: /*test*
+Disallow: /*dev*
+
+# Block tracking parameters from being indexed
+Disallow: /*?utm_*
+Disallow: /*&utm_*
+Disallow: /*?fbclid=*
+Disallow: /*&fbclid=*
+Disallow: /*?gclid=*
+Disallow: /*&gclid=*
+
+# Crawl-delay for polite crawling
+Crawl-delay: 0.5
+
+# Specific user-agent instructions for major search engines
+User-agent: Googlebot
+Crawl-delay: 0.5
+Allow: /
+
+User-agent: Bingbot
+Crawl-delay: 1
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /

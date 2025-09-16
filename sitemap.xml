@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <!-- Homepage -->
+  <url>
+    <loc>https://booisha.com/</loc>
+    <lastmod>2025-09-16</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://booisha.com/Images/BooIshaLogo.png</image:loc>
+      <image:caption>BooIsha - Australia's Premier Luxury Textile Company offering Premium Fabrics, Silk, Cotton, Lace</image:caption>
+      <image:title>BooIsha - Premium Textiles & Fabrics Logo</image:title>
+    </image:image>
+  </url>
+
+  <!-- Fabrics Collection Page -->
+  <url>
+    <loc>https://booisha.com/Fabrics.html</loc>
+    <lastmod>2025-09-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://booisha.com/Images/BooIshaLogo.png</image:loc>
+      <image:caption>BooIsha Premium Fabric Collections - Luxury Silk, Organic Cotton, Natural Linen, Wool, Cashmere | Australia's Leading Textile Company</image:caption>
+      <image:title>BooIsha Premium Fabrics Collection - Luxury Textiles Australia</image:title>
+    </image:image>
+  </url>
+
+  <!-- Lace Collection Page -->
+  <url>
+    <loc>https://booisha.com/Lace.html</loc>
+    <lastmod>2025-09-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://booisha.com/Images/BooIshaLogo.png</image:loc>
+      <image:caption>BooIsha Premium Lace Collection - French Chantilly, Venetian, Guipure, Alençon Lace | Luxury Lace Fabrics Australia</image:caption>
+      <image:title>BooIsha Premium Lace Collection - Luxury Lace Fabrics Australia</image:title>
+    </image:image>
+  </url>
+
+  <!-- Premium Fabric Categories -->
+  <url>
+    <loc>https://booisha.com/Fabrics.html?category=silk</loc>
+    <lastmod>2025-09-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://booisha.com/Fabrics.html?category=cotton</loc>
+    <lastmod>2025-09-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://booisha.com/Fabrics.html?category=linen</loc>
+    <lastmod>2025-09-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://booisha.com/Fabrics.html?category=wool</loc>
+    <lastmod>2025-09-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://booisha.com/Fabrics.html?category=cashmere</loc>
+    <lastmod>2025-09-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Premium Lace Categories -->
+  <url>
+    <loc>https://booisha.com/Lace.html?category=chantilly</loc>
+    <lastmod>2025-09-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://booisha.com/Lace.html?category=venetian</loc>
+    <lastmod>2025-09-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://booisha.com/Lace.html?category=guipure</loc>
+    <lastmod>2025-09-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Additional High-Value Search Terms -->
+  <url>
+    <loc>https://booisha.com/Fabrics.html?search=luxury+textiles</loc>
+    <lastmod>2025-09-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://booisha.com/Fabrics.html?search=premium+fabrics</loc>
+    <lastmod>2025-09-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://booisha.com/Lace.html?search=bridal+lace</loc>
+    <lastmod>2025-09-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+</urlset>

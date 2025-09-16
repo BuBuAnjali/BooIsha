@@ -23,6 +23,13 @@ const MEDIA_CONFIGS = [
     manifestKey: "categoryFolders"
   },
   {
+    name: "Lace Images",
+    inputDir: path.join(ROOT, "Images", "Laces"),
+    outputFile: path.join(ROOT, "Images", "Laces", "lace-images.json"),
+    type: "folders",
+    manifestKey: "laceColors"
+  },
+  {
     name: "Video Cards",
     inputDir: path.join(ROOT, "Videos", "videoCard"),
     outputFile: path.join(ROOT, "Videos", "videoCard", "manifest.json"),
@@ -35,6 +42,13 @@ const MEDIA_CONFIGS = [
     outputFile: path.join(ROOT, "Images", "droppingImages", "manifest.json"),
     type: "flat",
     manifestKey: null // plain array
+  },
+  {
+    name: "Index Card Backgrounds",
+    inputDir: path.join(ROOT, "Images", "cardImages"),
+    outputFile: path.join(ROOT, "Images", "cardImages", "card-backgrounds.json"),
+    type: "index-cards",
+    manifestKey: "cardBackgrounds"
   }
 ];
 
@@ -84,6 +98,46 @@ async function scanFolderStructure(dirPath) {
   }
 }
 
+// Scan and organize images for index page card backgrounds
+async function scanIndexCardImages(dirPath) {
+  try {
+    const files = await fs.readdir(dirPath);
+    const allImages = files.filter((f) => IMAGE_RE.test(f)).sort((a, b) => a.localeCompare(b));
+
+    // Create curated collections for different card types
+    const fabricImages = allImages.filter(img =>
+      img.toLowerCase().includes('silk') ||
+      img.toLowerCase().includes('cotton') ||
+      img.toLowerCase().includes('fabric') ||
+      img.toLowerCase().includes('denim') ||
+      img.toLowerCase().includes('poly') ||
+      img.toLowerCase().includes('dupion') ||
+      img.toLowerCase().includes('crepe')
+    );
+
+    const laceImages = allImages.filter(img =>
+      img.toLowerCase().includes('lace') ||
+      img.toLowerCase().includes('pattern') ||
+      img.toLowerCase().includes('embroid')
+    );
+
+    // Fallback for fashion/general if not enough specific images
+    const generalImages = allImages.filter(img =>
+      !fabricImages.includes(img) && !laceImages.includes(img)
+    );
+
+    return {
+      fabrics: fabricImages.length > 0 ? fabricImages : allImages.slice(0, Math.ceil(allImages.length / 3)),
+      lace: laceImages.length > 0 ? laceImages : allImages.slice(Math.ceil(allImages.length / 3), Math.ceil(2 * allImages.length / 3)),
+      fashion: generalImages.length > 0 ? generalImages : allImages.slice(Math.ceil(2 * allImages.length / 3)),
+      all: allImages
+    };
+  } catch (err) {
+    console.warn(`⚠️ Could not read directory ${dirPath}:`, err.message);
+    return { fabrics: [], lace: [], fashion: [], all: [] };
+  }
+}
+
 // Process a single configuration
 async function processImageConfig(config) {
   console.log(`\n🔄 Processing ${config.name}...`);
@@ -125,6 +179,53 @@ async function processImageConfig(config) {
     Object.keys(categoryFolders).forEach(category => {
       console.log(`    📂 ${category}: ${categoryFolders[category].length} images`);
     });
+
+  } else if (config.type === "index-cards") {
+    // Handle index page card background organization
+    const cardCollections = await scanIndexCardImages(config.inputDir);
+
+    // Also collect lace images from Laces directory for better lace card backgrounds
+    const laceDir = path.join(ROOT, "Images", "Laces");
+    let laceBackgrounds = [];
+
+    try {
+      const laceFolders = await scanFolderStructure(laceDir);
+      // Get a diverse selection of lace images from different color folders
+      Object.keys(laceFolders).forEach(color => {
+        const colorImages = laceFolders[color];
+        // Take up to 2 images from each color folder
+        const selectedImages = colorImages.slice(0, 2).map(img => `Laces/${color}/${img}`);
+        laceBackgrounds.push(...selectedImages);
+      });
+      console.log(`  🕸️ Added ${laceBackgrounds.length} lace images from Laces directory`);
+    } catch (err) {
+      console.warn(`⚠️ Could not load lace images from ${laceDir}:`, err.message);
+    }
+
+    manifest = {
+      [config.manifestKey]: {
+        fabricCard: cardCollections.fabrics,
+        laceCard: laceBackgrounds.length > 0 ? laceBackgrounds : cardCollections.lace,
+        fashionCard: cardCollections.fashion
+      },
+      totalImages: cardCollections.all.length + laceBackgrounds.length,
+      collections: {
+        fabrics: cardCollections.fabrics.length,
+        lace: laceBackgrounds.length > 0 ? laceBackgrounds.length : cardCollections.lace.length,
+        fashion: cardCollections.fashion.length
+      },
+      sources: {
+        fabricCard: "Images/cardImages",
+        laceCard: laceBackgrounds.length > 0 ? "Images/Laces/*" : "Images/cardImages",
+        fashionCard: "Images/cardImages"
+      }
+    };
+
+    totalItems = cardCollections.all.length + laceBackgrounds.length;
+    console.log(`  📁 Organized ${totalItems} images for card backgrounds:`);
+    console.log(`    🧵 Fabric cards: ${cardCollections.fabrics.length} images (from cardImages)`);
+    console.log(`    🕸️ Lace cards: ${manifest.collections.lace} images (from ${manifest.sources.laceCard})`);
+    console.log(`    👗 Fashion cards: ${cardCollections.fashion.length} images (from cardImages)`);
   }
 
   // Write manifest file

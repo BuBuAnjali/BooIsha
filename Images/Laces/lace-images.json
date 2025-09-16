@@ -1,0 +1,58 @@
+{
+  "laceColors": {
+    "blue": [
+      "sky blue lace.jpg",
+      "sky blue lace(1).jpg",
+      "sky blue lace(2).jpg",
+      "sky blue lace(3).jpg"
+    ],
+    "cerulean": [
+      "cerulean lace.jpg",
+      "cerulean lace(1).jpg",
+      "cerulean lace(2).jpg"
+    ],
+    "coral": [
+      "coral pink lace.jpg",
+      "coral pink lace(1).jpg",
+      "coral pink lace(2).jpg"
+    ],
+    "gold": [
+      "gold lace.jpg",
+      "gold lace(1).jpg",
+      "gold lace(2).jpg",
+      "goldLace.png"
+    ],
+    "green": [
+      "coral green lace.jpg",
+      "coral green lace(1).jpg",
+      "coral green lace(2).jpg",
+      "pale green lace.jpg",
+      "pale green lace(1).jpg",
+      "pale green lace(2).jpg"
+    ],
+    "pink": [
+      "gradient lace.jpg",
+      "pink lace.jpg",
+      "pink lace(1).jpg",
+      "pink lace(2).jpg",
+      "pink lace(3).jpg"
+    ],
+    "purple": [
+      "purple lace.jpg",
+      "purple lace(1).jpg",
+      "purple lace(2).jpg",
+      "purple lace(3).jpg"
+    ],
+    "silver": [
+      "lace images(1).jpg",
+      "silver lace.jpg",
+      "silver lace(1).jpg",
+      "silver lace(2).jpg",
+      "silver lace(3).jpg",
+      "silverLace.jpeg",
+      "SilverLace.png"
+    ]
+  },
+  "totalCategories": 8,
+  "totalImages": 36
+}

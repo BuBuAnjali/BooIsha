@@ -56,19 +56,19 @@ export async function onRequestPost(context) {
     const emailBody = {
       personalizations: [
         {
-          to: [{ email: "info@booshiv.com" }],
+          to: [{ email: "info@booisha.com" }],
         },
       ],
       from: {
-        email: "noreply@booshiv.com",
-        name: "BooShiv Website",
+        email: "noreply@booisha.com",
+        name: "BooIsha Website",
       },
       subject: `New Enquiry: ${data.subject}`,
       content: [
         {
           type: "text/plain",
           value: `
-New enquiry from BooShiv website:
+New enquiry from BooIsha website:
 
 Name: ${data.firstname} ${data.lastname}
 Email: ${data.email}

@@ -469,6 +469,9 @@ document.addEventListener("DOMContentLoaded", function () {
   // Initialize dropping cards with images
   initializeDroppingCards();
 
+  // Initialize product card backgrounds
+  initializeProductCardBackgrounds();
+
   // Form submission handler
   const form = document.getElementById("enquiry-form-submit");
   console.log("Form found:", form);
@@ -527,7 +530,7 @@ async function handleFormSubmission(event) {
   } catch (error) {
     console.error("Form submission error:", error);
     alert(
-      "Sorry, there was an error submitting your form. Please try again or email us directly at info@booshiv.com"
+      "Sorry, there was an error submitting your form. Please try again or email us directly at info@booisha.com"
     );
   } finally {
     // Re-enable submit button
@@ -1618,6 +1621,316 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // =================== END SEARCH BACKGROUND FUNCTIONALITY ===================
+
+// =================== PRODUCT CARD BACKGROUND FUNCTIONALITY ===================
+const CARD_BACKGROUNDS_URL = "/Images/cardImages/card-backgrounds.json";
+const LACE_IMAGES_URL = "/Images/Laces/lace-images.json";
+
+let cardBackgroundImages = {};
+let laceImages = {};
+
+async function loadCardBackgroundImages() {
+  console.log("🖼️ Loading card background images...");
+
+  try {
+    // Load card backgrounds from cardImages
+    const cardRes = await fetch(CARD_BACKGROUNDS_URL);
+    if (cardRes.ok) {
+      const cardData = await cardRes.json();
+      cardBackgroundImages = cardData.cardBackgrounds || {};
+      console.log("✅ Loaded card background images:", cardBackgroundImages);
+    }
+
+    // Load lace images for the Premium Lace Collection card
+    const laceRes = await fetch(LACE_IMAGES_URL);
+    if (laceRes.ok) {
+      const laceData = await laceRes.json();
+      laceImages = laceData.laceColors || {};
+      console.log("✅ Loaded lace images:", Object.keys(laceImages));
+    }
+  } catch (error) {
+    console.error("❌ Failed to load background images:", error);
+  }
+}
+
+function getRandomImage(imageArray) {
+  if (!imageArray || imageArray.length === 0) return null;
+  return imageArray[Math.floor(Math.random() * imageArray.length)];
+}
+
+function getRandomLaceImage() {
+  // Get all lace images from all color folders
+  const allLaceImages = [];
+  Object.keys(laceImages).forEach(color => {
+    const colorImages = laceImages[color];
+    colorImages.forEach(image => {
+      allLaceImages.push(`/Images/Laces/${color}/${image}`);
+    });
+  });
+  return getRandomImage(allLaceImages);
+}
+
+// Analyze image brightness and return appropriate text color
+async function getContrastingTextColor(imageSrc) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+
+    img.onload = function() {
+      try {
+        // Create canvas to analyze image
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Use a smaller canvas for performance
+        const sampleSize = 50;
+        canvas.width = sampleSize;
+        canvas.height = sampleSize;
+
+        // Draw and sample the image
+        ctx.drawImage(img, 0, 0, sampleSize, sampleSize);
+        const imageData = ctx.getImageData(0, 0, sampleSize, sampleSize);
+        const data = imageData.data;
+
+        let totalBrightness = 0;
+        let pixelCount = 0;
+
+        // Calculate average brightness
+        for (let i = 0; i < data.length; i += 4) {
+          const r = data[i];
+          const g = data[i + 1];
+          const b = data[i + 2];
+
+          // Calculate perceived brightness using luminance formula
+          const brightness = (0.299 * r + 0.587 * g + 0.114 * b);
+          totalBrightness += brightness;
+          pixelCount++;
+        }
+
+        const averageBrightness = totalBrightness / pixelCount;
+
+        // Return contrasting color based on brightness
+        // If image is bright (> 128), use dark text; if dark, use light text
+        const textColor = averageBrightness > 128 ? '#1a1a1a' : '#ffffff';
+        const textShadow = averageBrightness > 128
+          ? '1px 1px 2px rgba(255,255,255,0.8), 0 0 8px rgba(255,255,255,0.3)'
+          : '1px 1px 2px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.3)';
+
+        resolve({ color: textColor, shadow: textShadow });
+      } catch (error) {
+        console.warn('Could not analyze image brightness, using default colors:', error);
+        // Default to white text with dark shadow
+        resolve({ color: '#ffffff', shadow: '1px 1px 2px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.3)' });
+      }
+    };
+
+    img.onerror = function() {
+      console.warn('Could not load image for brightness analysis, using default colors');
+      // Default to white text with dark shadow
+      resolve({ color: '#ffffff', shadow: '1px 1px 2px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.3)' });
+    };
+
+    img.src = imageSrc;
+  });
+}
+
+// Apply dynamic text styling to card content
+function applyDynamicTextStyling(card, textColor, textShadow, isLaceCard = false) {
+  // Style text elements (excluding links/buttons)
+  const textElements = card.querySelectorAll('h3, p, li, .product-icon');
+
+  textElements.forEach(element => {
+    if (isLaceCard) {
+      // For lace cards, add background only to text elements (not buttons)
+      element.style.color = '#ffffff';
+      element.style.textShadow = '1px 1px 2px rgba(0,0,0,0.8)';
+      element.style.background = 'rgba(0, 0, 0, 0.5)';
+      element.style.padding = '2px 6px';
+      element.style.borderRadius = '3px';
+      element.style.display = 'inline-block';
+      element.style.transition = 'all 0.3s ease';
+    } else {
+      // For other cards, use dynamic contrast without background
+      element.style.color = textColor;
+      element.style.textShadow = textShadow;
+      element.style.background = 'none';
+      element.style.padding = '';
+      element.style.borderRadius = '';
+      element.style.display = '';
+      element.style.transition = 'color 0.3s ease, text-shadow 0.3s ease';
+    }
+  });
+
+  // Handle links/buttons separately - keep original styling, only change text color
+  const links = card.querySelectorAll('a');
+  links.forEach(link => {
+    if (isLaceCard) {
+      // For lace card links, only change text color, keep original button styling
+      link.style.color = '#ffffff';
+      link.style.textShadow = '1px 1px 2px rgba(0,0,0,0.8)';
+      // Don't modify button background, padding, etc. - keep original styling
+    } else {
+      // For other cards, use dynamic contrast
+      link.style.color = textColor;
+      link.style.textShadow = textShadow;
+
+      // Standard hover effects
+      const isLightText = textColor === '#ffffff';
+      const hoverColor = isLightText ? '#e0e0e0' : '#333333';
+
+      link.addEventListener('mouseenter', () => {
+        link.style.color = hoverColor;
+      });
+
+      link.addEventListener('mouseleave', () => {
+        link.style.color = textColor;
+      });
+    }
+  });
+}
+
+function addComingSoonBadge(card) {
+  // Ensure the card is positioned relative for absolute positioning of badge
+  card.style.position = 'relative';
+
+  // Create coming soon badge
+  const comingSoonBadge = document.createElement('div');
+  comingSoonBadge.style.cssText = `
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: linear-gradient(135deg, #FF6B6B 0%, #e74c3c 100%);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+    z-index: 10;
+    animation: pulse 2s ease-in-out infinite;
+  `;
+  comingSoonBadge.textContent = 'Coming Soon';
+  comingSoonBadge.classList.add('coming-soon-badge');
+
+  // Add CSS animation for pulse effect
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.9; }
+    }
+    .coming-soon-badge:hover {
+      transform: scale(1.1) !important;
+      transition: transform 0.2s ease;
+    }
+  `;
+
+  // Add style only once
+  if (!document.querySelector('#coming-soon-styles')) {
+    style.id = 'coming-soon-styles';
+    document.head.appendChild(style);
+  }
+
+  card.appendChild(comingSoonBadge);
+  console.log(`✅ Added "Coming Soon" badge to Fashion Atelier card`);
+}
+
+function applyCardBackgroundImages() {
+  console.log("🎨 Applying dynamic card background images...");
+
+  const productCards = document.querySelectorAll('.product-card');
+
+  if (productCards.length === 0) {
+    console.warn("⚠️ No product cards found");
+    return;
+  }
+
+  productCards.forEach((card, index) => {
+    const cardTitle = card.querySelector('h3')?.textContent?.toLowerCase() || '';
+    let backgroundImage = null;
+
+    // Determine which type of background image to use
+    if (cardTitle.includes('fabric')) {
+      // Fabrics card - use fabric images from cardImages
+      const fabricImage = getRandomImage(cardBackgroundImages.fabricCard);
+      if (fabricImage) {
+        backgroundImage = `/Images/cardImages/${fabricImage}`;
+      }
+    } else if (cardTitle.includes('lace')) {
+      // Lace card - use curated lace images
+      const laceImage = getRandomImage(cardBackgroundImages.laceCard);
+      if (laceImage) {
+        // Check if the image path already includes directory structure
+        if (laceImage.startsWith('Laces/')) {
+          backgroundImage = `/Images/${laceImage}`;
+        } else {
+          backgroundImage = `/Images/cardImages/${laceImage}`;
+        }
+      }
+    } else if (cardTitle.includes('atelier') || cardTitle.includes('fashion')) {
+      // Fashion Atelier card - no background image, add coming soon badge
+      addComingSoonBadge(card);
+      return; // Skip adding background image
+    } else {
+      // Other cards - use general images if needed
+      const fashionImage = getRandomImage(cardBackgroundImages.fashionCard);
+      if (fashionImage) {
+        backgroundImage = `/Images/cardImages/${fashionImage}`;
+      }
+    }
+
+    // Apply the background image and analyze for text contrast
+    if (backgroundImage) {
+      card.style.backgroundImage = `url('${backgroundImage}')`;
+      card.style.backgroundSize = 'cover';
+      card.style.backgroundPosition = 'center';
+      card.style.backgroundRepeat = 'no-repeat';
+      card.style.position = 'relative';
+
+      // Determine if this is a lace card
+      const isLaceCard = cardTitle.includes('lace');
+
+      // Analyze image and apply appropriate text styling
+      if (isLaceCard) {
+        // For lace cards, always use text backgrounds regardless of image brightness
+        applyDynamicTextStyling(card, '#ffffff', '1px 1px 2px rgba(0,0,0,0.8)', true);
+        console.log(`✅ Applied background and lace text styling to ${cardTitle}: ${backgroundImage}`);
+      } else {
+        // For other cards, use dynamic contrast analysis
+        getContrastingTextColor(backgroundImage)
+          .then(({ color, shadow }) => {
+            applyDynamicTextStyling(card, color, shadow, false);
+            console.log(`✅ Applied background and dynamic text styling to ${cardTitle}: ${backgroundImage} (text: ${color})`);
+          })
+          .catch(error => {
+            console.warn('Failed to apply dynamic text styling:', error);
+            // Apply default styling
+            applyDynamicTextStyling(card, '#ffffff', '1px 1px 2px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.3)', false);
+          });
+      }
+
+    } else {
+      console.warn(`⚠️ No background image found for card: ${cardTitle}`);
+    }
+  });
+}
+
+async function initializeProductCardBackgrounds() {
+  console.log("🚀 Initializing product card backgrounds...");
+
+  await loadCardBackgroundImages();
+
+  // Wait for DOM to be ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', applyCardBackgroundImages);
+  } else {
+    applyCardBackgroundImages();
+  }
+}
+
+// =================== END PRODUCT CARD BACKGROUND FUNCTIONALITY ===================
 
 // =================== SEARCH EXPANSION FUNCTIONALITY ===================
 function expandSearchInterface() {

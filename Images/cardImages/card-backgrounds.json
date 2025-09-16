@@ -1,0 +1,57 @@
+{
+  "cardBackgrounds": {
+    "fabricCard": [
+      "beigeSilk.png",
+      "Crepe.jpeg",
+      "crepe2.jpeg",
+      "denimBlueFabric.png",
+      "denimFabricBlue.png",
+      "Dupion.jpeg",
+      "goldSilkFabric.jpeg",
+      "polyBlue.png",
+      "polyYellow.png",
+      "RedSilk.png",
+      "silk.jpeg",
+      "silkMulti.png",
+      "silkMulti2.png",
+      "silkMulti3.png",
+      "silkPattdBeige.jpeg",
+      "silkPattern.jpeg",
+      "silkYellow.png"
+    ],
+    "laceCard": [
+      "Laces/blue/sky blue lace.jpg",
+      "Laces/blue/sky blue lace(1).jpg",
+      "Laces/cerulean/cerulean lace.jpg",
+      "Laces/cerulean/cerulean lace(1).jpg",
+      "Laces/coral/coral pink lace.jpg",
+      "Laces/coral/coral pink lace(1).jpg",
+      "Laces/gold/gold lace.jpg",
+      "Laces/gold/gold lace(1).jpg",
+      "Laces/green/coral green lace.jpg",
+      "Laces/green/coral green lace(1).jpg",
+      "Laces/pink/gradient lace.jpg",
+      "Laces/pink/pink lace.jpg",
+      "Laces/purple/purple lace.jpg",
+      "Laces/purple/purple lace(1).jpg",
+      "Laces/silver/lace images(1).jpg",
+      "Laces/silver/silver lace.jpg"
+    ],
+    "fashionCard": [
+      "bluejeanfab.jpeg",
+      "lightGreen.avif",
+      "otton.jpeg"
+    ]
+  },
+  "totalImages": 36,
+  "collections": {
+    "fabrics": 17,
+    "lace": 16,
+    "fashion": 3
+  },
+  "sources": {
+    "fabricCard": "Images/cardImages",
+    "laceCard": "Images/Laces/*",
+    "fashionCard": "Images/cardImages"
+  }
+}
