@@ -1,6 +1,6 @@
 // Simple form submission handler that works with Cloudflare Email Routing
 export async function onRequestPost(context) {
-  console.log("🚀 SUBMIT-FORM FUNCTION STARTED");
+  console.log("🚀🚀🚀 LATEST CODE VERSION 2025-09-17 RUNNING 🚀🚀🚀");
 
   const corsHeaders = {
     "Access-Control-Allow-Origin": "*",
@@ -100,8 +100,6 @@ Please reply directly to the customer's email: ${data.email}
       console.log("🔑 API Key exists:", resendApiKey ? "YES" : "NO");
 
       if (resendApiKey) {
-        console.log("📧 Attempting to send email via Resend...");
-
         const resendResponse = await fetch("https://api.resend.com/emails", {
           method: "POST",
           headers: {
@@ -109,32 +107,21 @@ Please reply directly to the customer's email: ${data.email}
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            from: "BooIsha Website <noreply@booisha.com>",
-            to: ["info@booisha.com"],
+            from: "BooIsha Website <noreply@booshiv.com>",
+            to: ["info@booshiv.com"],
             subject: emailSubject,
             text: emailBody,
-            reply_to: data.email, // Customer can reply directly to the enquiry
+            reply_to: data.email,
           }),
         });
 
         const resendResult = await resendResponse.json();
-        console.log("📬 Resend response status:", resendResponse.status);
-        console.log("📬 Resend response:", resendResult);
 
-        if (resendResponse.ok) {
-          console.log("✅ Email sent successfully via Resend:", resendResult.id);
-        } else {
-          console.error("❌ Resend API error:", resendResult);
-          throw new Error(`Resend API error: ${resendResult.message || 'Unknown error'}`);
+        if (!resendResponse.ok) {
+          throw new Error(`Email failed: ${resendResult.message || resendResponse.status}`);
         }
       } else {
-        console.warn("⚠️ RESEND_API_KEY not found, email not sent");
-        console.log("📧 EMAIL TO SEND:", {
-          to: "info@booisha.com",
-          from: "noreply@booisha.com",
-          subject: emailSubject,
-          body: emailBody
-        });
+        throw new Error("RESEND_API_KEY not configured");
       }
     } catch (emailError) {
       console.error("❌ Email sending failed:", emailError);
