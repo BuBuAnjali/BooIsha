@@ -1,5 +1,7 @@
 // Simple form submission handler that works with Cloudflare Email Routing
 export async function onRequestPost(context) {
+  console.log("🚀 SUBMIT-FORM FUNCTION STARTED");
+
   const corsHeaders = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
