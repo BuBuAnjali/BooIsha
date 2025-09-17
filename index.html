@@ -113,6 +113,14 @@
     <!-- Sliding Contact Panel -->
     <div class="contact-panel" id="contactPanel">
       <div class="contact-panel-header">
+        <div class="contact-panel-nav">
+          <span class="contact-panel-back-arrow" id="contactPanelBack" onclick="goBackWithFallback()">
+            <img src="Images/backArrow.png" alt="Back" width="24" height="24">
+          </span>
+          <button class="contact-panel-home" id="contactPanelHome" onclick="goHome()">
+            <img src="Images/homeIcon.png" alt="Home" width="16" height="16">
+          </button>
+        </div>
         <h2>Need Help?</h2>
         <button class="contact-panel-close" id="contactPanelClose">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -386,7 +394,7 @@
         </div>
 
         <!-- Expanded Search Interface -->
-        <div class="expanded-search-interface" id="expandedSearchInterface" style="display: none;">
+        <div class="expanded-search-interface" id="expandedSearchInterface">
           <div class="main-search-container">
             <input 
               type="text" 
@@ -519,7 +527,7 @@
       <div class="container">
         <div class="mission-content">
           <h2>Vision & Mission</h2>
-          <p style="font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.95">
+          <p>
             Connecting markets with heritage excellence by sourcing premium
             textiles and spices directly from artisans and farmers, ensuring
             quality, authenticity, and fair trade practices that preserve
@@ -617,7 +625,7 @@
         <p class="footer-text">
           Connecting global markets through authentic heritage trade and luxury commerce
         </p>
-        <p style="opacity: 0.6; font-size: 0.9rem">
+        <p class="footer-copyright">
           © 2024 BooIsha. All rights reserved. | ABN: 11 762 603 033
         </p>
       </div>

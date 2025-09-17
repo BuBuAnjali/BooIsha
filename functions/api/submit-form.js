@@ -94,7 +94,12 @@ Please reply directly to the customer's email: ${data.email}
     try {
       const resendApiKey = context.env.RESEND_API_KEY;
 
+      console.log("🔍 Checking for RESEND_API_KEY...");
+      console.log("🔑 API Key exists:", resendApiKey ? "YES" : "NO");
+
       if (resendApiKey) {
+        console.log("📧 Attempting to send email via Resend...");
+
         const resendResponse = await fetch("https://api.resend.com/emails", {
           method: "POST",
           headers: {
@@ -111,6 +116,8 @@ Please reply directly to the customer's email: ${data.email}
         });
 
         const resendResult = await resendResponse.json();
+        console.log("📬 Resend response status:", resendResponse.status);
+        console.log("📬 Resend response:", resendResult);
 
         if (resendResponse.ok) {
           console.log("✅ Email sent successfully via Resend:", resendResult.id);
@@ -120,7 +127,6 @@ Please reply directly to the customer's email: ${data.email}
         }
       } else {
         console.warn("⚠️ RESEND_API_KEY not found, email not sent");
-        // Fallback: Log detailed information for manual processing
         console.log("📧 EMAIL TO SEND:", {
           to: "info@booisha.com",
           from: "noreply@booisha.com",
@@ -129,7 +135,7 @@ Please reply directly to the customer's email: ${data.email}
         });
       }
     } catch (emailError) {
-      console.error("Email sending failed:", emailError);
+      console.error("❌ Email sending failed:", emailError);
       // Continue anyway - the submission is still logged
     }
 

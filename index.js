@@ -1768,9 +1768,23 @@ function applyDynamicTextStyling(
   // Style text elements (excluding links/buttons)
   const textElements = card.querySelectorAll("h3, p, li, .product-icon");
 
+  // Check if this is specifically the middle card (second product card)
+  const allProductCards = document.querySelectorAll(".product-card");
+  const isMiddleCard = Array.from(allProductCards).indexOf(card) === 1;
+
   textElements.forEach((element) => {
-    if (isLaceCard) {
-      // For lace cards, add background only to text elements (not buttons)
+    if (isLaceCard && isMiddleCard) {
+      // For middle card only, style text without background and black color
+      element.style.color = "#000000";
+      element.style.fontWeight = "bold";
+      element.style.textShadow = "none";
+      element.style.background = "none";
+      element.style.padding = "0";
+      element.style.borderRadius = "0";
+      element.style.display = "";
+      element.style.transition = "all 0.3s ease";
+    } else if (isLaceCard) {
+      // For other lace cards, use original styling with background
       element.style.color = "#ffffff";
       element.style.textShadow = "1px 1px 2px rgba(0,0,0,0.8)";
       element.style.background = "rgba(0, 0, 0, 0.5)";
@@ -1819,11 +1833,17 @@ function applyDynamicTextStyling(
 }
 
 function addComingSoonBadge(card) {
+  // Check if badge already exists to prevent duplicates
+  if (card.querySelector(".coming-soon-badge")) {
+    return;
+  }
+
   // Ensure the card is positioned relative for absolute positioning of badge
   card.style.position = "relative";
 
   // Create coming soon badge
   const comingSoonBadge = document.createElement("div");
+  comingSoonBadge.className = "coming-soon-badge";
   comingSoonBadge.style.cssText = `
     position: absolute;
     top: 15px;
@@ -2123,6 +2143,50 @@ function expandSearchInterface() {
 // =================== END SEARCH EXPANSION FUNCTIONALITY ===================
 
 // =================== END PREMIUM SEARCH FUNCTIONALITY ===================
+
+// =================== CONTACT PANEL NAVIGATION FUNCTIONALITY ===================
+
+// Function to go back to previous page
+function goBack() {
+  window.history.back();
+}
+
+// Function to go to home page
+function goHome() {
+  window.location.href = '/';
+}
+
+// Function to go back with fallback to home
+function goBackWithFallback() {
+  // Check if there's history to go back to
+  if (window.history.length > 1 && document.referrer !== '') {
+    window.history.back();
+  } else {
+    // If no history or came directly to this page, go to home
+    window.location.href = '/';
+  }
+}
+
+// Show navigation buttons on small screens
+function showContactPanelNavigation() {
+  const backBtn = document.getElementById('contactPanelBack');
+  const homeBtn = document.getElementById('contactPanelHome');
+
+  // Show buttons only on screens 650px and below
+  if (window.innerWidth <= 650) {
+    if (backBtn) backBtn.style.display = 'inline';  // Changed to inline for span element
+    if (homeBtn) homeBtn.style.display = 'flex';
+  } else {
+    if (backBtn) backBtn.style.display = 'none';
+    if (homeBtn) homeBtn.style.display = 'none';
+  }
+}
+
+// Update navigation visibility on resize
+window.addEventListener('resize', showContactPanelNavigation);
+
+// Initialize navigation visibility on page load
+document.addEventListener('DOMContentLoaded', showContactPanelNavigation);
 
 // =================== END CONTACT PANEL FUNCTIONALITY ===================
 
