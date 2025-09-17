@@ -117,15 +117,32 @@ Please reply directly to the customer's email: ${data.email}
 
         const resendResult = await resendResponse.json();
 
+        console.log("📨 Resend API Response Status:", resendResponse.status);
+        console.log("📨 Resend API Response:", resendResult);
+
         if (!resendResponse.ok) {
+          console.error("❌ Resend API Error:", resendResult);
           throw new Error(`Email failed: ${resendResult.message || resendResponse.status}`);
         }
+
+        console.log("✅ Email sent successfully via Resend:", resendResult.id);
       } else {
         throw new Error("RESEND_API_KEY not configured");
       }
     } catch (emailError) {
-      console.error("❌ Email sending failed:", emailError);
-      // Continue anyway - the submission is still logged
+      // Return the actual error so you can see what's wrong
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: `Email failed: ${emailError.message}`,
+          details: emailError.toString(),
+          timestamp: new Date().toISOString()
+        }),
+        {
+          status: 500,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
     }
 
     // Store submission in KV storage if available (optional)
