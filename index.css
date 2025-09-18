@@ -361,7 +361,7 @@ body.dark-theme nav {
 .logo {
   font-size: 3rem;
   font-weight: bold;
-  background: linear-gradient(135deg, #819cab 0%, #2972A7 100%);
+  background: linear-gradient(135deg, #819cab 0%, #508ea1 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
