@@ -1,6 +1,6 @@
-// Simple form submission handler that works with Cloudflare Email Routing
+// Direct Zoho API integration for form submission
 export async function onRequestPost(context) {
-  console.log("🚀🚀🚀 LATEST CODE VERSION 2025-09-17 RUNNING 🚀🚀🚀");
+  console.log("🚀 ZOHO API INTEGRATION - VERSION 2025-09-19 🚀");
 
   const corsHeaders = {
     "Access-Control-Allow-Origin": "*",
@@ -23,19 +23,19 @@ export async function onRequestPost(context) {
     }
 
     const data = {
-      firstname: formData.get("firstname"),
-      lastname: formData.get("lastname"),
+      firstname: formData.get("firstname") || formData.get("name") || "",
+      lastname: formData.get("lastname") || "",
       email: formData.get("email"),
       phone: formData.get("phone"),
       subject: formData.get("subject") || "Website Contact",
       message: formData.get("message"),
       timestamp: new Date().toISOString(),
       userAgent: context.request.headers.get("User-Agent"),
-      ip: context.request.headers.get("CF-Connecting-IP"),
+      ip: context.request.headers.get("CF-Connecting-IP") || context.request.headers.get("X-Forwarded-For"),
     };
 
     // Validate required fields
-    if (!data.firstname || !data.lastname || !data.email || !data.phone || !data.message) {
+    if (!data.firstname || !data.email || !data.message) {
       return new Response(
         JSON.stringify({ success: false, error: "Missing required fields" }),
         {
@@ -57,7 +57,7 @@ export async function onRequestPost(context) {
       );
     }
 
-    // Log the submission (this will appear in Cloudflare Pages Functions logs)
+    // Log the submission
     console.log("📧 New form submission:", {
       name: `${data.firstname} ${data.lastname}`,
       email: data.email,
@@ -65,7 +65,7 @@ export async function onRequestPost(context) {
       timestamp: data.timestamp
     });
 
-    // Format email for forwarding
+    // Format email content
     const emailSubject = `[BooIsha Website] ${data.subject}`;
     const emailBody = `
 NEW ENQUIRY FROM BOOISHA WEBSITE
@@ -92,45 +92,90 @@ This email was automatically generated from the BooIsha website contact form.
 Please reply directly to the customer's email: ${data.email}
     `;
 
-    // Send email using Resend API
+    // Send email using Zoho Mail API
     try {
-      const resendApiKey = context.env.RESEND_API_KEY;
+      const zohoAccessToken = context.env.ZOHO_ACCESS_TOKEN;
+      const zohoRefreshToken = context.env.ZOHO_REFRESH_TOKEN;
+      const zohoClientId = context.env.ZOHO_CLIENT_ID;
+      const zohoClientSecret = context.env.ZOHO_CLIENT_SECRET;
 
-      console.log("🔍 Checking for RESEND_API_KEY...");
-      console.log("🔑 API Key exists:", resendApiKey ? "YES" : "NO");
+      console.log("🔍 Checking Zoho credentials...");
+      console.log("Access Token:", zohoAccessToken ? "EXISTS" : "MISSING");
+      console.log("Refresh Token:", zohoRefreshToken ? "EXISTS" : "MISSING");
+      console.log("Client ID:", zohoClientId ? "EXISTS" : "MISSING");
+      console.log("Client Secret:", zohoClientSecret ? "EXISTS" : "MISSING");
 
-      if (resendApiKey) {
-        const resendResponse = await fetch("https://api.resend.com/emails", {
+      if (!zohoAccessToken && !zohoRefreshToken) {
+        throw new Error("Zoho API credentials not configured");
+      }
+
+      let accessToken = zohoAccessToken;
+
+      // If no access token but have refresh token, get new access token
+      if (!accessToken && zohoRefreshToken) {
+        console.log("🔄 Refreshing Zoho access token...");
+
+        const refreshResponse = await fetch("https://accounts.zoho.com.au/oauth/v2/token", {
           method: "POST",
           headers: {
-            "Authorization": `Bearer ${resendApiKey}`,
-            "Content-Type": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
           },
-          body: JSON.stringify({
-            from: "BooIsha Website <noreply@booisha.com.au>",
-            to: ["info@booisha.com.au"],
-            subject: emailSubject,
-            text: emailBody,
-            reply_to: data.email,
+          body: new URLSearchParams({
+            refresh_token: zohoRefreshToken,
+            client_id: zohoClientId,
+            client_secret: zohoClientSecret,
+            grant_type: "refresh_token",
           }),
         });
 
-        const resendResult = await resendResponse.json();
+        const refreshData = await refreshResponse.json();
 
-        console.log("📨 Resend API Response Status:", resendResponse.status);
-        console.log("📨 Resend API Response:", resendResult);
-
-        if (!resendResponse.ok) {
-          console.error("❌ Resend API Error:", resendResult);
-          throw new Error(`Email failed: ${resendResult.message || resendResponse.status}`);
+        if (refreshResponse.ok) {
+          accessToken = refreshData.access_token;
+          console.log("✅ New access token obtained");
+        } else {
+          console.error("❌ Failed to refresh token:", refreshData);
+          throw new Error(`Token refresh failed: ${refreshData.error}`);
         }
-
-        console.log("✅ Email sent successfully via Resend:", resendResult.id);
-      } else {
-        throw new Error("RESEND_API_KEY not configured");
       }
+
+      // Send email via Zoho Mail API
+      console.log("📤 Sending email via Zoho Mail API...");
+
+      const zohoAccountId = context.env.ZOHO_ACCOUNT_ID || "810502852";
+
+      const zohoResponse = await fetch(`https://mail.zoho.com.au/api/accounts/${zohoAccountId}/messages`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Zoho-oauthtoken ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fromAddress: "info@booisha.com.au",
+          toAddress: "info@booisha.com.au",
+          subject: emailSubject,
+          content: emailBody,
+          mailFormat: "plaintext",
+          replyTo: data.email,
+        }),
+      });
+
+      const zohoResult = await zohoResponse.json();
+
+      console.log("📨 Zoho API Response Status:", zohoResponse.status);
+      console.log("📨 Zoho API Response:", zohoResult);
+
+      if (!zohoResponse.ok) {
+        console.error("❌ Zoho Mail API Error:", zohoResult);
+        throw new Error(`Zoho Mail failed: ${zohoResult.message || zohoResponse.status}`);
+      }
+
+      console.log("✅ Email sent successfully via Zoho Mail API");
+
     } catch (emailError) {
-      // Return the actual error so you can see what's wrong
+      console.error("❌ Email sending failed:", emailError);
+
+      // Return detailed error for debugging
       return new Response(
         JSON.stringify({
           success: false,
@@ -159,7 +204,7 @@ Please reply directly to the customer's email: ${data.email}
       // Continue anyway
     }
 
-    // Always return success response
+    // Return success response
     return new Response(
       JSON.stringify({
         success: true,

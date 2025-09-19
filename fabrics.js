@@ -1920,15 +1920,47 @@ function displayPage(page) {
 
 function attachEnquireListeners() {
   const enquireButtons = document.querySelectorAll(".enquire-btn");
-  enquireButtons.forEach((button) => {
+  console.log("🔗 Attaching enquire listeners to", enquireButtons.length, "buttons");
+
+  enquireButtons.forEach((button, index) => {
     button.addEventListener("click", function () {
+      console.log("🔗 Enquire button clicked:", index);
       const productCard = this.closest(".product-card");
       const productName = productCard.querySelector("h3").textContent;
-      window.location.href = `index.html#enquiry-form?product=${encodeURIComponent(
-        productName
-      )}`;
+      console.log("🔗 Product name:", productName);
+
+      // Open the fabric enquiry modal
+      openFabricEnquiry(productName);
     });
   });
+}
+
+function openFabricEnquiry(productName) {
+  console.log("🔗 Opening enquiry modal for:", productName);
+
+  // Set the product name in the modal
+  const enquiryFabricName = document.getElementById("enquiryFabricName");
+  if (enquiryFabricName) {
+    enquiryFabricName.textContent = productName;
+  }
+
+  // Show the modal
+  const modal = document.getElementById("fabricEnquiryModal");
+  if (modal) {
+    modal.style.display = "flex";
+    modal.classList.add("active");
+    console.log("🔗 Modal opened successfully");
+  } else {
+    console.error("🔗 Modal not found!");
+  }
+}
+
+function closeFabricEnquiry() {
+  const modal = document.getElementById("fabricEnquiryModal");
+  if (modal) {
+    modal.style.display = "none";
+    modal.classList.remove("active");
+  }
 }
 
 // Side Menu Functions
@@ -2154,6 +2186,11 @@ document.addEventListener("DOMContentLoaded", function () {
   // Render first page
   renderCurrentPage();
 
+  // Ensure enquire listeners are attached
+  setTimeout(() => {
+    attachEnquireListeners();
+  }, 100);
+
   // Initialize menu categories (all closed)
   document.querySelectorAll(".fabric-list").forEach((list) => {
     list.classList.remove("active");
@@ -2183,7 +2220,48 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Start hero slideshow
   initHeroSlideshow();
+
+  // Add form submission handler for fabric enquiry modal
+  const fabricEnquiryForm = document.getElementById("fabricEnquiryForm");
+  if (fabricEnquiryForm) {
+    fabricEnquiryForm.addEventListener("submit", handleFabricEnquirySubmission);
+  }
 });
+
+async function handleFabricEnquirySubmission(event) {
+  event.preventDefault();
+
+  const form = event.target;
+  const formData = new FormData(form);
+
+  // Get the fabric name from the modal
+  const fabricName = document.getElementById("enquiryFabricName").textContent;
+
+  // Add fabric name to form data
+  formData.append("fabric", fabricName);
+  formData.append("subject", `Fabric Enquiry: ${fabricName}`);
+
+  try {
+    const response = await fetch("/api/submit-form", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (response.ok) {
+      // Show success message
+      alert("Thank you! Your fabric enquiry has been submitted successfully. We'll get back to you within 24 hours.");
+
+      // Close modal and reset form
+      closeFabricEnquiry();
+      form.reset();
+    } else {
+      throw new Error("Network response was not ok");
+    }
+  } catch (error) {
+    console.error("Error submitting form:", error);
+    alert("Sorry, there was an error submitting your enquiry. Please try again or contact us directly.");
+  }
+}
 
 // Smooth scroll for anchor links
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {

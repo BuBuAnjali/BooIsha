@@ -469,8 +469,10 @@ document.addEventListener("DOMContentLoaded", function () {
   // Initialize dropping cards with images
   initializeDroppingCards();
 
-  // Initialize product card backgrounds
-  initializeProductCardBackgrounds();
+  // Initialize product card backgrounds (only on home page)
+  if (!window.location.pathname.includes('Fabrics.html')) {
+    initializeProductCardBackgrounds();
+  }
 
   // Form submission handler
   const form = document.getElementById("enquiry-form-submit");
@@ -513,7 +515,7 @@ async function handleFormSubmission(event) {
     console.log("Sending form data...");
 
     // Submit form data
-    const response = await fetch("/api/submit-form", {
+    const response = await fetch("/submit-form.php", {
       method: "POST",
       body: formData,
     });
@@ -530,7 +532,7 @@ async function handleFormSubmission(event) {
   } catch (error) {
     console.error("Form submission error:", error);
     alert(
-      "Sorry, there was an error submitting your form. Please try again or email us directly at info@booisha.com"
+      "Sorry, there was an error submitting your form. Please try again or email us directly at info@booisha.com.au"
     );
   } finally {
     // Re-enable submit button
@@ -862,9 +864,11 @@ function toggleChat(event) {
   if (chatOpen) {
     chatWindow.classList.add("open");
     chatToggle.classList.add("active");
+    chatToggle.style.display = "none"; // Hide chat icon when window is open
   } else {
     chatWindow.classList.remove("open");
     chatToggle.classList.remove("active");
+    chatToggle.style.display = "flex"; // Show chat icon when window is closed
     welcomeMode = true;
     chatWindow.classList.remove("chat-mode");
     chatWindow.classList.add("welcome-mode");
@@ -1108,7 +1112,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       try {
         const formData = new FormData(panelForm);
-        const response = await fetch("/api/submit-form", {
+        const response = await fetch("/submit-form.php", {
           method: "POST",
           body: formData,
         });

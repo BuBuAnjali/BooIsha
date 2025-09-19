@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Get Zoho Account ID</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
+        .container { background: #f5f5f5; padding: 20px; border-radius: 8px; }
+        input, button { padding: 10px; margin: 5px; font-size: 16px; }
+        input[type="text"] { width: 500px; }
+        button { background: #007cba; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #005a87; }
+        .result { margin-top: 20px; padding: 15px; background: white; border-radius: 4px; }
+        .success { border-left: 4px solid #4caf50; }
+        .error { border-left: 4px solid #f44336; }
+        pre { background: #f0f0f0; padding: 10px; border-radius: 4px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🔍 Get Your Zoho Mail Account ID</h2>
+        <p>Enter your Zoho access token to get your Account ID:</p>
+
+        <input type="text" id="accessToken" placeholder="Paste your access token here (1000.9b46...)" />
+        <button onclick="getAccountId()">Get Account ID</button>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        async function getAccountId() {
+            const accessToken = document.getElementById('accessToken').value.trim();
+            const resultDiv = document.getElementById('result');
+
+            if (!accessToken) {
+                resultDiv.innerHTML = '<div class="result error">Please enter your access token</div>';
+                return;
+            }
+
+            resultDiv.innerHTML = '<div class="result">🔄 Getting your Account ID...</div>';
+
+            try {
+                const response = await fetch('https://mail.zoho.com.au/api/accounts', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Zoho-oauthtoken ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                console.log('Response status:', response.status);
+                const data = await response.json();
+                console.log('Response data:', data);
+
+                if (response.ok && data.data && data.data.length > 0) {
+                    const account = data.data[0];
+                    const accountId = account.accountId;
+                    const emailAddress = account.primaryEmailAddress;
+
+                    resultDiv.innerHTML = `
+                        <div class="result success">
+                            <h3>✅ Success! Here are your details:</h3>
+                            <p><strong>Account ID:</strong> <code>${accountId}</code></p>
+                            <p><strong>Primary Email:</strong> <code>${emailAddress}</code></p>
+                            <h4>📋 Copy these values for your environment variables:</h4>
+                            <pre>ZOHO_ACCOUNT_ID=${accountId}
+ZOHO_ACCESS_TOKEN=${accessToken}</pre>
+                            <p><small>⚠️ Save these values now - the access token expires in 10 minutes!</small></p>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="result error">
+                            <h3>❌ Error getting account information</h3>
+                            <p><strong>Status:</strong> ${response.status}</p>
+                            <p><strong>Response:</strong></p>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+
+                // Check if it's a CORS error
+                if (error.message.includes('CORS') || error.message.includes('fetch')) {
+                    resultDiv.innerHTML = `
+                        <div class="result error">
+                            <h3>🚫 CORS Error - Let's try a different approach</h3>
+                            <p>The browser is blocking the API call due to CORS policy.</p>
+                            <h4>📋 Use this curl command instead:</h4>
+                            <pre>curl -X GET "https://mail.zoho.com.au/api/accounts" \\
+  -H "Authorization: Zoho-oauthtoken ${accessToken}"</pre>
+                            <p>Run this command in Terminal/Command Prompt to get your Account ID.</p>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="result error">
+                            <h3>❌ Error occurred</h3>
+                            <p><strong>Error:</strong> ${error.message}</p>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        // Auto-fill if there's a token in the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        if (token) {
+            document.getElementById('accessToken').value = token;
+        }
+    </script>
+</body>
+</html>

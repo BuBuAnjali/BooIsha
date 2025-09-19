@@ -5,7 +5,7 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://booisha.com/sitemap.xml
+Sitemap: https://booisha.com.au/sitemap.xml
 
 # Main pages - High priority
 Allow: /index.html

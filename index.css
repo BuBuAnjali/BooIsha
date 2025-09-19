@@ -117,7 +117,7 @@ body {
 }
 
 .contact-bar-content a:hover {
-  color: #ffffff;
+  color: #508ea1;
 }
 
 /* ===== THEME TOGGLE ===== */
@@ -1539,8 +1539,8 @@ footer {
 /* Larger screens - more margin from edge */
 @media (min-width: 1200px) {
   .chat-widget {
-    bottom: 60px;
-    right: 100px;
+    bottom: 50px;
+    right: 60px;
   }
 
 .contact-panel-back-arrow{
@@ -1558,8 +1558,8 @@ footer {
 
 @media (min-width: 1440px) {
   .chat-widget {
-    bottom: 80px;
-    right: 120px;
+    bottom: 50px;
+    right: 90px;
   }
 .contact-panel-back-arrow{
     display: flex;
@@ -1804,6 +1804,7 @@ footer {
   position: relative;
   font-family: inherit;
   text-align: left;
+ 
 }
 
 
@@ -1917,8 +1918,8 @@ footer {
 .chat-window {
   position: absolute;
   bottom: 80px;
-  right: 50%;
-  transform: translateX(50%) translateY(20px) scale(0.9);
+  left: 50%;
+  transform: translateX(-50%) translateY(20px) scale(0.9);
   width: 320px;
   max-width: calc(100vw - 40px);
   height: 480px;
@@ -1935,7 +1936,7 @@ footer {
 .chat-window.open {
   opacity: 1;
   visibility: visible;
-  transform: translateX(50%) translateY(0) scale(1);
+  transform: translateX(-50%) translateY(0) scale(1);
 }
 
 .chat-window.welcome-mode .welcome-screen {
@@ -3867,12 +3868,12 @@ body.dark-theme .panel-chat-input {
     width: calc(100vw - 40px);
     height: calc(100vh - 120px);
     bottom: 84px;
-    right: 50%;
-    transform: translateX(50%);
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .chat-window.open {
-    transform: translateX(50%);
+    transform: translateX(-50%);
   }
 
   .chat-toggle {
@@ -5090,12 +5091,12 @@ body.dark-theme .panel-chat-input {
     max-width: 280px;
     height: 400px;
     bottom: 4rem;
-    right: 50%;
-    transform: translateX(50%);
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .chat-window.open {
-    transform: translateX(50%);
+    transform: translateX(-50%);
   }
 
   .welcome-title {
@@ -5203,12 +5204,12 @@ body.dark-theme .panel-chat-input {
     max-width: 260px;
     height: 350px;
     bottom: 3rem;
-    right: 50%;
-    transform: translateX(50%) translateY(20px) scale(0.9);
+    left: 50%;
+    transform: translateX(-50%) translateY(20px) scale(0.9);
   }
 
   .chat-window.open {
-    transform: translateX(50%);
+    transform: translateX(-50%);
   }
 }
 
@@ -5296,12 +5297,12 @@ body.dark-theme .panel-chat-input {
     max-width: 280px;
     height: 370px;
     bottom: 3.2rem;
-    right: 50%;
-    transform: translateX(50%) translateY(20px) scale(0.9);
+    left: 50%;
+    transform: translateX(-50%) translateY(20px) scale(0.9);
   }
 
   .chat-window.open {
-    transform: translateX(50%);
+    transform: translateX(-50%);
   }
 
   /* Contact panel full window for small screens */
@@ -5381,12 +5382,12 @@ body.dark-theme .panel-chat-input {
     max-width: 300px;
     height: 390px;
     bottom: 3.5rem;
-    right: 50%;
-    transform: translateX(50%) translateY(20px) scale(0.9);
+    left: 50%;
+    transform: translateX(-50%) translateY(20px) scale(0.9);
   }
 
   .chat-window.open {
-    transform: translateX(50%);
+    transform: translateX(-50%);
   }
 
   /* Contact panel full window for small screens */
@@ -5468,12 +5469,12 @@ body.dark-theme .panel-chat-input {
     max-width: 320px;
     height: 410px;
     bottom: 3.7rem;
-    right: 50%;
-    transform: translateX(50%) translateY(20px) scale(0.9);
+    left: 50%;
+    transform: translateX(-50%) translateY(20px) scale(0.9);
   }
 
   .chat-window.open {
-    transform: translateX(50%);
+    transform: translateX(-50%);
   }
 
   /* Contact panel full window for small screens */
@@ -5555,12 +5556,12 @@ body.dark-theme .panel-chat-input {
     max-width: 340px;
     height: 430px;
     bottom: 4rem;
-    right: 50%;
-    transform: translateX(50%) translateY(20px) scale(0.9);
+    left: 50%;
+    transform: translateX(-50%) translateY(20px) scale(0.9);
   }
 
   .chat-window.open {
-    transform: translateX(50%);
+    transform: translateX(-50%);
   }
 
   /* Contact panel full window for small screens */
@@ -5642,12 +5643,12 @@ body.dark-theme .panel-chat-input {
     max-width: 360px;
     height: 450px;
     bottom: 4.2rem;
-    right: 50%;
-    transform: translateX(50%) translateY(20px) scale(0.9);
+    left: 50%;
+    transform: translateX(-50%) translateY(20px) scale(0.9);
   }
 
   .chat-window.open {
-    transform: translateX(50%);
+    transform: translateX(-50%);
   }
 }
 
