@@ -515,7 +515,7 @@ async function handleFormSubmission(event) {
     console.log("Sending form data...");
 
     // Submit form data
-    const response = await fetch("/submit-form.php", {
+    const response = await fetch("/api/submit-form", {
       method: "POST",
       body: formData,
     });
@@ -1112,7 +1112,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       try {
         const formData = new FormData(panelForm);
-        const response = await fetch("/submit-form.php", {
+        const response = await fetch("/api/submit-form", {
           method: "POST",
           body: formData,
         });
