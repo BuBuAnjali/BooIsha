@@ -23,8 +23,9 @@ export async function onRequestPost(context) {
     }
 
     const data = {
-      firstname: formData.get("firstname"),
-      lastname: formData.get("lastname"),
+      name: formData.get("name") || `${formData.get("firstname")} ${formData.get("lastname")}`.trim(),
+      firstname: formData.get("firstname") || formData.get("name")?.split(' ')[0] || '',
+      lastname: formData.get("lastname") || formData.get("name")?.split(' ').slice(1).join(' ') || '',
       email: formData.get("email"),
       phone: formData.get("phone"),
       subject: formData.get("subject") || "Website Contact",
@@ -35,7 +36,7 @@ export async function onRequestPost(context) {
     };
 
     // Validate required fields
-    if (!data.firstname || !data.lastname || !data.email || !data.phone || !data.message) {
+    if (!data.name || !data.email || !data.message) {
       return new Response(
         JSON.stringify({ success: false, error: "Missing required fields" }),
         {
@@ -59,7 +60,7 @@ export async function onRequestPost(context) {
 
     // Log the submission (this will appear in Cloudflare Pages Functions logs)
     console.log("📧 New form submission:", {
-      name: `${data.firstname} ${data.lastname}`,
+      name: data.name,
       email: data.email,
       subject: data.subject,
       timestamp: data.timestamp
@@ -72,7 +73,7 @@ NEW ENQUIRY FROM BOOISHA WEBSITE
 ================================
 
 Customer Information:
-👤 Name: ${data.firstname} ${data.lastname}
+👤 Name: ${data.name}
 📧 Email: ${data.email}
 📱 Phone: ${data.phone}
 
