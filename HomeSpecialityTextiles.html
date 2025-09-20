@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BooIsha | Home & Speciality Textiles</title>
+    <meta
+      name="description"
+      content="Explore BooIsha's speciality textiles for home, interior, theatrical, and marine applications. Discover curated collections tailored for premium upholstery and furnishings."
+    />
+    <link rel="icon" href="/Images/BooIshaLogo.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/Images/BooIshaLogo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="home-speciality.css" />
+  </head>
+  <body>
+    <div class="contact-bar">
+      <div class="contact-bar-content">
+        <div class="theme-toggle-container">
+          <button
+            class="arrow-toggle"
+            onclick="toggleThemeMenu()"
+            data-tooltip="Select Theme"
+            aria-expanded="false"
+            aria-controls="themeMenu"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <div class="theme-menu" id="themeMenu">
+            <button
+              class="theme-btn"
+              onclick="toggleTheme()"
+              data-tooltip="Switch to Dark Mode"
+              aria-pressed="false"
+            >
+              <span class="theme-icon-light"></span>
+              <span class="theme-icon-dark"></span>
+            </button>
+          </div>
+        </div>
+        <div class="contact-right">
+          <a href="mailto:info@booisha.com.au">Get in Touch</a>
+        </div>
+      </div>
+    </div>
+
+    <nav>
+      <div class="nav-container">
+        <div class="logo-container">
+          <a href="index.html" class="logo-link">
+            <img
+              src="/Images/BooIshaLogo.png"
+              alt="BooIsha Logo"
+              class="logo-img"
+            />
+            <div class="logo">BooIsha</div>
+          </a>
+        </div>
+        <div class="nav-menu">
+          <a href="index.html#story"><span>Our Story</span></a>
+          <a href="index.html#mission"><span>Mission</span></a>
+          <div class="nav-dropdown">
+            <a href="index.html#products"><span>Products</span></a>
+            <div class="dropdown-content">
+              <a href="Fabrics.html">Fabrics</a>
+              <a href="Lace.html">Lace</a>
+              <a href="productKRice.html">Garments</a>
+            </div>
+          </div>
+          <a href="mailto:info@booisha.com.au"><span>Contact</span></a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="speciality-wrapper">
+      <section class="speciality-hero">
+        <div class="hero-content">
+          <p class="eyebrow">Home & Speciality Textiles</p>
+          <h1>Tailored textiles for interiors, performance, and marine excellence</h1>
+          <p>
+            Navigate our curated segments to preview upcoming upholstery and speciality
+            fabrics. Select a focus area to reveal detailed product cards tailored to
+            your project needs.
+          </p>
+        </div>
+      </section>
+
+      <section class="speciality-navigation" aria-label="Speciality textile categories">
+        <!-- Multi-Level Navigation Menu -->
+        <div class="multi-level-nav-container">
+          <ul class="speciality-nav-menu">
+            <!-- Furniture Upholstery with Multi-Level Submenus -->
+            <li class="nav-item has-dropdown" data-category="furniture-upholstery">
+              <a href="#furniture-upholstery" class="nav-link">Furniture Upholstery</a>
+              <div class="dropdown-menu level-1">
+                <div class="dropdown-section">
+                  <ul class="dropdown-list">
+                    <li class="dropdown-item has-submenu" data-submenu="velvet">
+                      <a href="#velvet" class="dropdown-link">Velvet</a>
+                      <div class="submenu-arrow">→</div>
+                      <!-- Velvet Submenu -->
+                      <div class="submenu level-2" data-submenu-id="velvet">
+                        <div class="submenu-header">
+                          <h4>Velvet Collections</h4>
+                        </div>
+                        <ul class="submenu-list">
+                          <li><a href="#cotton-velvet">Cotton Velvet</a></li>
+                          <li><a href="#silk-velvet">Silk Velvet</a></li>
+                          <li><a href="#crushed-velvet">Crushed Velvet</a></li>
+                          <li><a href="#mohair-velvet">Mohair Velvet</a></li>
+                          <li><a href="#stretch-velvet">Stretch Velvet</a></li>
+                          <li><a href="#burnout-velvet">Burnout Velvet</a></li>
+                        </ul>
+                      </div>
+                    </li>
+                    <li class="dropdown-item has-submenu" data-submenu="leather">
+                      <a href="#leather" class="dropdown-link">Leather</a>
+                      <div class="submenu-arrow">→</div>
+                      <!-- Leather Submenu -->
+                      <div class="submenu level-2" data-submenu-id="leather">
+                        <div class="submenu-header">
+                          <h4>Leather Types</h4>
+                        </div>
+                        <ul class="submenu-list">
+                          <li><a href="#full-grain-leather">Full Grain Leather</a></li>
+                          <li><a href="#top-grain-leather">Top Grain Leather</a></li>
+                          <li><a href="#nappa-leather">Nappa Leather</a></li>
+                          <li><a href="#suede">Suede</a></li>
+                          <li><a href="#faux-leather">Faux Leather</a></li>
+                          <li><a href="#bonded-leather">Bonded Leather</a></li>
+                        </ul>
+                      </div>
+                    </li>
+                    <li class="dropdown-item has-submenu" data-submenu="linen-upholstery">
+                      <a href="#linen-upholstery" class="dropdown-link">Linen</a>
+                      <div class="submenu-arrow">→</div>
+                      <!-- Linen Upholstery Submenu -->
+                      <div class="submenu level-2" data-submenu-id="linen-upholstery">
+                        <div class="submenu-header">
+                          <h4>Linen Upholstery</h4>
+                        </div>
+                        <ul class="submenu-list">
+                          <li><a href="#pure-linen">Pure Linen</a></li>
+                          <li><a href="#linen-cotton-blend">Linen-Cotton Blend</a></li>
+                          <li><a href="#heavy-linen">Heavy Linen</a></li>
+                          <li><a href="#textured-linen">Textured Linen</a></li>
+                          <li><a href="#colored-linen">Colored Linen</a></li>
+                        </ul>
+                      </div>
+                    </li>
+                    <li class="dropdown-item has-submenu" data-submenu="cotton-upholstery">
+                      <a href="#cotton-upholstery" class="dropdown-link">Cotton</a>
+                      <div class="submenu-arrow">→</div>
+                      <!-- Cotton Upholstery Submenu -->
+                      <div class="submenu level-2" data-submenu-id="cotton-upholstery">
+                        <div class="submenu-header">
+                          <h4>Cotton Upholstery</h4>
+                        </div>
+                        <ul class="submenu-list">
+                          <li><a href="#canvas-cotton">Canvas Cotton</a></li>
+                          <li><a href="#duck-cotton">Duck Cotton</a></li>
+                          <li><a href="#twill-cotton">Twill Cotton</a></li>
+                          <li><a href="#denim">Denim</a></li>
+                          <li><a href="#corduroy">Corduroy</a></li>
+                        </ul>
+                      </div>
+                    </li>
+                    <li class="dropdown-item has-submenu" data-submenu="synthetic">
+                      <a href="#synthetic" class="dropdown-link">Synthetic</a>
+                      <div class="submenu-arrow">→</div>
+                      <!-- Synthetic Submenu -->
+                      <div class="submenu level-2" data-submenu-id="synthetic">
+                        <div class="submenu-header">
+                          <h4>Synthetic Fabrics</h4>
+                        </div>
+                        <ul class="submenu-list">
+                          <li><a href="#microfiber">Microfiber</a></li>
+                          <li><a href="#polyester">Polyester</a></li>
+                          <li><a href="#nylon">Nylon</a></li>
+                          <li><a href="#acrylic">Acrylic</a></li>
+                          <li><a href="#performance-fabrics">Performance Fabrics</a></li>
+                        </ul>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </li>
+
+            <!-- Other sections (should not react when Furniture Upholstery is hovered) -->
+            <li class="nav-item has-dropdown isolated-section" data-category="interior-furnishings">
+              <a href="#interior-furnishings" class="nav-link">Interior Furnishings</a>
+              <div class="dropdown-menu level-1">
+                <div class="dropdown-section">
+                  <ul class="dropdown-list">
+                    <li class="dropdown-item"><a href="#curtains-drapes" class="dropdown-link">Curtains & Drapes</a></li>
+                    <li class="dropdown-item"><a href="#cushions-pillows" class="dropdown-link">Cushions & Pillows</a></li>
+                    <li class="dropdown-item"><a href="#table-linens" class="dropdown-link">Table Linens</a></li>
+                    <li class="dropdown-item"><a href="#bed-linens" class="dropdown-link">Bed Linens</a></li>
+                    <li class="dropdown-item"><a href="#throws-blankets" class="dropdown-link">Throws & Blankets</a></li>
+                  </ul>
+                </div>
+              </div>
+            </li>
+
+            <li class="nav-item has-dropdown isolated-section" data-category="costume-theatrical">
+              <a href="#costume-theatrical" class="nav-link">Costume & Theatrical</a>
+              <div class="dropdown-menu level-1">
+                <div class="dropdown-section">
+                  <ul class="dropdown-list">
+                    <li class="dropdown-item"><a href="#stage-fabrics" class="dropdown-link">Stage Fabrics</a></li>
+                    <li class="dropdown-item"><a href="#costume-fabrics" class="dropdown-link">Costume Fabrics</a></li>
+                    <li class="dropdown-item"><a href="#special-effects" class="dropdown-link">Special Effects</a></li>
+                    <li class="dropdown-item"><a href="#period-fabrics" class="dropdown-link">Period Fabrics</a></li>
+                  </ul>
+                </div>
+              </div>
+            </li>
+
+            <li class="nav-item has-dropdown isolated-section" data-category="marine-upholstery">
+              <a href="#marine-upholstery" class="nav-link">Marine Upholstery</a>
+              <div class="dropdown-menu level-1">
+                <div class="dropdown-section">
+                  <ul class="dropdown-list">
+                    <li class="dropdown-item"><a href="#marine-vinyl" class="dropdown-link">Marine Vinyl</a></li>
+                    <li class="dropdown-item"><a href="#outdoor-canvas" class="dropdown-link">Outdoor Canvas</a></li>
+                    <li class="dropdown-item"><a href="#water-resistant" class="dropdown-link">Water Resistant</a></li>
+                    <li class="dropdown-item"><a href="#uv-protection" class="dropdown-link">UV Protection</a></li>
+                  </ul>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="speciality-search" aria-label="Search speciality textiles">
+        <form id="specialitySearchForm" class="speciality-search-form" role="search">
+          <label for="specialitySearchInput" class="visually-hidden"
+            >Search speciality textiles</label
+          >
+          <div class="search-input-wrapper">
+            <input
+              type="search"
+              id="specialitySearchInput"
+              placeholder="Search by textile focus, application, or keyword"
+              autocomplete="off"
+            />
+            <button type="submit" class="search-trigger" aria-label="Search">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="11" cy="11" r="7"></circle>
+                <line x1="20" y1="20" x2="16.65" y2="16.65"></line>
+              </svg>
+            </button>
+          </div>
+          <button type="button" class="clear-search" id="clearSearchButton">
+            Clear
+          </button>
+        </form>
+        <div class="search-status" id="searchStatus" aria-live="polite"></div>
+      </section>
+
+      <section class="speciality-results" aria-live="polite">
+        <div class="results-header">
+          <h2 id="resultsHeading">Select a textile focus to view product cards</h2>
+          <span id="resultsCount" class="results-count">Showing 0 of 107 previews</span>
+        </div>
+        <div class="product-grid" id="productGrid"></div>
+        <div class="empty-state" id="emptyState">
+          <p>Choose a speciality segment or search to preview the upcoming collections.</p>
+        </div>
+      </section>
+    </main>
+
+    <script src="home-speciality.js" type="module"></script>
+
+    <!-- Multi-Level Navigation JavaScript -->
+    <script>
+    // Enhanced Multi-Level Navigation with Hover Isolation
+    document.addEventListener('DOMContentLoaded', function() {
+        const navItems = document.querySelectorAll('.nav-item.has-dropdown');
+        const dropdownItems = document.querySelectorAll('.dropdown-item.has-submenu');
+        const furnitureUpholstery = document.querySelector('[data-category="furniture-upholstery"]');
+        const isolatedSections = document.querySelectorAll('.nav-item.isolated-section');
+
+        // Enhanced hover handling for nav items with special isolation for Furniture Upholstery
+        navItems.forEach(navItem => {
+            let hoverTimeout;
+
+            navItem.addEventListener('mouseenter', function() {
+                clearTimeout(hoverTimeout);
+                this.classList.add('nav-active');
+
+                // Special isolation behavior for Furniture Upholstery
+                if (this.dataset.category === 'furniture-upholstery') {
+                    isolatedSections.forEach(section => {
+                        section.style.opacity = '0.3';
+                        section.style.pointerEvents = 'none';
+
+                        // Force close any open dropdowns in isolated sections
+                        const dropdown = section.querySelector('.dropdown-menu');
+                        if (dropdown) {
+                            dropdown.style.opacity = '0';
+                            dropdown.style.visibility = 'hidden';
+                            dropdown.style.transform = 'translateY(-10px)';
+                        }
+                    });
+                }
+            });
+
+            navItem.addEventListener('mouseleave', function() {
+                hoverTimeout = setTimeout(() => {
+                    this.classList.remove('nav-active');
+
+                    // Remove isolation for all sections
+                    if (this.dataset.category === 'furniture-upholstery') {
+                        isolatedSections.forEach(section => {
+                            section.style.opacity = '';
+                            section.style.pointerEvents = '';
+
+                            // Reset dropdown styles
+                            const dropdown = section.querySelector('.dropdown-menu');
+                            if (dropdown) {
+                                dropdown.style.opacity = '';
+                                dropdown.style.visibility = '';
+                                dropdown.style.transform = '';
+                            }
+                        });
+                    }
+                }, 150);
+            });
+        });
+
+        // Enhanced submenu handling with exclusive behavior
+        dropdownItems.forEach(dropdownItem => {
+            let submenuTimeout;
+
+            dropdownItem.addEventListener('mouseenter', function() {
+                clearTimeout(submenuTimeout);
+
+                // Hide other submenus in the same dropdown
+                const parentDropdown = this.closest('.dropdown-menu');
+                const siblingSubmenus = parentDropdown.querySelectorAll('.submenu');
+
+                siblingSubmenus.forEach(submenu => {
+                    if (submenu !== this.querySelector('.submenu')) {
+                        submenu.style.opacity = '0';
+                        submenu.style.visibility = 'hidden';
+                        submenu.style.transform = 'translateX(-10px)';
+                    }
+                });
+
+                // Show target submenu
+                const targetSubmenu = this.querySelector('.submenu');
+                if (targetSubmenu) {
+                    targetSubmenu.style.opacity = '1';
+                    targetSubmenu.style.visibility = 'visible';
+                    targetSubmenu.style.transform = 'translateX(0)';
+                }
+
+                this.classList.add('dropdown-active');
+            });
+
+            dropdownItem.addEventListener('mouseleave', function() {
+                this.classList.remove('dropdown-active');
+
+                submenuTimeout = setTimeout(() => {
+                    const submenu = this.querySelector('.submenu');
+                    if (submenu && !isMouseOverElement(submenu)) {
+                        submenu.style.opacity = '0';
+                        submenu.style.visibility = 'hidden';
+                        submenu.style.transform = 'translateX(-10px)';
+                    }
+                }, 100);
+            });
+        });
+
+        // Keep submenus open when hovering over them
+        document.querySelectorAll('.submenu').forEach(submenu => {
+            submenu.addEventListener('mouseenter', function() {
+                this.style.opacity = '1';
+                this.style.visibility = 'visible';
+                this.style.transform = 'translateX(0)';
+            });
+
+            submenu.addEventListener('mouseleave', function() {
+                setTimeout(() => {
+                    this.style.opacity = '0';
+                    this.style.visibility = 'hidden';
+                    this.style.transform = 'translateX(-10px)';
+                }, 100);
+            });
+        });
+
+        // Utility function to check if mouse is over element
+        function isMouseOverElement(element) {
+            const rect = element.getBoundingClientRect();
+            const mouseX = event.clientX;
+            const mouseY = event.clientY;
+
+            return (
+                mouseX >= rect.left &&
+                mouseX <= rect.right &&
+                mouseY >= rect.top &&
+                mouseY <= rect.bottom
+            );
+        }
+
+        // Close all dropdowns on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                navItems.forEach(item => {
+                    item.classList.remove('nav-active');
+                });
+
+                isolatedSections.forEach(section => {
+                    section.style.opacity = '';
+                    section.style.pointerEvents = '';
+                });
+
+                document.querySelectorAll('.submenu').forEach(submenu => {
+                    submenu.style.opacity = '0';
+                    submenu.style.visibility = 'hidden';
+                    submenu.style.transform = 'translateX(-10px)';
+                });
+            }
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.nav-item.has-dropdown')) {
+                navItems.forEach(item => {
+                    item.classList.remove('nav-active');
+                });
+
+                isolatedSections.forEach(section => {
+                    section.style.opacity = '';
+                    section.style.pointerEvents = '';
+                });
+            }
+        });
+
+        console.log('Multi-level navigation with isolation initialized successfully');
+    });
+    </script>
+  </body>
+</html>

@@ -528,6 +528,8 @@
             <div class="logo">BooIsha</div>
           </a>
         </div>
+
+
         <div class="breadcrumb">
           <a href="index.html"><span>Home / </span></a>
           <span>Fabrics</span>
@@ -711,6 +713,22 @@
               </select>
 
               <select
+                id="fabric-construction-filter"
+                class="filter-select search-filter-select"
+                onchange="filterByConstruction(this.value)"
+              >
+                <option value="">All Construction Types</option>
+                <option value="woven">Woven</option>
+                <option value="knitted">Knitted</option>
+                <option value="non-woven">Non-woven</option>
+                <option value="lace">Lace</option>
+                <option value="pile">Pile (Velvet)</option>
+                <option value="brocade">Brocade</option>
+                <option value="jacquard">Jacquard</option>
+                <option value="embroidered">Embroidered</option>
+              </select>
+
+              <select
                 class="filter-select search-filter-select"
                 onchange="sortSearchResults(this.value)"
               >
@@ -752,6 +770,13 @@
               onclick="switchToAllFabrics()"
             >
               All Fabrics
+            </button>
+            <button
+              class="toggle-btn"
+              id="homeSpecialityBtn"
+              onclick="window.location.href='HomeSpecialityTextiles.html'"
+            >
+              Home &amp; Speciality Textiles View
             </button>
             <!-- Results count moved here -->
             <div class="results-count">
@@ -1297,6 +1322,7 @@
     <script src="index.js" defer></script>
     <script src="fabrics.js" defer></script>
 
+
     <!-- Add this script to enhance your existing fabrics.js functionality -->
     <script>
       // Integration functions to connect with existing code
@@ -1422,6 +1448,11 @@
       function handleCategoryFilter() {
         const categoriesView = document.getElementById("categoriesView");
         const allFabricsView = document.getElementById("allFabricsView");
+
+        // Validate filter combination first
+        if (!validateFilterCombination()) {
+          return; // Stop if invalid combination
+        }
 
         if (categoriesView.style.display !== "none") {
           // In category view - filter category tiles
@@ -1578,6 +1609,177 @@
         }
       }
 
+      // Construction type mapping for validation and filtering
+      const constructionMapping = {
+        woven: {
+          keywords: ['weave', 'twill', 'plain', 'satin', 'dupioni', 'crepe', 'georgette', 'oxford', 'duck', 'dobby', 'herringbone', 'handwoven', 'traditional', 'ikat'],
+          validCategories: ['Silk', 'Cotton', 'Linen', 'Wool', 'Specialty', 'Blended Fabrics', 'Heritage & Traditional'],
+          fabricTypes: ['mulberry', 'tussar', 'chanderi', 'banarasi', 'mysore', 'khadi', 'organic cotton', 'linen', 'hemp', 'jute', 'ramie', 'bamboo', 'pashmina', 'merino']
+        },
+        knitted: {
+          keywords: ['knit', 'jersey', 'knitted'],
+          validCategories: ['Cotton', 'Wool', 'Blended Fabrics'],
+          fabricTypes: ['organic cotton jersey', 'hemp jersey', 'bamboo jersey', 'merino wool jersey', 'cashmere knit', 'bamboo cotton']
+        },
+        'non-woven': {
+          keywords: ['felt', 'non-woven', 'bonded'],
+          validCategories: ['Specialty'],
+          fabricTypes: ['felt']
+        },
+        lace: {
+          keywords: ['lace', 'openwork'],
+          validCategories: ['Specialty', 'Heritage & Traditional'],
+          fabricTypes: ['lace']
+        },
+        pile: {
+          keywords: ['velvet', 'pile', 'plush'],
+          validCategories: ['Specialty', 'Silk'],
+          fabricTypes: ['velvet']
+        },
+        brocade: {
+          keywords: ['brocade', 'zari', 'tissue'],
+          validCategories: ['Silk', 'Heritage & Traditional'],
+          fabricTypes: ['banarasi', 'brocade']
+        },
+        jacquard: {
+          keywords: ['jacquard', 'tissue', 'tanchoi'],
+          validCategories: ['Silk', 'Heritage & Traditional'],
+          fabricTypes: ['tissue', 'tanchoi']
+        },
+        embroidered: {
+          keywords: ['embroidered', 'kalamkari', 'ajrakh', 'bandhani'],
+          validCategories: ['Heritage & Traditional', 'Specialty'],
+          fabricTypes: ['kalamkari', 'ajrakh', 'bandhani']
+        }
+      };
+
+      // Filter by Construction Method Function
+      function filterByConstruction(constructionType) {
+        console.log("Filtering by construction:", constructionType);
+
+        // Store the construction filter
+        if (typeof window.activeSearchFilters !== "undefined") {
+          if (constructionType) {
+            window.activeSearchFilters.construction = constructionType;
+          } else {
+            delete window.activeSearchFilters.construction;
+          }
+        }
+
+        // Check which view is active
+        const categoriesView = document.getElementById("categoriesView");
+        const allFabricsView = document.getElementById("allFabricsView");
+
+        if (categoriesView && categoriesView.style.display !== "none") {
+          // Filter category tiles
+          filterCategoryTilesByConstruction(constructionType);
+        } else if (allFabricsView && allFabricsView.style.display !== "none") {
+          // Filter fabric tiles
+          filterFabricTilesByConstruction(constructionType);
+        }
+
+        // Validate filter combination
+        validateFilterCombination();
+      }
+
+      // Filter category tiles by construction type
+      function filterCategoryTilesByConstruction(constructionType) {
+        const categoryCards = document.querySelectorAll(".fabric-category-card");
+        let visibleCount = 0;
+        const totalCount = categoryCards.length;
+
+        categoryCards.forEach((card) => {
+          const h3Element = card.querySelector("h3");
+          if (!h3Element) return;
+
+          const categoryTitle = h3Element.textContent;
+          let shouldShow = false;
+
+          if (!constructionType) {
+            shouldShow = true;
+          } else {
+            const construction = constructionMapping[constructionType];
+            if (construction) {
+              shouldShow = construction.validCategories.some(validCat =>
+                categoryTitle.toLowerCase().includes(validCat.toLowerCase()) ||
+                validCat.toLowerCase().includes(categoryTitle.toLowerCase())
+              );
+            }
+          }
+
+          if (shouldShow) {
+            card.style.display = "block";
+            visibleCount++;
+          } else {
+            card.style.display = "none";
+          }
+        });
+
+        // Update results count
+        const resultsDisplay = document.getElementById("unified-results-display");
+        if (resultsDisplay) {
+          resultsDisplay.textContent = `Showing ${visibleCount} of ${totalCount} fabric categories`;
+        }
+      }
+
+      // Filter fabric tiles by construction type
+      function filterFabricTilesByConstruction(constructionType) {
+        // Call external fabric filtering function if it exists
+        if (typeof window.filterProductsByConstruction === "function") {
+          window.filterProductsByConstruction(constructionType);
+        } else if (typeof window.renderCurrentPage === "function") {
+          window.renderCurrentPage();
+        }
+      }
+
+      // Validate filter combination and show errors
+      function validateFilterCombination() {
+        const constructionFilter = document.getElementById("fabric-construction-filter");
+        const categoryFilter = document.getElementById("fabric-category-filter");
+
+        if (!constructionFilter || !categoryFilter) return;
+
+        const selectedConstruction = constructionFilter.value;
+        const selectedCategory = categoryFilter.value;
+
+        // Clear any existing error messages
+        clearFilterError();
+
+        // Only validate if both filters are selected
+        if (selectedConstruction && selectedCategory && selectedCategory !== "All Categories") {
+          const construction = constructionMapping[selectedConstruction];
+
+          if (construction && !construction.validCategories.includes(selectedCategory)) {
+            showFilterError(`${selectedCategory} fabrics cannot be filtered with ${selectedConstruction} construction type`);
+            return false;
+          }
+        }
+        return true;
+      }
+
+      // Show filter error message
+      function showFilterError(message) {
+        const activeFiltersDiv = document.getElementById("active-search-filters");
+        if (activeFiltersDiv) {
+          activeFiltersDiv.innerHTML = `
+            <div class="filter-error" style="background: #fee; border: 1px solid #fcc; color: #c33; padding: 8px 12px; border-radius: 4px; margin: 8px 0;">
+              <strong>Incorrect filter applied:</strong> ${message}
+            </div>
+          `;
+        }
+      }
+
+      // Clear filter error message
+      function clearFilterError() {
+        const activeFiltersDiv = document.getElementById("active-search-filters");
+        if (activeFiltersDiv) {
+          const errorDiv = activeFiltersDiv.querySelector(".filter-error");
+          if (errorDiv) {
+            errorDiv.remove();
+          }
+        }
+      }
+
       // Clear All Filters Function
       function clearAllSearchFilters() {
         console.log("Clear All button clicked - starting reset");
@@ -1609,7 +1811,17 @@
           card.style.display = "block";
         });
 
-        // 4. Show all fabric products (call external function)
+        // 4. Reset construction filter specifically
+        const constructionFilter = document.getElementById("fabric-construction-filter");
+        if (constructionFilter) {
+          constructionFilter.selectedIndex = 0;
+          constructionFilter.value = "";
+        }
+
+        // 4.1. Clear any filter error messages
+        clearFilterError();
+
+        // 5. Show all fabric products (call external function)
         console.log("Calling external functions...");
         if (typeof window.activeSearchFilters !== "undefined") {
           window.activeSearchFilters = {};
